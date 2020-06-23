@@ -1,0 +1,107 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>상영 시간표</title>
+<style type="text/css">
+#scheduleList {
+	margin: 0 auto;
+	text-align: center;
+}
+#scheduleList a {
+		color: black;
+}
+#scheduleTable {
+	margin: 20px auto;
+	width: 80%;
+	border-collapse: collapse;
+	border: 1px solid black;
+}
+#scheduleTable td {
+	padding: 10px;
+}
+#scheduleTable tr:nth-child(2n-1) {
+	background-color: lightgray;
+}
+</style>
+</head>
+<body>
+<div id="scheduleList">
+	<h3>${sessionScope.MOVIE_INFO.movieTitle }</h3>
+	
+	<!-- 새로 만든 테이블 -->
+	<h3>영화명 : 백두산</h3>
+	<table id="scheduleTable">
+		<colgroup>
+			<col width="*">
+			<col width="17%">
+			<col width="17%">
+			<col width="17%">
+			<col width="17%">
+			<col width="17%">
+		</colgroup>
+		<tr>
+			<td>날짜</td>
+			<td>시간1</td>
+			<td>시간2</td>
+			<td>시간3</td>
+			<td>시간4</td>
+			<td>시간5</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>시간6</td>
+			<td>시간7</td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>날짜</td>
+			<td>시간1</td>
+			<td>시간2</td>
+			<td>시간3</td>
+			<td>시간4</td>
+			<td>시간5</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>시간6</td>
+			<td>시간7</td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+	</table>
+	
+	<!-- 기존 테이블 -->
+	<c:forEach items="${screenList }" var="screen" varStatus="status">
+		<c:if test="${status.index eq 0 or screenList[status.index-1].screenName ne screenList[status.index].screenName}">
+			<h4>${screen.screenName }</h4>
+		</c:if>
+		<c:choose>
+			<c:when test="${fn:substring(screenList[status.index-1].scheduleStart, 0, 10) ne fn:substring(screenList[status.index].scheduleStart, 0 , 10)}">
+				<p>${fn:substring(screen.scheduleStart, 5, 7) }월
+				${fn:substring(screen.scheduleStart, 8, 10) }일</p>
+				<div class="time">
+				<a href="chooseSeat.do?scheduleNum=${screen.scheduleNum}">${fn:substring(screen.scheduleStart, 11, 16) }</a><br>
+				${screen.reservedAvailable}/${screen.seatCnt }<br>
+				</div>
+			</c:when>
+			<c:otherwise>
+				<div class="time">
+				<a href="chooseSeat.do">${fn:substring(screen.scheduleStart, 11, 16) }</a><br>
+				${screen.reservedAvailable}/${screen.seatCnt }<br>
+				</div>
+			</c:otherwise>
+		</c:choose>
+	</c:forEach>
+	<br>
+	<input type="button" value="상영 일정 보기" id="goScheduleListBtn" onclick="location.href='movieMain.do'"/>
+</div>
+</body>
+</html>

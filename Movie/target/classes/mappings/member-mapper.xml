@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="memberMapper">
+	<resultMap type="com.spring.service.vo.MemberVO" id="member">
+		<result column="MEMBER_NUM" 		property="memberNum"/>
+		<result column="MEMBER_ID" 			property="memberId"/>
+		<result column="MEMBER_PASSWORD" 	property="memberPassword"/>
+		<result column="MEMBER_NAME" 		property="memberName"/>
+		<result column="MEMBER_SHIP" 		property="memberShip"/>
+		<result column="MEMBER_TEL" 		property="memberTel"/>
+		<result column="MEMBER_POINT" 		property="memberPoint"/>
+	</resultMap>
+	
+	
+	<!-- 회원가입하는 메소드 -->
+	<insert id="insertMember">
+	INSERT INTO MOVIE_MEMBER (
+		MEMBER_NUM
+		, MEMBER_ID
+		, MEMBER_PASSWORD
+		, MEMBER_NAME
+		, MEMBER_SHIP
+		, MEMBER_TEL
+		<if test='chooChun=="y"'>
+		, MEMBER_POINT
+		</if>
+	) VALUES (
+		(SELECT NVL(MAX(MEMBER_NUM),0) + 1 FROM MOVIE_MEMBER)
+		, #{memberId}
+		, #{memberPassword}
+		, #{memberName}
+		, '브론즈'
+		, #{memberTel}
+		<if test='chooChun=="y"'>
+		, 5000
+		</if>
+	)
+ 	
+	</insert>
+	
+	
+	<!-- 로그인하는 메소드 -->
+	<select id="loginMember" resultMap="member">
+	SELECT MEMBER_NUM
+		, MEMBER_ID
+		, MEMBER_PASSWORD
+		, MEMBER_NAME
+		, MEMBER_TEL
+		, MEMBER_SHIP
+		, MEMBER_POINT
+	FROM MOVIE_MEMBER 	
+	WHERE MEMBER_ID = #{memberId}
+	AND MEMBER_PASSWORD = #{memberPassword}
+	</select>
+	
+	
+	<!-- 회원을 조회하는 쿼리 -->
+	<select id="selectMemberList" resultMap="member">
+		SELECT MEMBER_ID
+ 		   , MEMBER_NAME
+ 		   , MEMBER_TEL
+ 		   , MEMBER_SHIP
+ 		   , MEMBER_PASSWORD
+ 		   , MEMBER_POINT
+		FROM MOVIE_MEMBER
+		ORDER BY MEMBER_NUM
+	</select>
+	
+	
+	<!-- 아이디 중복 검사 확인 / 추천인 아이디 검사 확인 -->
+	<select id="selectMemberId" resultMap="member">
+		SELECT MEMBER_ID
+		FROM MOVIE_MEMBER
+		WHERE MEMBER_ID = #{memberId}
+	</select>
+
+
+	<!-- 추천 받은 사람  포인트 추가 -->
+	<update id="updatePoint">
+		UPDATE MOVIE_MEMBER
+		SET MEMBER_POINT = MEMBER_POINT + 2000
+		WHERE MEMBER_ID = #{chooChunId}
+	</update>
+	
+	<!-- 회원 정보를 조회하는 쿼리 -->
+	<select id="selectMemberInfo" resultMap="member">
+		SELECT MEMBER_ID
+ 		   , MEMBER_NAME
+ 		   , MEMBER_TEL
+ 		   , MEMBER_SHIP
+ 		   , MEMBER_PASSWORD
+ 		   , MEMBER_POINT
+		FROM MOVIE_MEMBER
+		WHERE MEMBER_ID = #{memberId}
+	</select>
+	
+	
+	<!-- 회원정보 수정 -->
+	<update id="updateMemberInfo">
+		UPDATE MOVIE_MEMBER
+		SET
+		MEMBER_PASSWORD = #{memberPassword}
+		, MEMBER_NAME = #{memberName}
+		, MEMBER_TEL = #{memberTel}
+		WHERE MEMBER_ID = #{memberId}
+	</update>
+	
+	
+	
+
+	
+	<!-- 회원 탈퇴 -->
+	<delete id="joinOutMember">
+		DELETE FROM MOVIE_MEMBER
+		WHERE MEMBER_ID = #{memberId}
+	</delete>
+	
+	<!-- 관리자 권한 부여 -->
+	<update id="updateAdminGrant">
+		UPDATE MOVIE_MEMBER
+		SET 
+		MEMBER_SHIP = #{memberShip}
+		, MEMBER_POINT = #{memberPoint}
+		WHERE MEMBER_ID = #{memberId} 
+	</update>
+	
+	<!-- 멤버 아이디 찾기 -->
+	<select id="findMemberId" resultMap="member">
+		SELECT MEMBER_ID
+		FROM MOVIE_MEMBER
+		WHERE member_name = #{memberName}
+		AND MEMBER_TEL = #{memberTel}
+	</select>
+	
+	
+	<!-- 멤버 비밀번호 찾기 -->
+	<select id="findMemberPassword" resultMap="member">
+		SELECT MEMBER_PASSWORD
+		FROM MOVIE_MEMBER
+		WHERE MEMBER_NAME = #{memberName}
+		AND MEMBER_ID = #{memberId}
+	</select>
+	
+	
+	<!-- 결제, 사용한 포인트 차감 -->
+	<update id="updateMemberPoint">
+		UPDATE MOVIE_MEMBER
+		SET
+		MEMBER_POINT = #{memberPoint}
+		WHERE MEMBER_ID = #{memberId}
+	</update>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+

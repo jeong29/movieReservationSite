@@ -1,0 +1,62 @@
+// 이벤트
+$(document).ready(function(){
+	// 댓글 버튼 클릭 시 이동
+	$(document).on('click','#replyBtn', function() {
+		var replyContent = $('#replyContent').val();
+		var movieNum = $('#movieNum').val();
+		var scoreNum = $('#selectScore option:selected').val();
+
+		location.href = 'insertReply.do?replyContent=' + replyContent + '&movieNum=' + movieNum + '&scoreNum=' + scoreNum;
+	});
+	
+	// 상영여부 버튼 클릭 시 
+	$(document).on('click','#isUseBtn', function() {
+		var movieNum = $('#movieNum').val();
+		
+		$.ajax({
+			url: 'isUse.do',
+			type: 'post',
+			data: {'movieNum':movieNum},
+			success: function(result) {
+				if(result == 1) {
+					alert('상영중지 되었습니다.');
+					location.href='movieDetail.do?movieNum='+movieNum;
+				}
+				else {
+					alert('상영중지 실패');
+				}
+			},
+			error: function() {
+				alert('상영중지 실패');
+			}
+		});
+	});
+	
+	// 예매 버튼 클릭 시 
+	$(document).on('click','#reserBtn', function() {
+		// 로그인 체크
+		var memberId = $('#memberId').val();
+		if(memberId == null || memberId == ''){
+			alert('로그인 후에 예매 가능합니다');
+			location.href='loginForm.do';
+		}
+		else {
+			location.href='scheduleList.do';
+		}
+	});
+	
+	// 목록가기 버튼 클릭 시 
+	$(document).on('click','#listBtn', function() {
+			location.href='movieMain.do';
+	});
+	
+	// 관리자 버튼 클릭 시 
+	$(document).on('click','#adminBtn', function() {
+		location.href='adminPage.do';
+	});
+});
+
+// 함수
+(function($) {
+
+})(jQuery);

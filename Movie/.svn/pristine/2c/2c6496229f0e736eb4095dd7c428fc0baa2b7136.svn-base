@@ -1,0 +1,22 @@
+@charset "UTF-8";
+
+/* 회원가입 페이지 */
+
+
+#memberInfoTable {
+	border-collapse: collapse;
+	margin: 0px auto;
+	width: 600px;
+	text-align: center;
+	
+}
+
+#updateBtn {
+	margin: 10px auto;
+	width: 100px;
+	height: 35px;
+	font-weight: bold;
+	color: white;
+	background-color: #F24535;
+	border-style: none;
+}

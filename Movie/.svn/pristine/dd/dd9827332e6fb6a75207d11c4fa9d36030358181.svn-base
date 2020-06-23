@@ -1,0 +1,55 @@
+$(document).ready(function(){
+	//예매 여/부
+	$('#reservationBtn').hide();
+	$('.N').click(function(){
+		if($(this).attr('data-isSelect') == 'N'){
+			$(this).css('background', 'rgb(242, 69, 53)');
+			$(this).attr('data-isSelect', 'Y');
+		}
+		else{
+			$(this).css('background', 'rgb(61, 157, 242)');
+			$(this).attr('data-isSelect', 'N');
+		}
+		
+		var cnt = 0;
+		$('.N').each(function(){
+			if($(this).attr('data-isSelect') == 'Y'){
+				cnt++;
+			}
+		});
+		if(cnt > 0){
+			$('#reservationBtn').show();
+		}
+		else{
+			$('#reservationBtn').hide();
+		}
+	});
+	
+	//예매 클릭 시...
+	$(document).on('click', '#reservationBtn', function(){
+		var bookNum = '';
+		var schedule = $('#scheduleNum').val();
+		$('.N').each(function(){
+			if($(this).attr('data-isSelect') == 'Y'){
+				bookNum += $(this).attr('data-bookNum') + ',';
+			}
+		});
+		$.ajax({
+			url: 'reservation.do',
+			type: 'post',
+			data: {'bookNums':bookNum},
+			success: function(result) {
+				
+				alert($('#screenName').val() + '에서' + '\n' + $('#scheduleStart').val() + '에 상영되는' + '\n' + $('#movieTitle').val() + result + '석을 예매 하시겠습니까?');
+				location.href = 'paymentScreen.do';
+			},
+			error: function(){
+				alert('실패');
+				location.href = 'chooseSeat.do?scheduleNum=' + $('#scheduleNum').val();
+			}
+		});
+	});
+});
+(function($) {
+
+})(jQuery);

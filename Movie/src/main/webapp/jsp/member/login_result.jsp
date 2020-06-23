@@ -1,0 +1,37 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>로그인 결과 확인</title>
+<c:choose>
+	<c:when test="${not empty member }">
+		<c:choose>
+			<c:when test="${sessionScope.MEMBER_INFO.memberShip eq 'admin' }">
+				<script type="text/javascript">
+					alert('관리자님 환영합니다!');
+					location.href = 'movieMain.do';
+				</script>
+			</c:when>
+			<c:otherwise>
+				<script type="text/javascript">
+					alert('로그인 성공! 메인 화면으로 갑니다');
+					location.href = 'movieMain.do';
+				</script>
+			</c:otherwise>
+		</c:choose>
+	</c:when>
+	<c:otherwise>
+		<script type="text/javascript">
+			alert('다시 로그인하세요!');
+			location.href = 'loginForm.do';
+		</script>
+	</c:otherwise>
+</c:choose>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+package com.spring.service.vo;
+
+//자주하는 질문 VO
+
+public class FaqVO {
+	private int faqNum; // 자주하는 질문번호
+	private String faqSort; // 질문 분류
+	private String faqAsk; // 자주하는 질문이름
+	private String faqAnswer; // 자주하는 질문 답변
+	
+	
+	public int getFaqNum() {
+		return faqNum;
+	}
+	public void setFaqNum(int faqNum) {
+		this.faqNum = faqNum;
+	}
+	public String getFaqSort() {
+		return faqSort;
+	}
+	public void setFaqSort(String faqSort) {
+		this.faqSort = faqSort;
+	}
+	public String getFaqAsk() {
+		return faqAsk;
+	}
+	public void setFaqAsk(String faqAsk) {
+		this.faqAsk = faqAsk;
+	}
+	public String getFaqAnswer() {
+		return faqAnswer;
+	}
+	public void setFaqAnswer(String faqAnswer) {
+		this.faqAnswer = faqAnswer;
+	}
+	
+	
+	
+	
+}

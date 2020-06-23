@@ -1,0 +1,78 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>자주하는질문 등록 페이지</title>
+<style type="text/css">
+#faqFormDiv{
+	margin: 0 auto;
+	padding: 10px;
+	width: 1200px;
+	height: auto;
+}
+#faqFormTable{
+	margin: 0 auto;
+	width: 50%;
+	padding: 10px;
+	border: 1px solid black; 
+	border-collapse: collapse;
+}
+#listBtn , #faqBtn {
+	margin: 10px auto;
+	width: 100px;
+	height: 35px;
+	font-weight: bold;
+	color: white;
+	background-color: #F24535;
+	border-style: none;
+}
+
+
+</style>
+</head>
+<body>
+
+<form action="faqForm.do" method="post" >
+<div id="faqFormDiv">
+	<h3>FAQ 등록</h3>
+	<table id="faqFormTable" border="1">
+		<tr>
+			<td>분류</td>			
+			<td>
+				<select name="faqSortCode" style="width: 80%;">
+					<optgroup label="전체">
+						<option value="1">영화관 이용</option>
+						<option value="2">회원</option>
+						<option value="3">VIP / 클럽멤버쉽</option>
+						<option value="4">온라인</option>
+						<option value="5">할인혜택</option>
+						<option value="6">관람권</option>
+						<option value="7">스페셜관</option>
+					</optgroup>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>질문 </td>
+			<td><input type="text" name="faqAsk" style="width: 80%;"/></td>			
+		</tr>
+		<tr>
+			<td>답변</td>
+			<td><textarea rows="20" cols="40" name="faqAnswer"></textarea></td>
+		</tr>
+		<tr>
+			<td colspan="2"><input type="submit" value="FAQ등록" id="faqBtn"/></td>
+		</tr>
+	</table>
+	<input type="button" onclick="location.href='service.do'" value="목록가기" id="listBtn"/>
+</div>	
+
+	
+</form>
+
+
+
+</body>
+</html>

@@ -1,0 +1,34 @@
+// 이벤트
+$(document).ready(function(){
+	// 비고사항 버튼 등록시
+	$(document).on('click', '#adminGrant', function() {
+		var memberId = $(this).attr('data-memberId');
+		
+		$.ajax({
+			url: 'adminGrantAjax.do',
+			type: 'post',
+			data: {'memberPoint' :0, 'memberShip':'admin', 'memberId':memberId},
+			success: function(result) {
+				if(result == 1){
+					alert('등록 성공');
+					location.href = 'memberList.do';
+				}
+				else {
+					alert('등록 실패');
+				}
+			},
+			error: function() {
+				alert('등록 실패');
+			}
+		});
+		
+		
+		
+	});
+	
+});
+
+// 함수
+(function($) {
+
+})(jQuery);

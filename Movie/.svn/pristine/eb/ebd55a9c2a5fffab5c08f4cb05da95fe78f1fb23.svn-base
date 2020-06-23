@@ -1,0 +1,187 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>상영 시간표</title>
+<style type="text/css">
+#scheduleList {
+	margin: 0 auto;
+	text-align: center;
+}
+
+#scheduleList a {
+	color: black;
+}
+
+input[type="button"] {
+	margin: 10px auto;
+	width: 100px;
+	height: 35px;
+	font-weight: bold;
+	color: white;
+	background-color: #F24535;
+	border-style: none;
+}
+
+/* 설명박스 */
+.explan {
+	margin: 0 auto;
+	width: 80%;
+	color: gray;
+	font-size: 14px;
+	text-align: left;
+}
+
+/* 스케쥴 테이블 */
+#scheduleTable {
+	margin: 10px auto;
+	width: 80%;
+	border-collapse: collapse;
+	border: 1px solid darkgray;
+}
+
+h2 {
+	margin: 0;
+	padding: 20px;
+}
+
+#scheduleTable th {
+	font-size: 22px;
+	border: 2px solid rgb(229, 229, 229);
+	background-color: #dcdcdc;
+}
+
+#scheduleTable td {
+	border: 2px solid rgb(229, 229, 229);
+}
+
+#scheduleTable td:nth-last-child(2) {
+	text-align: right;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 10px;
+	background-color: #dcdcdc;
+}
+.time_box {
+	width: 100px;
+	height: 60px;
+	padding: 10px;
+	/* border: 1px solid black; */
+	float: left;
+	display: inline-block;
+	cursor: pointer;
+}
+.start_time {
+	font-size: 25px;
+}
+.seat {
+	font-size: 14px;
+	color: gray;
+}
+
+/* 이벤트 */
+a:hover .time_box {
+	background-color: rgba(242, 69, 53, 0.8);
+}
+a:hover .seat, a:hover .start_time {
+	color: white;
+	font-weight: bold;
+}
+
+</style>
+</head>
+<body>
+	<div id="scheduleList">
+		<h2>${sessionScope.MOVIE_INFO.movieTitle }</h2>
+
+		<!-- New 테이블 -->
+		
+		<div class="explan">※ 시간(남은 좌석 수 / 총 좌석 수)</div>
+		<table id="scheduleTable">
+			<colgroup>
+				<col width="15%">
+				<col width="15%">
+				<col width="*">
+			</colgroup>
+			<!-- 시간표 조회 -->
+			<c:forEach items="${screenList }" var="screen" varStatus="status">
+			<tr>
+			<c:choose>
+				<c:when test="${fn:substring(screenList[status.index-1].scheduleStart, 0, 10) ne fn:substring(screenList[status.index].scheduleStart, 0 , 10)}">
+					<th>
+						${fn:substring(screen.scheduleStart, 5, 7) }.
+						${fn:substring(screen.scheduleStart, 8, 10) }
+						${screen.dy }
+					</th>
+				</c:when>
+				<c:otherwise>
+					<th></th>
+				</c:otherwise>
+			</c:choose>
+			<c:choose>
+				<c:when test="${status.index eq 0 or (screenList[status.index-1].screenName ne screenList[status.index].screenName or fn:substring(screenList[status.index-1].scheduleStart, 0, 10) ne fn:substring(screenList[status.index].scheduleStart, 0 , 10))}">
+					<td>
+						${screen.screenName }
+					</td>
+				</c:when>
+				<c:otherwise>
+					<td></td>
+				</c:otherwise>
+			</c:choose>
+			<%-- <c:choose>
+				<c:when test=""> --%>
+					<td>
+					<a href="chooseSeat.do?scheduleNum=${screen.scheduleNum}">
+					<div class="time_box">
+						<span class="start_time">
+							${fn:substring(screen.scheduleStart, 11, 16) }
+						</span>
+						<span class="seat">
+							${screen.reservedAvailable}/${screen.seatCnt }
+						</span>
+					</div>
+					</a>
+					</td>
+				<%-- </c:when> --%>
+				<%-- <c:otherwise>
+					<div class="time_box"><span class="start_time"></span></div>
+				</c:otherwise>
+			</c:choose> --%>
+				
+			</tr>
+			</c:forEach>
+		</table>
+		<input type="button" value="목록가기" id="goMoiveList" onclick="location.href='movieMain.do'" />
+
+
+		<%-- <!-- 기존 테이블 -->
+		<c:forEach items="${screenList }" var="screen" varStatus="status">
+			<c:if test="${status.index eq 0 or screenList[status.index-1].screenName ne screenList[status.index].screenName}">
+			<h4>${screen.screenName }</h4>
+		</c:if>
+			<c:choose>
+				<c:when test="${fn:substring(screenList[status.index-1].scheduleStart, 0, 10) ne fn:substring(screenList[status.index].scheduleStart, 0 , 10)}">
+					<p>${fn:substring(screen.scheduleStart, 5, 7) }월
+						${fn:substring(screen.scheduleStart, 8, 10) }일</p>
+					<div class="time">
+						<a href="chooseSeat.do?scheduleNum=${screen.scheduleNum}">${fn:substring(screen.scheduleStart, 11, 16) }</a><br>
+						${screen.reservedAvailable}/${screen.seatCnt }<br>
+					</div>
+				</c:when>
+				<c:otherwise>
+					<div class="time">
+						<a href="chooseSeat.do">${fn:substring(screen.scheduleStart, 11, 16) }</a><br>
+						${screen.reservedAvailable}/${screen.seatCnt }<br>
+					</div>
+				</c:otherwise>
+			</c:choose>
+		</c:forEach>
+		<br> <input type="button" value="목록가기" id="goMoiveList"
+			onclick="location.href='movieMain.do'" />--%>
+	</div>
+</body>
+</html>

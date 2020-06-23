@@ -1,0 +1,37 @@
+@charset "UTF-8";
+
+
+#container{
+	margin: 30px auto;
+}
+table {
+	border: 1px solid;
+	width:90%;
+	border-collapse: collapse;
+	margin: 0 auto;
+	padding: 60px;
+	
+}
+
+table td {
+	text-align: center;
+	padding: 10px;
+}
+table .title {
+	background: #ededed;
+	
+}
+
+input[type=button]{
+	margin: 10px auto;
+	width: 100px;
+	height: 35px;
+	font-weight: bold;
+	color: white;
+	background-color: #F24535;
+	border-style: none;
+}
+.otoAnswer{
+	height: 200px;
+	
+}

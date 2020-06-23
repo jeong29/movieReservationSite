@@ -1,0 +1,149 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>헤더 화면</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://kit.fontawesome.com/148cfa54ae.js" crossorigin="anonymous"></script>
+<!-- <script src="js/header.js?ver=07"></script> -->
+<script type="text/javascript">
+//로그아웃 버튼 클릭시
+$(document).on('click','#logoutBtn' , function(){
+	var isLogout = confirm('정말 로그아웃하시겠습니까?');
+
+	if(isLogout){
+		location.href = 'logout.do';			
+	}
+});
+
+/* //로고 이미지 클릭시
+$(document).on('click','#box2' , function(){
+	location.href = 'movieMain.do';
+}); */
+</script>
+<link rel="stylesheet" href="css/style.css?ver=02">
+<style type="text/css">
+body {
+	position: relative;
+}
+#box1 {
+	width: 25%;
+	box-sizing: border-box;
+	/* border: 1px solid black; */
+	color: white;
+	position: absolute;
+	top: 10px;
+	left: 10px;
+}
+
+#box2 {
+	box-sizing: border-box;
+	width: 50%;
+	/* border: 1px solid black; */
+	position: absolute;
+	left: 440px;
+}
+
+#box3 {
+	width: 20%;
+	box-sizing: border-box;
+	color: white;
+	position: absolute;
+	right: 0;
+}
+
+a {
+	font-size: 15px;
+	text-decoration: none;
+	color: white;
+}
+
+/* SNS 메뉴 */
+.sns {
+	text-align:left;
+	width: 40px;
+}
+.fab {
+	padding-left: 5px;
+}
+
+/* 로고 이미지 */
+.logo {
+	float: left;
+}
+.logo img {
+	width: 100%;
+}
+
+/* 주메뉴 */
+.menu ul {
+	float: right;
+	list-style: none;
+	padding: 0;
+}
+.menu ul li {
+	padding: 5px;
+	float: left;
+	line-height: 14px;
+}
+.menu ul li a {
+	padding: 5px;
+}
+.menu ul li a:hover{
+	border-bottom: 2px solid white;
+}
+</style>
+</head>
+<body>
+<div id="mainDiv">
+
+	<!-- SNS -->
+	<div id="box1" class="sns">
+		
+			<a href="https://ko-kr.facebook.com" target="_blank"><i class="fab fa-facebook-f"> LIKE</i></a>
+		
+		&nbsp;
+		
+			<a href="https://www.youtube.com" target="_blank"><i class="fab fa-youtube"> 구독</i></a>
+		
+		&nbsp;
+		
+			<a href="https://www.instagram.com " target="_blank"><i class="fab fa-instagram"> Follow</i></a>
+		
+	</div>
+	
+	<!-- 로고 -->
+	<div id="box2" class="logo">
+		<a href="movieMain.do"><img alt="" src="/img/logo.jpg"></a>
+	</div>
+	
+	<!-- 메뉴 -->
+	<div id="box3" class="menu">
+		<ul>
+		<c:choose>
+			<c:when test="${empty sessionScope.MEMBER_INFO }">
+				<li><a href="loginForm.do" id="loginBtn">로그인</a></li>
+				<li><a href="joinForm.do">회원가입</a></li>
+			</c:when>
+			<c:otherwise>
+			<li><i class="fas fa-user-alt">&nbsp;</i>${sessionScope.MEMBER_INFO.memberId }님</li>
+			<c:if test="${sessionScope.MEMBER_INFO.memberId ne 'admin' }">
+				<li><a href="myPage.do">My Movie </a></li>
+			</c:if>
+			<c:if test="${sessionScope.MEMBER_INFO.memberId eq 'admin' }">
+				<li><a href="adminPage.do">관리자 페이지 </a></li>
+			</c:if>
+				<li><a href="#" id="logoutBtn">로그아웃 </a></li>
+			</c:otherwise>
+			</c:choose>
+			<li><a href="service.do">고객센터</a></li>
+		</ul>
+	</div>
+</div>
+</body>
+</html>

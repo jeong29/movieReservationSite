@@ -1,0 +1,32 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>관리자 페이지 컨텐츠</title>
+<style type="text/css">
+#explainDiv {
+	margin: 0;
+	padding: 0;
+}
+#logoDiv {
+	margin: 10px auto;
+	width: 800px;
+}
+img {
+	width: 100%;
+}
+</style>
+</head>
+<body>
+<div id="explainDiv">
+	<h2>이 곳은</h2>
+	<div id="logoDiv">
+		<img alt="" src="/img/login_logo.png">
+	</div>
+	<h2>의 관리자 페이지 입니다</h2>
+	<h1>환영합니다, 관리자님!</h1>
+</div>
+</body>
+</html>

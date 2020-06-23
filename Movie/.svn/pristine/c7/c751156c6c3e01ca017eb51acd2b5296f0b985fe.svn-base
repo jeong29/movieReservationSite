@@ -1,0 +1,43 @@
+//jsp실행시 바로 실행
+$(document).ready(function(){
+   
+   //탭메뉴 클릭시
+   $(document).on('click','ul.tabs li' , function(){
+        var tab_id = $(this).attr('data-tab');
+          
+          $('ul.tabs li').removeClass('current');
+          $('.tab-content').removeClass('current');
+       
+          $(this).addClass('current');
+          $("#"+tab_id).addClass('current');
+        });
+
+
+	//회원정보관리 버튼 클릭시
+	$(document).on('click','#passwordChk' , function(){
+		var memberPassword = $('#memberPassword').val();
+		var memberPasswordChk = $('#memberPasswordChk').val();
+		var memberId = $('#memberId').val();
+		
+		if(memberPassword != memberPasswordChk ){
+			alert('잘못 입력하셨습니다.');
+			$('#memberPasswordChk').focus();
+		}
+		else{
+			alert('회원정보 페이지로 이동합니다');
+			location.href = 'memberInfo.do?memberId='+ memberId;
+			
+		}
+     });
+
+	
+});
+   
+   
+   
+
+//함수 선언
+(function($){
+
+
+})(jQuery);

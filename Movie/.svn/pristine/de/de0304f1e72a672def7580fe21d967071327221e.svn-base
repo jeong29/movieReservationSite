@@ -1,0 +1,68 @@
+// 이벤트
+$(document).ready(function(){
+	//아이디 확인
+	$(document).on('click','#idChkBtn' , function(){
+		var memberId = $('#memberId').val();
+		$.ajax({
+	        url: 'selectmemberIdAjax.do',
+	        type: 'post',
+	        data: {'memberId':memberId},
+	        success: function(result) {
+	           if(result == '' || result == 0) {
+	              alert('사용 가능한 ID입니다.');
+	              $('#memberId').attr('data-checkResult','Y');
+	           }
+	           else {
+	              alert('사용중인 ID입니다. 다시 입력하세요');
+	              //$('#memberId').val('');
+	           }
+	        },
+	        error: function(){
+	           alert('실패');
+	        }
+	   });
+	});
+	// 비밀번호 확인
+	$(document).on('keyup','#memberPassword' , function(){
+		$('#chkNotice').html('');
+	});
+	$(document).on('keyup','#memberPasswordChk', function(){
+	    if($('#memberPassword').val() != $('#memberPasswordChk').val()){
+	       $('#chkNotice').html('<div style="color:red;">&nbsp;&nbsp;비밀번호가 일치하지 않습니다</div>');         
+	    }
+	    else{
+	       $('#chkNotice').html('<div style="color:blue;">&nbsp;&nbsp;비밀번호가 일치합니다</div>');
+	    }
+	 });
+	
+	
+	//아이디 입력시 
+	$(document).on('change', '#memberId', function() {
+		$('#idCheckSucess').hide();
+		$('#idChkBtn').show();
+		$('#memberId').attr('data-checkResult','N');
+	});
+	
+	//회원가입 클릭시 
+	$(document).on('click', '#joinBtn', function() {
+	
+		if($('#memberId').attr('data-checkResult') == 'N'){
+			 alert("아이디 중복체크를 해주시기 바랍니다.");
+			    $('#memberId').focus();
+			    return false;
+		}
+		else{
+			return true;
+			
+		}
+	});
+	
+	
+	
+	
+});
+
+// 함수
+(function($) {
+
+})(jQuery);

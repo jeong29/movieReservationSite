@@ -1,0 +1,37 @@
+@charset "UTF-8";
+
+#updateDiv{
+	width: 100%;
+	margin: 20px;
+}	
+table{
+	width:80%;
+	margin: 0 auto;
+	border-collapse: collapse;
+}
+table td input[type=text] {
+	width: 90%;
+}
+table td textarea{
+	width: 90%;
+	margin: 50px;
+}
+
+#updateBtn{
+	margin: 10px auto;
+	width: 100px;
+	height: 35px;
+	font-weight: bold;
+	color: white;
+	background-color: #F24535;
+	border-style: none;
+}
+#backBtn {
+	margin: 10px auto;
+	width: 100px;
+	height: 35px;
+	font-weight: bold;
+	color: white;
+	background-color: rgb(61,157,242);
+	border-style: none;
+}

@@ -1,0 +1,136 @@
+package com.spring.service.vo;
+
+public class MovieVO {
+	private int movieNum;
+	private String movieTitle;
+	private String movieImage;
+	private String movieDerector;
+	private String movieActors;
+	private String movieContent;
+	private String movieOpenDate;
+	private int movieRunningTime;
+	private String movieIsUse;
+	private String genreNum;
+	
+	// Join 때문에 만든 변수
+	private int ratingNum;
+	private String ratingName;
+	private String genreName;
+	
+	// 조건 검색을 위한 변수
+	private String searchValue;
+	private String searchKeyword;
+	
+	//정렬을 위한 변수
+	private int startIndex = 1 ;
+	private int rowNum;
+	
+	
+	
+	
+	
+	
+	public int getRowNum() {
+		return rowNum;
+	}
+	public void setRowNum(int rowNum) {
+		this.rowNum = rowNum;
+	}
+	public int getStartIndex() {
+		return startIndex;
+	}
+	public void setStartIndex(int startIndex) {
+		this.startIndex = startIndex;
+	}
+	public String getSearchValue() {
+		return searchValue;
+	}
+	public void setSearchValue(String searchValue) {
+		this.searchValue = searchValue;
+	}
+	public String getSearchKeyword() {
+		return searchKeyword;
+	}
+	public void setSearchKeyword(String searchKeyword) {
+		this.searchKeyword = searchKeyword;
+	}
+	public int getMovieNum() {
+		return movieNum;
+	}
+	public void setMovieNum(int movieNum) {
+		this.movieNum = movieNum;
+	}
+	public String getMovieTitle() {
+		return movieTitle;
+	}
+	public void setMovieTitle(String movieTitle) {
+		this.movieTitle = movieTitle;
+	}
+	public String getMovieImage() {
+		return movieImage;
+	}
+	public void setMovieImage(String movieImage) {
+		this.movieImage = movieImage;
+	}
+	public String getMovieDerector() {
+		return movieDerector;
+	}
+	public void setMovieDerector(String movieDerector) {
+		this.movieDerector = movieDerector;
+	}
+	public String getMovieActors() {
+		return movieActors;
+	}
+	public void setMovieActors(String movieActors) {
+		this.movieActors = movieActors;
+	}
+	public String getMovieContent() {
+		return movieContent;
+	}
+	public void setMovieContent(String movieContent) {
+		this.movieContent = movieContent;
+	}
+	public String getMovieOpenDate() {
+		return movieOpenDate;
+	}
+	public void setMovieOpenDate(String movieOpenDate) {
+		this.movieOpenDate = movieOpenDate;
+	}
+	public int getMovieRunningTime() {
+		return movieRunningTime;
+	}
+	public void setMovieRunningTime(int movieRunningTime) {
+		this.movieRunningTime = movieRunningTime;
+	}
+	public int getRatingNum() {
+		return ratingNum;
+	}
+	public void setRatingNum(int ratingNum) {
+		this.ratingNum = ratingNum;
+	}
+	public String getRatingName() {
+		return ratingName;
+	}
+	public void setRatingName(String ratingName) {
+		this.ratingName = ratingName;
+	}
+	public String getGenreNum() {
+		return genreNum;
+	}
+	public void setGenreNum(String genreNum) {
+		this.genreNum = genreNum;
+	}
+	public String getGenreName() {
+		return genreName;
+	}
+	public void setGenreName(String genreName) {
+		this.genreName = genreName;
+	}
+	public String getMovieIsUse() {
+		return movieIsUse;
+	}
+	public void setMovieIsUse(String movieIsUse) {
+		this.movieIsUse = movieIsUse;
+	}
+	
+}

@@ -1,0 +1,95 @@
+package com.spring.service.vo;
+
+public class MovieVO {
+	private int movieNum;
+	private String movieTitle;
+	private String movieImage;
+	private String movieDerector;
+	private String movieActors;
+	private String movieContent;
+	private String movieOpenDate;
+	private String movieRunningTime;
+	
+	// Join 때문에 만든 변수
+	private int ratingNum;
+	private String ratingName;
+	private int genreNum;
+	private String genreName;
+	
+	
+	public int getMovieNum() {
+		return movieNum;
+	}
+	public void setMovieNum(int movieNum) {
+		this.movieNum = movieNum;
+	}
+	public String getMovieTitle() {
+		return movieTitle;
+	}
+	public void setMovieTitle(String movieTitle) {
+		this.movieTitle = movieTitle;
+	}
+	public String getMovieImage() {
+		return movieImage;
+	}
+	public void setMovieImage(String movieImage) {
+		this.movieImage = movieImage;
+	}
+	public String getMovieDerector() {
+		return movieDerector;
+	}
+	public void setMovieDerector(String movieDerector) {
+		this.movieDerector = movieDerector;
+	}
+	public String getMovieActors() {
+		return movieActors;
+	}
+	public void setMovieActors(String movieActors) {
+		this.movieActors = movieActors;
+	}
+	public String getMovieContent() {
+		return movieContent;
+	}
+	public void setMovieContent(String movieContent) {
+		this.movieContent = movieContent;
+	}
+	public String getMovieOpenDate() {
+		return movieOpenDate;
+	}
+	public void setMovieOpenDate(String movieOpenDate) {
+		this.movieOpenDate = movieOpenDate;
+	}
+	public String getMovieRunningTime() {
+		return movieRunningTime;
+	}
+	public void setMovieRunningTime(String movieRunningTime) {
+		this.movieRunningTime = movieRunningTime;
+	}
+	
+	
+	public int getRatingNum() {
+		return ratingNum;
+	}
+	public void setRatingNum(int ratingNum) {
+		this.ratingNum = ratingNum;
+	}
+	public String getRatingName() {
+		return ratingName;
+	}
+	public void setRatingName(String ratingName) {
+		this.ratingName = ratingName;
+	}
+	public int getGenreNum() {
+		return genreNum;
+	}
+	public void setGenreNum(int genreNum) {
+		this.genreNum = genreNum;
+	}
+	public String getGenreName() {
+		return genreName;
+	}
+	public void setGenreName(String genreName) {
+		this.genreName = genreName;
+	}
+	
+}

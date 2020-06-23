@@ -1,0 +1,552 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>결제 화면</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://kit.fontawesome.com/148cfa54ae.js"
+	crossorigin="anonymous"></script>
+<style type="text/css">
+body {
+	padding: 0;
+	margin: 0;
+}
+
+#payDiv {
+	margin: 0;
+	padding: 30px 0;
+}
+
+caption {
+	text-align: left;
+	padding-bottom: 20px;
+	font-size: 30px;
+	font-weight: bold;
+}
+
+#payTable {
+	border-top: 2px solid black;
+	border-collapse: collapse;
+	margin: 0 auto;
+	width: 80%;
+	text-align: left;
+	font-size: 20px;
+	border-collapse: collapse;
+}
+
+#payTable td {
+	padding: 10px 20px;
+}
+
+#payTable tr:nth-child(3) {
+	background-color: lightgray;
+}
+
+#movieImg {
+	border: 1px solid black;
+	margin: 0 auto;
+	width: 80%;
+}
+
+#movieImg img {
+	width: 100%;
+}
+
+h3 {
+	margin-top: 10px;
+	margin-bottom: 0px;
+}
+
+.sub {
+	font-size: 16px;
+}
+
+.title {
+	color: gray;
+}
+
+.price {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.total {
+	font-size: 25px;
+}
+
+/* =================================== 포인트 테이블 =================================== */
+#pointTable {
+	border: 1px solid gray;
+	border-collapse: collapse;
+	margin: 0 auto;
+	width: 80%;
+	text-align: left;
+	font-size: 20px;
+}
+
+.main_title {
+	background-color: gray;
+}
+
+#pointTable td {
+	padding: 10px 20px;
+	height: 50px;
+}
+
+.point {
+	color: white;
+	font-weight: bold;
+	font-size: 25px;
+}
+
+/* =================================== 포인트 사용, 결제수단 선택 =================================== */
+#usePointTable, #selectPayTable {
+	border-top: 1px solid black;
+	margin: 0 auto;
+	padding: 0;
+	width: 90%;
+	text-align: center;
+	background-color: lightgray;
+	font-size: 16px;
+}
+
+#usePointTable td, #selectPayTable td {
+	height: 30px;
+}
+
+#apply {
+	background-color: gray;
+	padding: 10px;
+	width: 100px;
+	color: white;
+	border-style: none;
+}
+
+#reset {
+	padding: 10px;
+	width: 100px;
+	border: 1px solid gray;
+}
+
+input[type="text"] {
+	height: 90%;
+}
+
+input[type="password"] {
+	width: 80px;
+	height: 90%;
+}
+
+.box {
+	width: 49%;
+	height: 80%;
+	box-sizing: border-box;
+}
+
+.con1 {
+	float: left;
+	text-align: right;
+}
+
+.con2 {
+	float: right;
+	text-align: left;
+}
+
+/* =================================== 그 외 결제수단 =================================== */
+#payTable2 {
+	border: 1px solid gray;
+	border-collapse: collapse;
+	margin: 0 auto;
+	width: 80%;
+	text-align: left;
+	font-size: 20px;
+}
+
+#payTable2 td {
+	padding: 10px 20px;
+	height: 50px;
+}
+
+#selectCardList {
+	height: 25px;
+}
+
+#bankTable {
+	margin: 0 auto;
+	width: 30%;
+	text-align: left;
+}
+
+#bankTable td {
+	height: 25px;
+	padding: 0;
+}
+
+#bankTable td:nth-child(1) {
+	font-weight: bold;
+}
+
+/* =================================== 최종 결제 =================================== */
+#finallyDiv {
+	width: 100%;
+	height: 300px;
+}
+
+#beforeDiv {
+	height: 20%;
+	background-color: lightgray;
+	box-sizing: border-box;
+}
+
+#totalDiv {
+	height: 80%;
+	background-color: gray;
+	box-sizing: border-box;
+}
+
+#total_box {
+	margin: 0 auto;
+	width: 80%;
+	height: 100%;
+	box-sizing: border-box;
+}
+
+#beforeBox {
+	float: left;
+	height: 100%;
+	font-size: 18px;
+	line-height: 50px;
+	padding-left: 10px;
+}
+
+a {
+	text-decoration: none;
+	color: black;
+}
+
+.total_box {
+	width: 33.3%;
+	height: 100%;
+	border: 1px solid white;
+	float: left;
+	box-sizing: border-box;
+	border: 1px solid white;
+}
+
+.total_title {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.finally_total {
+	font-size: 35px;
+	font-weight: bold;
+}
+
+#totalTalbe {
+	width: 100%;
+	height: 100%;
+	color: white;
+}
+
+#totalTalbe tr:nth-child(1), tr:nth-child(2) {
+	height: 20px;
+}
+
+#totalTalbe td:nth-child(1) {
+	padding-left: 20px;
+	padding-top: 20px;
+}
+
+#totalTalbe td {
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+#totalTalbe td:nth-child(2) {
+	text-align: right;
+}
+
+#buyBtn {
+	width: 100%;
+	height: 80%;
+	font-size: 35px;
+	border-style: none;
+	background-color: white;
+}
+</style>
+</head>
+<body>
+	<div id="payDiv">
+		<!-- =================================== 주문/결제 테이블 =================================== -->
+		<table id="payTable">
+			<caption>주문/결제</caption>
+			<colgroup>
+				<col width="15%">
+				<col width="10%">
+				<col width="15%">
+				<col width="10%">
+				<col width="15%">
+				<col width="*">
+			</colgroup>
+			<tr>
+				<td rowspan="2">
+					<div id="movieImg">
+						<img alt="이미지" src="">
+					</div>
+				</td>
+				<td colspan="5">
+					<h3>백두산(디지털)</h3>
+				</td>
+			</tr>
+			<tr>
+				<td><font class="sub title">상영일</font><br> <font
+					class="sub title">상영관</font><br> <font class="sub title">좌석</font>
+				</td>
+
+				<td><font class="sub">2019-12-31(화)</font><br> <font
+					class="sub">울산(백화점) 5관</font><br> <font class="sub">D5</font>
+				</td>
+
+				<td><font class="sub title">상영시간</font><br> <font
+					class="sub title">관람인원</font><br> <font class="sub title">-</font>
+				</td>
+
+				<td><font class="sub">21:40 ~ 23:58</font><br> <font
+					class="sub">성인 1</font><br> <font class="sub">-</font><br>
+				</td>
+
+				<td><font class="price">10,000</font><font class="sub">
+						원</font></td>
+			</tr>
+			<tr>
+				<td colspan="5"><font class="total">총 주문금액</font></td>
+				<td><font class="total price">10,000</font><font class="sub">
+						원</font></td>
+			</tr>
+		</table>
+		<br> <br>
+
+		<!-- =================================== 포인트 테이블 =================================== -->
+		<table id="pointTable">
+			<caption>포인트 사용</caption>
+			<tr class="main_title">
+				<td><font class="point">POINT</font></td>
+			</tr>
+			<tr>
+				<td><font class="sub title"> <br> 사용가능 포인트가 1000P
+						이상인 경우 1000P 단위로 사용하실 수 있습니다. <br> <br>
+						<hr>
+				</font></td>
+			</tr>
+			<tr>
+				<td>
+					<table id="usePointTable">
+						<tr>
+							<td>
+								<div class="box con1">
+									사용 가능한 포인트 - <i class="fas fa-parking"></i>
+								</div> |
+								<div class="box con2">
+									잔여 포인트 - <i class="fas fa-parking"></i>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="box con1">
+									적용 포인트 <input type="text"> <i class="fas fa-parking"></i>
+								</div> |
+								<div class="box con2">
+									온라인 비밀번호 <input type="password"> <input type="button"
+										value="온라인 비밀번호 변경" id="changeBtn">
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td><input type="button" value="적용" id="apply"> <input
+								type="button" value="다시작성" id="reset"></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+		<br> <br>
+
+		<!-- =================================== 그 외 결제수단 =================================== -->
+		<table id="payTable2">
+			<caption>최종결제수단</caption>
+			<tr class="main_title">
+				<td><font class="point">그 외 결제수단</font></td>
+			</tr>
+			<tr>
+				<td>
+					<table id="selectPayTable">
+						<tr>
+							<td><input type="radio" name="payWay" value="card">
+								신용카드 <input type="radio" name="payWay" value="easy">
+								간편결제 <input type="radio" name="payWay" value="bank">
+								계좌이체 <input type="radio" name="payWay" value="phone">
+								휴대폰결제</td>
+						</tr>
+						<tr>
+							<td>
+								<div id="selectCardDiv">
+									<!-- =================================== 카드 선택 =================================== -->
+									<hr>
+									카드종류 <select id="selectCardList">
+										<option value="0">&nbsp;카드를 선택하세요</option>
+										<option value="1">롯데카드</option>
+										<option value="2">국민카드</option>
+										<option value="3">신한카드</option>
+										<option value="4">삼성카드</option>
+									</select>
+									<hr>
+								</div> <!-- =================================== 계좌 이체 =================================== -->
+								<div id="bankDiv">
+									<table id="bankTable">
+										<colgroup>
+											<col width="20%">
+											<col width="*">
+										</colgroup>
+										<tr>
+											<td>예금주</td>
+											<td>어쩌다 발견한 영화</td>
+										</tr>
+										<tr>
+											<td>농협은행</td>
+											<td>123-4567-8910-11</td>
+										</tr>
+										<tr>
+											<td>우리은행</td>
+											<td>1234-567-891011</td>
+										</tr>
+										<tr>
+											<td>국민은행</td>
+											<td>123456-78-910111</td>
+										</tr>
+									</table>
+								</div> <!-- =================================== 휴대폰 결제 =================================== -->
+								<div id="phoneDiv">
+									<input type="text" placeholder="휴대폰 번호 입력">
+								</div>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+		<br> <br>
+
+		<!-- =================================== 최종 Div =================================== -->
+		<div id="finallyDiv">
+			<div id="beforeDiv">
+				<div id="total_box">
+					<div id="beforeBox">
+						<a href="#"><i class="fas fa-arrow-left"> 이전단계</i></a>
+					</div>
+				</div>
+			</div>
+			<div id="totalDiv">
+				<div id="total_box">
+					<div class="total_box">
+						<table id="totalTalbe">
+							<colgroup>
+								<col width="50%">
+								<col width="50%">
+							</colgroup>
+							<tr>
+								<td colspan="2"><font class="total_title">주문금액</font></td>
+							</tr>
+							<tr>
+								<td>영화예매</td>
+								<td>10,000원</td>
+							</tr>
+							<tr>
+								<td></td>
+								<td><font class="total_title">10,000원</font></td>
+							</tr>
+						</table>
+					</div>
+					<div class="total_box">
+						<table id="totalTalbe">
+							<colgroup>
+								<col width="50%">
+								<col width="50%">
+							</colgroup>
+							<tr>
+								<td colspan="2"><font class="total_title">할인금액</font></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td><font class="total_title">(-) 0원</font></td>
+							</tr>
+						</table>
+					</div>
+					<div class="total_box">
+						<table id="totalTalbe">
+							<colgroup>
+								<col width="50%">
+								<col width="50%">
+							</colgroup>
+							<tr>
+								<td colspan="2"><font class="total_title">총 결제 금액</font>(주문금액
+									- 할인금액)</td>
+							</tr>
+							<tr>
+								<td></td>
+								<td><font class="finally_total">10,000원</font></td>
+							</tr>
+							<tr>
+								<td colspan="2"><input type="button" value="결제하기"
+									id="buyBtn"></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#phoneDiv').hide();
+			$('#selectCardDiv').hide();
+			$('#bankDiv').hide();
+			
+			// radio 타입 선택시
+			$(document).on('change', 'input[type="radio"]', function() {
+				var isChecked = $(this).val();
+
+				if (isChecked == 'card') {
+					$('#phoneDiv').hide();
+					$('#bankDiv').hide();
+					$('#selectCardDiv').show();
+				} 
+				else if (isChecked == 'bank') {
+					$('#phoneDiv').hide();
+					$('#selectCardDiv').hide();
+					$('#bankDiv').show();
+				} 
+				else if (isChecked == 'phone') {
+					$('#selectCardDiv').hide();
+					$('#bankDiv').hide();
+					$('#phoneDiv').show();
+				}
+				else {
+					$('#phoneDiv').hide();
+					$('#selectCardDiv').hide();
+					$('#bankDiv').hide();
+				}
+			});
+		});
+	</script>
+</body>
+</html>

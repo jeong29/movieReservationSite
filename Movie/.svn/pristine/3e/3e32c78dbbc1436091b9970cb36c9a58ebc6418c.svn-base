@@ -1,0 +1,121 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>관리자 페이지</title>
+<script type="text/javascript">
+	//목록가기 버튼 클릭시
+	$(document).on('click', '#listBtn', function() {
+		location.href = 'movieMain.do';
+	});
+
+	/* //영화 등록 버튼 클릭시
+	 $(document).on('click','#insertMovieBtn',function(){
+	 location.href='movieRegForm.do';
+	 });
+
+	 //회원정보조회 버튼 클릭시
+	 $(document).on('click','#selectMember',function(){
+	 var memberId = $('#memberId').val();
+	
+	 location.href='memberList.do?memberId=' + memberId;
+	 }); */
+</script>
+<style type="text/css">
+/* #insertMovieBtn, #selectMember, #listBtn {
+	margin: 10px auto;
+	width: 100px;
+	height: 35px;
+	font-weight: bold;
+	color: white;
+	background-color: #F24535;
+	border-style: none;
+} */
+#adminDiv {
+	margin: 20px auto;
+}
+
+#adminTable {
+	border: 1px solid black;
+	border-collapse: collapse;
+	margin: 10px auto;
+	width: 90%;
+	height: 500px;
+}
+
+#adminTable td {
+	border: 1px solid black;
+	padding: 5px;
+}
+
+#selectorList {
+	width: 100%;
+	height: 100%;
+}
+#memberListTable {
+	border: 1px solid black;
+	margin: 0 auto;
+	width: 90%;
+}
+</style>
+</head>
+<body>
+	<div id="adminDiv">
+		<table id="adminTable">
+			<colgroup>
+				<col width="20%">
+				<col width="*">
+			</colgroup>
+			<tr>
+				<td>
+					<select id="selectorList" multiple>
+						<optgroup label="회원관리">
+							<option id="selectMember">회원정보조회</option>
+						</optgroup>
+						<optgroup label="영화관리">
+							<option id="insertMovie">영화등록</option>
+							<option id="movieList">영화목록</option>
+						</optgroup>
+					</select>
+				</td>
+				<td>
+					<!-- 회원 정보 조회 -->
+					<div id="memberListDiv">
+						<h2>회 원 정 보 조 회</h2>
+						<table id="memberListTable">
+							<colgroup>
+								<col width="20%">
+								<col width="20%">
+								<col width="20%">
+								<col width="*">
+								<col width="20%">
+							</colgroup>
+
+							<tr>
+								<td>아이디</td>
+								<td>비밀번호</td>
+								<td>이 름</td>
+								<td>전화번호</td>
+								<td>멤버등급</td>
+							</tr>
+						</table>
+					</div>
+				</td>
+			</tr>
+		</table>
+		<input type="button" value="목록가기" id="listBtn" />
+
+
+
+
+
+
+
+		<%-- <input type="hidden" value="${sessionScope.MEMBER_INFO.memberId }" id="memberId">
+<input type="button" value="회원정보조회" id="selectMember" /><br>
+<input type="button" value="영화등록" id="insertMovieBtn" /><br> --%>
+	</div>
+</body>
+</html>

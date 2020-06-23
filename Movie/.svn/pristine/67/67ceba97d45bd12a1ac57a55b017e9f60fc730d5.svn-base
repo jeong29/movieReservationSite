@@ -1,0 +1,44 @@
+@charset "UTF-8";
+
+/* 회원정보 수정페이지 */
+
+/* 로고 */
+
+
+#container{
+	padding: 0;
+	margin: 0;
+	margin: 30px auto;
+	text-align: center;
+}
+
+#memberInfoTable {
+	border-collapse: collapse;
+	margin: 20px auto;
+	width: 600px;
+	text-align: left;
+	border-spacing:1px;
+}
+
+#memberInfoTable label {
+	font-weight: bold;
+	padding: 10px;
+	vertical-align: top;
+	font-size: 20px;
+}
+
+#memberInfoTable td{
+	height: 60px;
+	padding: 10px;
+
+}
+
+#setBtn{
+	margin: 10px auto;
+	width: 90%;
+	font-weight: bold;
+	height: 50px;
+	color: white;
+	background-color: #F24535;
+	font-size: 20px;
+}

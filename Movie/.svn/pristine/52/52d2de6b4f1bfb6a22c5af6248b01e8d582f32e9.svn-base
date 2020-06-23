@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 공지사항 관리하는 매퍼 -->
+
+<mapper namespace="noticeMapper">
+	<resultMap type="com.spring.service.vo.NoticeVO" id="notice">
+		<result column="NOTICE_NUM" 		property="noticeNum"/>
+		<result column="NOTICE_TITLE"		property="noticeTitle"/>
+		<result column="NOTICE_CONTENT" 	property="noticeContent"/>
+		<result column="CREATE_DATE" 		property="createDate"/>
+		<result column="READ_CNT" 			property="readCnt"/>
+	</resultMap>
+	
+	
+	<select id="selectNoticeList" resultMap="notice">
+		SELECT NOTICE_NUM
+			, NOTICE_TITLE
+			, NOTICE_CONTENT
+			, TO_CHAR(CREATE_DATE,'YYYY-MM-DD') AS CREATE_DATE
+			, READ_CNT
+		FROM NOTICE	
+	</select>
+	
+	
+	<!-- 고객센터 글 상세 조회 -->
+	<select id="selectNoticeDetail" resultMap="notice">
+		SELECT NOTICE_CONTENT
+			, NOTICE_TITLE
+		FROM NOTICE
+		WHERE NOTICE_NUM = #{noticeNum}
+	</select>
+
+	<!-- 게시글 클릭시 조회수 증가 -->
+	<update id="updateReadCnt">
+		UPDATE NOTICE
+		SET READ_CNT = READ_CNT + 1
+		WHERE NOTICE_NUM = #{noticeNum}
+	
+	</update>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+

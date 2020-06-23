@@ -1,0 +1,358 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>상영 시간표</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="css/jquery-ui.css">
+
+<style type="text/css">
+#scheduleList {
+	margin: 0 auto;
+	text-align: center;
+}
+
+#scheduleList a {
+	color: black;
+}
+#scheduleList h2 {
+	margin: 0;
+	padding: 20px;
+}
+input[type="button"] {
+	margin: 10px auto;
+	width: 100px;
+	height: 35px;
+	font-weight: bold;
+	color: white;
+	background-color: #F24535;
+	border-style: none;
+}
+
+/* 설명박스 */
+.explan {
+	margin: 0 auto;
+	width: 80%;
+	color: gray;
+	font-size: 14px;
+	text-align: left;
+}
+
+/* 스케쥴 테이블 */
+#scheduleTable {
+	margin: 10px auto;
+	width: 80%;
+	border-collapse: collapse;
+	border: 1px solid darkgray;
+}
+#scheduleTable th {
+	font-size: 22px;
+	border: 2px solid rgb(229, 229, 229);
+	background-color: #dcdcdc;
+}
+
+#scheduleTable td {
+	border: 2px solid rgb(229, 229, 229);
+}
+
+#scheduleTable td:nth-last-child(2) {
+	text-align: right;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 10px;
+	background-color: #dcdcdc;
+}
+.time_box {
+	width: 100px;
+	height: 60px;
+	padding: 10px;
+	/* border: 1px solid black; */
+	float: left;
+	display: inline-block;
+	cursor: pointer;
+}
+.time_box .start_time {
+	font-size: 25px;
+}
+.time_box .seat {
+	font-size: 14px;
+	color: gray;
+}
+
+/* 이벤트 */
+a:hover .time_box {
+	background-color: rgba(242, 69, 53, 0.8);
+}
+a:hover .seat, a:hover .start_time {
+	color: white;
+	font-weight: bold;
+}
+
+/* 관람등급 */
+.r1, .r2, .r3, .r4 {
+	width: 18pt;
+	height: 18pt;
+	color: white;
+	border-radius: 5px;
+	display: inline-block;
+	line-height: 24px;
+	font-size: 10px;
+}
+.r2, .r3 {
+	font-size: 12px;
+}
+.r1 {
+	background: rgb(75, 165, 95);
+}
+.r2 {
+	background: rgb(24, 154, 232);
+}
+.r3 {
+	background: rgb(244, 162, 37);
+}
+.r4 {
+	background: rgb(193, 34, 38);
+}
+
+/* 관람등급 안내 팝업창 */
+.ratingTable {
+	border-collapse: collapse;
+	margin: 20px auto;
+	text-align: center;
+}
+
+.ratingTable tr {
+	border-bottom: 1px solid lightgray;
+}
+
+.ratingTable td, th {
+	padding: 10px;
+}
+
+.ratingTable th {
+	background-color: rgb(242, 69, 53);
+	color: white;
+}
+
+.ratingTable td:nth-child(1), th:nth-child(1) {
+	border-right: 1px solid lightgray;
+}
+.ratingTable td:nth-child(2) {
+	text-align: left;
+}
+
+
+</style>
+</head>
+<body>
+	<div id="scheduleList">
+		<h2>
+			<div class="r${sessionScope.MOVIE_INFO.ratingNum} rating">
+				<c:if test="${sessionScope.MOVIE_INFO.ratingNum eq 1}">
+					전체
+				</c:if>
+				<c:if test="${sessionScope.MOVIE_INFO.ratingNum eq 2}">
+					12
+				</c:if>
+				<c:if test="${sessionScope.MOVIE_INFO.ratingNum eq 3}">
+					15
+				</c:if>
+				<c:if test="${sessionScope.MOVIE_INFO.ratingNum eq 4}">
+					청불
+				</c:if>
+			</div>
+			${sessionScope.MOVIE_INFO.movieTitle }
+		</h2>
+		<!-- New 테이블 -->
+		<div class="explan">※ 시간(남은 좌석 수 / 총 좌석 수)</div>
+		<table id="scheduleTable">
+			<colgroup>
+				<col width="15%">
+				<col width="15%">
+				<col width="*">
+			</colgroup>
+			<!-- 시간표 조회 -->
+			<c:forEach items="${screenList }"  var="screen">
+				<tr>
+					<th rowspan="${screen.timeListPerScreenList.size() }">
+						<%-- ${screen.scheduleStart } --%>
+						${fn:substring(screen.scheduleStart, 5, 7) }.
+						${fn:substring(screen.scheduleStart, 8, 10) }
+						일
+					</th>
+					<c:forEach items="${screen.timeListPerScreenList }" var="ScreenPerDay">
+						<td>${ScreenPerDay.screenName }</td>
+						<td>
+						<c:forEach items="${ScreenPerDay.screenList }" var="timeInfo">
+							<a href="chooseSeat.do?scheduleNum=${timeInfo.scheduleNum}">
+								<div class="time_box">
+									<span class="start_time">
+										${fn:substring(timeInfo.scheduleStart, 11, 16) }
+									</span>
+									<span class="seat">
+										${timeInfo.reservedAvailable}/${timeInfo.seatCnt }
+									</span>
+								</div>
+							</a>
+						</c:forEach>
+						</td>
+						</tr>
+						<tr>
+					</c:forEach>
+			</c:forEach>
+			
+			
+			
+			
+			
+			<%-- <c:forEach items="${screenList }" var="screen" varStatus="status">
+			<tr>
+			<c:choose>
+				<c:when test="${fn:substring(screenList[status.index-1].scheduleStart, 0, 10) ne fn:substring(screenList[status.index].scheduleStart, 0 , 10)}">
+					<th>
+						${fn:substring(screen.scheduleStart, 5, 7) }.
+						${fn:substring(screen.scheduleStart, 8, 10) }
+						${screen.dy }
+					</th>
+				</c:when>
+				<c:otherwise>
+					<th></th>
+				</c:otherwise>
+			</c:choose>
+			<c:choose>
+				<c:when test="${status.index eq 0 or (screenList[status.index-1].screenName ne screenList[status.index].screenName or fn:substring(screenList[status.index-1].scheduleStart, 0, 10) ne fn:substring(screenList[status.index].scheduleStart, 0 , 10))}">
+					<td>
+						${screen.screenName }
+					</td>
+				</c:when>
+				<c:otherwise>
+					<td></td>
+				</c:otherwise>
+			</c:choose>
+				<td>
+					<a href="chooseSeat.do?scheduleNum=${screen.scheduleNum}">
+					<div class="time_box">
+						<span class="start_time">
+							${fn:substring(screen.scheduleStart, 11, 16) }
+						</span>
+						<span class="seat">
+							${screen.reservedAvailable}/${screen.seatCnt }
+						</span>
+					</div>
+					</a>
+				</td>
+			</tr>
+			</c:forEach> --%>
+		</table>
+		<input type="button" value="목록가기" id="goMoiveList" onclick="location.href='movieMain.do'" />
+		
+		
+		<div id="rating_popup" title="관람등급 안내">
+			<table class="ratingTable">
+				<colgroup>
+					<col width="40%">
+					<col width="*">
+				</colgroup>
+				<tr>
+					<th>등급명</th>
+					<th>설명</th>
+				</tr>
+				<tr>
+					<td>
+						<div class="r1">
+							전체
+						</div>
+						전체 관람가
+					</td>
+					<td>모든 연령의 고객이 관람가능</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="r2">
+							12
+						</div>
+						만 12세관람가
+					</td>
+					<td>
+						만 12세 이상(주민등록상 생일기준) 관람 가능<br>
+						만 12세 미만 고객은 보호자(성인) 동반 시 관람 가능
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="r3">
+							15
+						</div>
+						만 15세관람가
+					</td>
+					<td>
+						만 15세 이상(주민등록상 생일기준) 관람 가능<br>
+						만 15세 미만 고객은 보호자(성인) 동반 시 관람 가능
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="r4">
+							청불
+						</div>
+						청소년관람불가
+					</td>
+					<td>
+						만 18세 이상(주민등록상 생일기준) 관람 가능<br>
+						- 만 18세 이상이더라도 고등학교 재학중인 경우 관람 불가<br>
+						- 신분증을 지참 필수(구매, 입장시 신분증 확인)<br>
+						만 18세 미만 고객은 보호자(성인) 동반 시에도 관람 붉
+					</td>
+				</tr>
+			</table>
+		</div>
+
+		<%-- <!-- 기존 테이블 -->
+		<c:forEach items="${screenList }" var="screen" varStatus="status">
+			<c:if test="${status.index eq 0 or screenList[status.index-1].screenName ne screenList[status.index].screenName}">
+			<h4>${screen.screenName }</h4>
+		</c:if>
+			<c:choose>
+				<c:when test="${fn:substring(screenList[status.index-1].scheduleStart, 0, 10) ne fn:substring(screenList[status.index].scheduleStart, 0 , 10)}">
+					<p>${fn:substring(screen.scheduleStart, 5, 7) }월
+						${fn:substring(screen.scheduleStart, 8, 10) }일</p>
+					<div class="time">
+						<a href="chooseSeat.do?scheduleNum=${screen.scheduleNum}">${fn:substring(screen.scheduleStart, 11, 16) }</a><br>
+						${screen.reservedAvailable}/${screen.seatCnt }<br>
+					</div>
+				</c:when>
+				<c:otherwise>
+					<div class="time">
+						<a href="chooseSeat.do">${fn:substring(screen.scheduleStart, 11, 16) }</a><br>
+						${screen.reservedAvailable}/${screen.seatCnt }<br>
+					</div>
+				</c:otherwise>
+			</c:choose>
+		</c:forEach>
+		<br> <input type="button" value="목록가기" id="goMoiveList"
+			onclick="location.href='movieMain.do'" />--%>
+	</div>
+</body>
+<script type="text/javascript">
+$(document).ready(function () {
+	// 관람등급 안내 팝업창
+	$('#rating_popup').dialog({
+		autoOpen : false,
+		height : 'auto',
+		width : 'auto',
+		resizable : false,
+		modal : true
+	});
+	
+	// 관람등급 클릭시
+	$(document).on('click','.rating', function () {
+		$('#rating_popup').dialog('open');
+	});
+});
+</script>
+</html>

@@ -1,0 +1,32 @@
+// 이벤트
+$(document).ready(function(){
+	// 삭제 버튼 클릭시
+	$(document).on('click', '.deleteBookNSchedule', function() {
+		var is_delete = confirm('상영 일정뿐만 아니라 예약 정보까지 모두 삭제됩니다.\n그래도 삭제하시겠습니까?')
+		var scheduleNum = $(this).prev().val();
+		if(is_delete){
+			$.ajax({
+				url: 'deleteBookNScheule.do',
+				type: 'post',
+				data: {'scheduleNum' : scheduleNum},
+				success: function(result) {
+					if(result > 0){
+						alert('상영 일정과 ' + (result - 1) + '개의 예약 정보 삭제 성공!');
+						location.href = 'selectScheduleListAdmin.do';
+					}
+					else{
+						alert('삭제 실패');
+					}
+				},
+				error: function(){
+					alert('삭제 실패');
+				}
+			});
+		}
+	});
+});
+
+// 함수
+(function($) {
+
+})(jQuery);

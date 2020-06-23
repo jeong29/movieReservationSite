@@ -1,0 +1,68 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>회원정보 페이지</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="js/member_info.js?ver=06"></script>
+<style type="text/css">
+#memberInfoTable {
+	border-collapse: collapse;
+	margin: 0px auto;
+	width: 600px;
+	text-align: center;
+	
+}
+
+input[type="button"] {
+	margin: 10px auto;
+	width: 100px;
+	height: 35px;
+	font-weight: bold;
+	color: white;
+	background-color: #F24535;
+	border-style: none;
+}
+
+</style>
+</head>
+<body>
+<div id="container">
+	<table id="memberInfoTable" border="1">
+		<tr>
+			<td colspan="2">회원정보 입니다</td>
+		</tr>
+		<tr>
+			<td>아이디</td>
+			<td id="memberId">${info.memberId }</td>
+		</tr>
+		<tr>
+			<td>비밀번호</td>
+			<td><span>${info.memberPassword }</span></td>
+		</tr>
+		<tr>
+			<td>이 름</td>
+			<td><span>${info.memberName }</span></td>
+		</tr>
+		<tr>
+			<td>전화번호</td>
+			<td><span>${info.memberTel }</span></td>
+		</tr>
+		<tr>
+			<td>포인트</td>
+			<td>${info.memberPoint }</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<input type="button" value="수정하기" id="updateBtn"/>
+			</td>
+		</tr>
+	
+	</table>
+</div>
+	
+
+</body>
+</html>

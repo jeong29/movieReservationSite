@@ -1,0 +1,26 @@
+// 이벤트
+$(document).ready(function(){
+	// 등록 버튼 클릭 시
+	$(document).on('click','#insertBtn', function() {
+		var seatCnt = $('#seatCnt').val();
+		var seatColCnt = $('#seatColCnt').val();
+		
+		if(seatCnt < seatColCnt) {
+			confirm('좌석 열 개수가 총 좌석 수보다 적어야 합니다. 다시 입력해 주세요.');
+		}
+		else {
+			$('#screenRegForm').submit();
+		}
+	});
+	
+	// 취소 버튼 클릭 시
+	$(document).on('click','#cancellBtn', function() {
+		location.href = 'adminPage.do';
+	});
+	
+});
+
+// 함수
+(function($) {
+	
+})(jQuery);

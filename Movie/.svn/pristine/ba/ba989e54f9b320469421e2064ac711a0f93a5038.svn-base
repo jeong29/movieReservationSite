@@ -1,0 +1,127 @@
+package com.spring.controller;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.spring.service.CustomerService;
+import com.spring.service.vo.NoticeVO;
+
+//고객센터를 관리하는 컨트롤러
+
+@Controller
+public class CustomerController {
+	//서비스를 받아온다
+	@Resource(name = "customerService")
+	private CustomerService customerService;
+
+	
+	//고객센터로 가는 메소드
+	@RequestMapping(value = "/service.do")
+	public String service(Model model) {
+		
+		//고객센터 리스트 조회하기 - 쿼리 작성하러 가기
+		List<NoticeVO> list = customerService.selectNoticeList();
+		model.addAttribute("list", list);
+	
+		model.addAttribute("page","/jsp/member/service_list.jsp");	
+		return "/jsp/main.jsp";
+	}
+	
+	
+	
+	
+	//공지사항 글 확인하는 메소드
+	@RequestMapping(value = "/noticeDetail.do")
+	public String noticeDetail(Model model, NoticeVO noticeVO) {
+		
+		//공지사항 클릭시 공지안의 내용을 확인하는 쿼리 작성하러 가기
+		
+		model.addAttribute("notice", customerService.selectNoticeDetail(noticeVO));
+		model.addAttribute("page", "/jsp/admin/notice_datail.jsp");
+		
+		return "/jsp/main.jsp";
+				
+	}
+	
+	
+	//공지사항 등록하는 메소드
+	@RequestMapping(value = "/noticeWriteForm.do")
+	public String noticeWriteForm(Model model) {
+		model.addAttribute("page",  "/jsp/admin/notice_write_form.jsp");
+		
+		return "/jsp/main.jsp";
+	}
+	
+	//공지사항 진짜 등록하는 메소드
+	@RequestMapping(value = "/noticeForm.do")
+	public String noticeForm(Model model,NoticeVO noticeVO) {
+		int result = customerService.insertNotice(noticeVO);
+		model.addAttribute("result", result);
+		
+		model.addAttribute("page", "/jsp/admin/notice_write_result.jsp");
+		return "/jsp/main.jsp";
+	}
+	
+	
+	
+	//공지사항 글 수정하는 화면으로 이동
+	@RequestMapping(value = "/noticeUpdateForm.do")
+	public String noticeUpdateForm(Model model,NoticeVO noticeVO) {
+		//게시글 상세보기 서비스 듫고가기
+		
+		model.addAttribute("notice", customerService.selectNoticeDetail(noticeVO));
+		
+		model.addAttribute("page", "/jsp/admin/notice_update_form.jsp");
+		return "/jsp/main.jsp";
+	}
+	
+	//공지사항을 진짜 수정하는 곳
+	@RequestMapping(value = "/noticeUpdate.do")
+	public String noticeUpdate(Model model, NoticeVO noticeVO) {
+		//수정 쿼리 넣어주기		
+		model.addAttribute("updateResult", customerService.updateNotice(noticeVO));
+
+		model.addAttribute("page", "/jsp/admin/notice_update_result.jsp");
+		//수정결과 확인을 위해 update 결과값 던져주지
+		
+		return "/jsp/main.jsp";
+	}
+	
+	
+	//공지사항을 삭제하는 곳
+	@RequestMapping(value = "/noticeDelete.do")
+	public String noticeDelete(Model model,NoticeVO noticeVO) {
+		//삭제쿼리 넣기
+		customerService.deleteNotice(noticeVO);
+		//model.addAttribute("page", "/jsp/admin/notice_delete_result.jsp");
+		return "/jsp/admin/notice_delete_result.jsp";
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

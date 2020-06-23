@@ -1,0 +1,156 @@
+@charset "UTF-8";
+
+#listDiv {
+	padding: 20px;
+}
+
+/* 영화 리스트 테이블 */
+#selectMoiveTable {
+	margin: 10px auto;
+	text-align: center;
+	width: 95%;
+	padding: 10px;
+	background-color: white;
+	border-top: 2px solid black;
+	border-bottom: 2px solid black;
+}
+
+#selectMoiveTable font.title {
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+#selectMoiveTable font.openDate{
+	font-size: 0.8em;
+}
+
+/* 상영중지 : 빨강 */
+#selectMoiveTable font.noScreen {
+	color: red;
+}
+
+#selectMoiveTable td {
+	padding: 5px;
+	position: relative;
+}
+
+/* 검색 css */
+#searchTable {
+	margin-left: 30px;
+	padding-top: 20px;
+	width: 250px;
+}
+#genreSelector {
+	height: 30px;
+	border-style: none;
+	border-radius: 5px;
+	background-color: lightgray;
+}
+input[type="text"] {
+	background-color: lightgray;
+	width: 180px;
+}
+#searchTable td {
+	padding-right: 5px;
+	height: 30px;
+}
+#searchValue{
+	height: 100%;
+	border-style: none;
+	border-radius: 5px;
+}
+#searchBtn {
+	width: 60px;
+	height: 100%;
+	color: white;
+	background-color: #F24535;
+	border-style: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+
+
+/* 이미지 이벤트 */
+figure.box {
+	position: relative;
+	margin: 0 auto;
+	overflow: hidden;
+	width: 150px;
+	height: 215px;
+	color: #ffffff;
+	text-align: center;
+	font-size: 16px;
+	background-color: #000000;
+}
+
+figure.box * {
+  box-sizing: border-box;
+  transition: all 0.35s ease;
+}
+
+figure.box img {
+  width: 100%;
+  backface-visibility: hidden;
+  vertical-align: top;
+}
+
+figure.box:after, figure.box figcaption {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+figure.box:after {
+	content: '';
+	background-color: rgba(0, 0, 0, 0.65);
+	transition: all 0.35s ease;
+	opacity: 0;
+}
+
+figure.box figcaption {
+	z-index: 1;
+}
+
+figure.box .Btn {
+	width: 60%;
+	margin: 10px auto;
+	padding: 0;
+	opacity: 0;
+	background-color: rgb(242, 69, 53);
+	cursor: pointer;
+	line-height: 30px;
+}
+
+figure.box .Btn a {
+	color: white;
+	text-decoration: none;
+}
+
+figure.box .reserv {
+	margin-top: 70px;
+}
+
+figure.box .noReserv {
+	background-color: gray;
+	margin-top: 70px;
+	font-size: 16px;
+}
+
+figure.box:hover img {
+	zoom: 1;
+	filter: alpha(opacity=50);
+	opacity: 0.5;
+}
+
+figure.box:hover h4 {
+	transform: translate(0px, 0px);
+	opacity: 1;
+}
+
+figure.box:hover .Btn {
+	transform: translate(0px, 0px);
+	opacity: 1;
+}

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="reservationMapper">
+	<!-- 상영관(SCREEN) -->
+	<resultMap type="com.spring.service.vo.ScreenVO" id="screen">
+		<result column="SCREEN_NUM"			property="screenNum"/>
+		<result column="SCREEN_NAME"		property="screenName"/>
+		<result column="SEAT_CNT"			property="seatCnt"/>
+		<result column="SEAT_ROW_CNT"		property="seatRowCnt"/>
+		<result column="SEAT_COL_CNT"		property="seatColCnt"/>
+		<result column="MOVIE_NUM"			property="movieNum"/>
+		<result column="SCHEDULE_START"		property="scheduleStart"/>
+		<result column="SCHEDULE_NUM"		property="scheduleNum"/>
+		<result column="RESERVED_AVAILABLE"	property="reservationAvailable"/>
+	</resultMap>
+	<!-- 상영일정(SCHEDULE) -->
+	<resultMap type="com.spring.service.vo.ScheduleVO" id="schedule">
+		<result column="SCHEDULE_NUM"		property="scheduleNum"/>
+		<result column="SCHEDULE_START"		property="scheduleStart"/>
+		<result column="MOVIE_NUM"			property="movieNum"/>
+		<result column="SCREEN_NUM"			property="screenNum"/>
+		<result column="SCREEN_NAME"		property="screenName"/>
+	</resultMap>
+	<!-- 좌석(SEAT) -->
+	<resultMap type="com.spring.service.vo.SeatVO" id="seat">
+		<result column="SEAT_NUM"			property="seatNum"/>
+		<result column="ROW_NUM"			property="rowNum"/>
+		<result column="COL_NUM"			property="colNum"/>
+		<result column="SCREEN_NUM"			property="screenNum"/>
+	</resultMap>
+	<!-- 예약(BOOK) -->
+	<resultMap type="com.spring.service.vo.BookVO" id="book">
+		<result column="BOOK_NUM"			property="bookNum"/>
+		<result column="IS_RESERVED"		property="isReserved"/>
+		<result column="BOOK_ID"			property="bookId"/>
+		<result column="SCHEDULE_NUM"		property="scheduleNum"/>
+		<result column="SEAT_NUM"			property="seatNum"/>
+		<result column="ROW_NUM"			property="rowNum"/>
+		<result column="COL_NUM"			property="colNum"/>
+		<result column="SCREEN_NAME"		property="screenName"/>
+		<result column="SCHEDULE_START"		property="scheduleStart"/>
+	</resultMap>
+	
+	<select id="selectScreenListAjax" resultMap="screen">
+	SELECT SCREEN_NUM
+		, SCREEN_NAME
+		, SEAT_CNT
+	FROM SCREEN
+	ORDER BY SCREEN_NAME
+	</select>
+	
+	<select id="selectScreenList" resultMap="screen">
+	SELECT SCREEN_NAME
+	    , SEAT_CNT
+	    , TO_CHAR(SCHEDULE_START, 'YYYY-MM-DD HH24:MI') AS SCHEDULE_START
+        , SCHEDULE_NUM
+        , (SELECT COUNT(BOOK_NUM) FROM BOOK WHERE SCHEDULE_NUM = B.SCHEDULE_NUM AND IS_RESERVED = 'N') AS RESERVED_AVAILABLE
+	FROM SCREEN A, SCHEDULE B
+	WHERE A.SCREEN_NUM = B.SCREEN_NUM
+	<!-- AND SCHEDULE_START > SYSDATE -->
+	AND MOVIE_NUM = #{movieNum}
+	ORDER BY SCREEN_NAME, SCHEDULE_START
+	</select>
+	
+	<select id="selectBookList" resultMap="book">
+	SELECT BOOK_NUM
+	    , IS_RESERVED
+	    , BOOK_ID
+	    , C.SCHEDULE_NUM
+	    , ROW_NUM
+	    , COL_NUM
+	    , (SELECT SCREEN_NAME FROM SCREEN WHERE SCREEN_NUM = C.SCREEN_NUM) AS SCREEN_NAME
+	    , SCHEDULE_START
+	FROM BOOK A, SEAT B, SCHEDULE C
+	WHERE A.SEAT_NUM = B.SEAT_NUM
+	AND A.SCHEDULE_NUM = C.SCHEDULE_NUM
+	AND C.SCHEDULE_NUM = #{scheduleNum}
+	ORDER BY A.SEAT_NUM
+	</select>
+	
+	<select id="selectSeatColCnt" resultMap="screen">
+	SELECT SEAT_COL_CNT
+	FROM SCHEDULE A, SCREEN B
+	WHERE A.SCREEN_NUM = B.SCREEN_NUM
+	AND SCHEDULE_NUM = #{scheduleNum}
+	</select>
+	
+	<update id="updateBookIsReserved">
+	UPDATE BOOK
+	SET IS_RESERVED = 'Y'
+	WHERE IS_RESERVED = 'N'
+	AND BOOK_NUM = #{bookNum}
+	</update>
+</mapper>

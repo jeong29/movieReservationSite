@@ -1,0 +1,28 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>상영관 등록</title>
+</head>
+<body>
+	<form action="">
+		<table>
+			<tr>
+				<th>상영관 이름</th>
+				<td><input type="text"></td>
+			</tr>
+			<tr>
+				<th>총 좌석수</th>
+				<td><input type="text"></td>
+			</tr>
+			<tr>
+				<th>열 개수</th>
+				<td><input type="text"></td>
+			</tr>
+		</table>
+		<input type="submit" value="등록">
+	</form>
+</body>
+</html>

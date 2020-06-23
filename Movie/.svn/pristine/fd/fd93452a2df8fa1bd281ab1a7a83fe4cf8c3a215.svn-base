@@ -1,0 +1,115 @@
+package com.spring.service;
+
+import java.util.List;
+
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.spring.service.vo.BookVO;
+import com.spring.service.vo.MovieVO;
+import com.spring.service.vo.ScheduleVO;
+import com.spring.service.vo.ScreenVO;
+import com.spring.service.vo.SeatVO;
+
+@Service("reservationService")
+public class ReservationServiceImpl implements ReservationService {
+	@Autowired
+	private SqlSessionTemplate sqlsession;
+	
+	//관리자
+	@Override
+	public int insertScreen(ScreenVO screenVO) {
+		return sqlsession.update("insertScreen", screenVO);
+	}
+	
+	@Override
+	public ScreenVO selectMaxScreenNum() {
+		return sqlsession.selectOne("selectMaxScreenNum");
+	}
+
+	@Override
+	public int insertSeat(SeatVO seatVO) {
+		return sqlsession.insert("insertSeat", seatVO);
+	}
+	
+	@Override
+	public SeatVO selectMaxSeatNum() {
+		return sqlsession.selectOne("selectMaxSeatNum");
+	}
+
+	@Override
+	public int updateSeat(SeatVO seatVO) {
+		return sqlsession.update("updateSeat", seatVO);
+	}
+	
+	@Override
+	public int insertSchedule(ScheduleVO scheduleVO) {
+		return sqlsession.insert("insertSchedule", scheduleVO);
+	}
+	
+	@Override
+	public List<MovieVO> selectMovieTitleList() {
+		return sqlsession.selectList("selectMovieTitleList", null);
+	}
+	
+	@Override
+	public ScheduleVO selectScheduleNum() {
+		return sqlsession.selectOne("selectScheduleNum");
+	};
+	
+	@Override
+	public SeatVO selectMinNMax(ScheduleVO scheduleVO) {
+		return sqlsession.selectOne("selectMinNMax", scheduleVO);
+	};
+	
+	@Override
+	public int insertBook(BookVO bookVO) {
+		return sqlsession.insert("insertBook", bookVO);
+	};
+	
+	@Override
+	public List<ScreenVO> selectScreenListAdmin() {
+		return sqlsession.selectList("selectScreenListAdmin", null);
+	}
+	
+	@Override
+	public List<ScheduleVO> selectScheduleListAdmin() {
+		return sqlsession.selectList("selectScheduleListAdmin");
+	}
+	
+	//고객
+	@Override
+	public List<ScreenVO> selcetScreenList(MovieVO movieVO) {
+		return sqlsession.selectList("selectScreenList", movieVO);
+	}
+
+	@Override
+	public List<BookVO> selectBookList(ScheduleVO scheduleVO) {
+		return sqlsession.selectList("selectBookList", scheduleVO);
+	}
+	@Override
+	public ScreenVO selectSeatColCnt(ScheduleVO scheduleVO) {
+		return sqlsession.selectOne("selectSeatColCnt", scheduleVO);
+	}
+	
+	@Override
+	public BookVO selectIsReserved(BookVO bookVO) {
+		return sqlsession.selectOne("selectIsReserved", bookVO);
+	}
+	
+	@Override
+	public int updateBookIsReserved(BookVO bookVO) {
+		return sqlsession.update("updateBookIsReserved", bookVO);
+	}
+	
+	@Override
+	public BookVO selectMyReservation(BookVO bookVO) {
+		return sqlsession.selectOne("selectMyReservation", bookVO);
+	}
+	
+	@Override
+	public int updateBookIsNotReserved(BookVO bookVO) {
+		return sqlsession.update("updateBookIsNotReserved", bookVO);
+	}
+}

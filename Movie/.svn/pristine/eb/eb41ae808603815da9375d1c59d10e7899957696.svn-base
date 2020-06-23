@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="reservationMapper">
+	<!-- 상영관(SCREEN) -->
+	<resultMap type="com.spring.service.vo.ScreenVO" id="screen">
+		<result column="SCREEN_NUM"			property="screenNum"/>
+		<result column="SCREEN_NAME"		property="screenName"/>
+		<result column="SEAT_CNT"			property="seatCnt"/>
+		<result column="SEAT_COL_CNT"		property="seatColCnt"/>
+		<result column="MOVIE_NUM"			property="movieNum"/>
+		<result column="SCHEDULE_START"		property="scheduleStart"/>
+		<result column="SCHEDULE_NUM"		property="scheduleNum"/>
+		<result column="RESERVED_AVAILABLE"	property="reservationAvailable"/>
+		<result column="DY"					property="dy"/>
+	</resultMap>
+	<!-- 상영일정(SCHEDULE) -->
+	<resultMap type="com.spring.service.vo.ScheduleVO" id="schedule">
+		<result column="SCHEDULE_NUM"				property="scheduleNum"/>
+		<result column="SCHEDULE_START"				property="scheduleStart"/>
+		<result column="SCHEDULE_START_STRING"		property="scheduleStartString"/>
+		<result column="MOVIE_NUM"					property="movieNum"/>
+		<result column="SCREEN_NUM"					property="screenNum"/>
+		<result column="MOVIE_TITLE"				property="movieTitle"/>
+		<result column="SCREEN_NAME"				property="screenName"/>
+		<result column="SEAT_CNT"					property="seatCnt"/>
+		<result column="MOVIE_RUNNINGTIME"			property="movieRunningtime"/>
+	</resultMap>
+	<!-- 좌석(SEAT) -->
+	<resultMap type="com.spring.service.vo.SeatVO" id="seat">
+		<result column="SEAT_NUM"			property="seatNum"/>
+		<result column="ROW_NUM"			property="rowNum"/>
+		<result column="COL_NUM"			property="colNum"/>
+		<result column="PRICE"				property="price"/>
+		<result column="SCREEN_NUM"			property="screenNum"/>
+		<result column="MIN"				property="min"/>
+		<result column="MAX" 				property="max"/>
+	</resultMap>
+	<!-- 예약(BOOK) -->
+	<resultMap type="com.spring.service.vo.BookVO" id="book">
+		<result column="BOOK_NUM"			property="bookNum"/>
+		<result column="IS_RESERVED"		property="isReserved"/>
+		<result column="BOOK_ID"			property="bookId"/>
+		<result column="SCHEDULE_NUM"		property="scheduleNum"/>
+		<result column="SEAT_NUM"			property="seatNum"/>
+		<result column="ROW_NUM"			property="rowNum"/>
+		<result column="COL_NUM"			property="colNum"/>
+		<result column="SCREEN_NAME"		property="screenName"/>
+		<result column="SCHEDULE_START"		property="scheduleStart"/>
+		<result column="MOVIE_IMAGE"		property="movieImage"/>
+		<result column="MOVIE_TITLE"		property="movieTitle"/>
+		<result column="PRICE"				property="price"/>
+		<result column="DY"					property="dy"/>
+		<result column="SCHEDULE_END"		property="scheduleEnd"/>		
+	</resultMap>
+	
+	<!-- 관리자 -->
+	<insert id="insertScreen">
+	INSERT INTO SCREEN (
+	    SCREEN_NUM
+	    , SCREEN_NAME
+	    , SEAT_CNT
+	    , SEAT_COL_CNT
+	) VALUES (
+	    (SELECT NVL(MAX(SCREEN_NUM),0)+1 FROM SCREEN)
+	    , #{screenName}
+	    , #{seatCnt}
+	    , #{seatColCnt}
+	)
+	</insert>
+	
+	<select id="selectMaxScreenNum" resultMap="screen">
+	SELECT SCREEN_NUM
+	FROM (SELECT SCREEN_NUM FROM SCREEN ORDER BY SCREEN_NUM DESC)
+	WHERE ROWNUM = 1
+	</select>
+	
+	<insert id="insertSeat">
+	INSERT INTO SEAT (
+	    SEAT_NUM
+	    , ROW_NUM
+	    , COL_NUM
+	    , PRICE
+	    , SCREEN_NUM
+	) VALUES (
+	    (SELECT NVL(MAX(SEAT_NUM),0)+1 FROM SEAT)
+	    , #{rowNum}
+	    , #{colNum}
+	    , #{price}
+	    , #{screenNum}
+	)
+	</insert>
+	
+	<insert id="insertSchedule">
+	INSERT INTO SCHEDULE (
+	    SCHEDULE_NUM
+	    , SCHEDULE_START
+	    , MOVIE_NUM
+	    , SCREEN_NUM
+	) VALUES (
+	    (SELECT NVL(MAX(SCHEDULE_NUM),0)+1 FROM SCHEDULE)
+	    , #{scheduleStart}
+	    , #{movieNum}
+	    , #{screenNum}
+	)
+	</insert>
+	
+	<select id="selectScheduleNum" resultMap="schedule">
+	SELECT MAX(SCHEDULE_NUM) AS SCHEDULE_NUM
+	FROM SCHEDULE
+	</select>
+	
+	<select id="selectMinNMax" resultMap="seat">
+	SELECT MIN(SEAT_NUM) AS MIN, MAX(SEAT_NUM) AS MAX
+	FROM SEAT
+	WHERE SCREEN_NUM = #{screenNum}
+	</select>
+	
+	<insert id="insertBook">
+	INSERT INTO BOOK (
+	    BOOK_NUM
+	    , SCHEDULE_NUM
+	    , SEAT_NUM
+	) VALUES (
+	    (SELECT NVL(MAX(BOOK_NUM),0)+1 FROM BOOK)
+	    , #{scheduleNum}
+	    , #{seatNum}
+	)
+	</insert>
+	
+	<select id="selectScreenListAdmin" resultMap="screen">
+	SELECT SCREEN_NUM
+		, SCREEN_NAME
+		, SEAT_CNT
+	FROM SCREEN
+	ORDER BY SCREEN_NAME
+	</select>
+	
+	<select id="selectScreenListOnlyServiceable" resultMap="screen">
+	SELECT SCREEN_NUM
+      , SCREEN_NAME
+      , SEAT_CNT
+      , SERVICEABLE
+   FROM SCREEN
+   WHERE SERVICEABLE = 'Y'
+   ORDER BY SERVICEABLE DESC, SCREEN_NAME
+	</select>
+	
+	<select id="selectScheduleListAdmin" resultMap="schedule">
+	SELECT SCHEDULE_NUM 
+		, MOVIE_TITLE
+	    , SCREEN_NAME
+	    , SEAT_CNT
+	    , SCHEDULE_START
+	    , MOVIE_RUNNINGTIME
+	FROM SCHEDULE H, MOVIE M, SCREEN R
+	WHERE H.MOVIE_NUM = M.MOVIE_NUM
+	AND H.SCREEN_NUM = R.SCREEN_NUM
+	<!-- AND SCHEDULE_START > SYSDATE -->
+	ORDER BY MOVIE_TITLE, SCREEN_NAME, SCHEDULE_START
+	</select>
+	
+	<delete id="deleteBook">
+	DELETE FROM BOOK
+	WHERE SCHEDULE_NUM = #{scheduleNum}
+	</delete>
+	
+	<delete id="deleteSchedule">
+	DELETE FROM SCHEDULE
+	WHERE SCHEDULE_NUM = #{scheduleNum}
+	</delete>
+	
+	<!-- 고객 -->
+	<select id="selectScreenList" resultMap="screen">
+	SELECT SCREEN_NAME
+	    , SEAT_CNT
+	    , TO_CHAR(SCHEDULE_START, 'YYYY-MM-DD HH24:MI') AS SCHEDULE_START
+        , SCHEDULE_NUM
+        , (SELECT COUNT(BOOK_NUM) FROM BOOK WHERE SCHEDULE_NUM = B.SCHEDULE_NUM AND IS_RESERVED = 'N') AS RESERVED_AVAILABLE
+        , (SELECT TO_CHAR(SCHEDULE_START, 'DY') FROM DUAL) AS DY
+	FROM SCREEN A, SCHEDULE B
+	WHERE A.SCREEN_NUM = B.SCREEN_NUM
+	<!-- AND SCHEDULE_START > SYSDATE -->
+	AND MOVIE_NUM = #{movieNum}
+	ORDER BY SCHEDULE_START, SCREEN_NAME
+	</select>
+	
+	<select id="selectBookList" resultMap="book">
+	SELECT BOOK_NUM
+	    , IS_RESERVED
+	    , BOOK_ID
+	    , C.SCHEDULE_NUM
+	    , ROW_NUM
+	    , COL_NUM
+	    , (SELECT SCREEN_NAME FROM SCREEN WHERE SCREEN_NUM = C.SCREEN_NUM) AS SCREEN_NAME
+	    , SCHEDULE_START
+	FROM BOOK A, SEAT B, SCHEDULE C
+	WHERE A.SEAT_NUM = B.SEAT_NUM
+	AND A.SCHEDULE_NUM = C.SCHEDULE_NUM
+	AND C.SCHEDULE_NUM = #{scheduleNum}
+	ORDER BY A.SEAT_NUM
+	</select>
+	
+	<select id="selectSeatColCnt" resultMap="screen">
+	SELECT SEAT_COL_CNT
+	FROM SCHEDULE A, SCREEN B
+	WHERE A.SCREEN_NUM = B.SCREEN_NUM
+	AND SCHEDULE_NUM = #{scheduleNum}
+	</select >
+	
+	<select id="selectIsReserved" resultMap="book">
+	SELECT IS_RESERVED
+	FROM BOOK
+	WHERE BOOK_NUM = #{bookNum}
+	</select>
+	
+	<update id="updateBookIsReserved">
+	UPDATE BOOK
+	SET IS_RESERVED = 'Y'
+	WHERE IS_RESERVED = 'N'
+	AND BOOK_NUM = #{bookNum}
+	</update>
+	
+	<select id="selectMyReservation" resultMap="book">
+	SELECT BOOK_NUM
+	    , SCHEDULE_START
+	    , (SELECT TO_CHAR(SCHEDULE_START, 'DY') FROM DUAL) AS DY
+	    , (SELECT SCHEDULE_START + (SELECT MOVIE_RUNNINGTIME FROM MOVIE WHERE MOVIE_NUM = C.MOVIE_NUM)/24/60 FROM DUAL) AS SCHEDULE_END
+	    , (SELECT SCREEN_NAME FROM SCREEN WHERE SCREEN_NUM = C.SCREEN_NUM) AS SCREEN_NAME
+	    , (SELECT ROW_NUM FROM SEAT WHERE SEAT_NUM = B.SEAT_NUM) AS ROW_NUM
+	    , (SELECT COL_NUM FROM SEAT WHERE SEAT_NUM = B.SEAT_NUM) AS COL_NUM
+	    , (SELECT PRICE FROM SEAT WHERE SEAT_NUM = B.SEAT_NUM) AS PRICE
+	FROM BOOK B, SCHEDULE C
+	WHERE BOOK_NUM = #{bookNum}
+	AND B.SCHEDULE_NUM = C.SCHEDULE_NUM
+	</select>
+	
+	<update id="updateBookIsNotReserved">
+	UPDATE BOOK
+	SET IS_RESERVED = 'N'
+	WHERE BOOK_NUM = #{bookNum}
+	</update>
+	
+	<select id="selectMyMovieList" resultMap="book">
+	SELECT BOOK_NUM
+	    , (SELECT MOVIE_IMAGE FROM MOVIE WHERE MOVIE_NUM = C.MOVIE_NUM) AS MOVIE_IMAGE
+	    , (SELECT MOVIE_TITLE FROM MOVIE WHERE MOVIE_NUM = C.MOVIE_NUM) AS MOVIE_TITLE
+	    , (SELECT SCREEN_NAME FROM SCREEN WHERE SCREEN_NUM = C.SCREEN_NUM) AS SCREEN_NAME
+	    , SCHEDULE_START
+	    , (SELECT ROW_NUM FROM SEAT WHERE SEAT_NUM = B.SEAT_NUM) AS ROW_NUM
+	    , (SELECT COL_NUM FROM SEAT WHERE SEAT_NUM = B.SEAT_NUM) AS COL_NUM
+	FROM BOOK B, SCHEDULE C
+	WHERE BOOK_ID = #{memberId}
+	AND B.SCHEDULE_NUM = C.SCHEDULE_NUM
+	<!-- ORDER BY 넣어줘야합니다. -->
+	</select>
+	
+	<select id="selectScheduleListForReserve" resultType="String">
+		SELECT  TO_CHAR(SCHEDULE_START, 'YYYY-MM-DD') AS SCHEDULE_START
+		FROM SCREEN A, SCHEDULE B
+		WHERE A.SCREEN_NUM = B.SCREEN_NUM
+		AND MOVIE_NUM = #{movieNum}
+		GROUP BY TO_CHAR(SCHEDULE_START, 'YYYY-MM-DD')
+		ORDER BY SCHEDULE_START
+	</select>
+	
+	<select id="selectScreenListForReserve" resultMap="screen">
+		SELECT DISTINCT A.SCREEN_NAME
+				,  A.SCREEN_NUM
+		FROM SCREEN A, SCHEDULE B
+		WHERE A.SCREEN_NUM = B.SCREEN_NUM
+		AND MOVIE_NUM = #{movieNum}
+		AND TO_CHAR(SCHEDULE_START, 'YYYY-MM-DD') = #{scheduleStart}
+		ORDER BY SCREEN_NAME
+	</select>
+	
+	<select id="selectTimeTablePerScreen" resultMap="screen">
+		SELECT SEAT_CNT
+		    , TO_CHAR(SCHEDULE_START, 'YYYY-MM-DD HH24:MI') AS SCHEDULE_START
+	        , SCHEDULE_NUM
+	        , (SELECT COUNT(BOOK_NUM) FROM BOOK WHERE SCHEDULE_NUM = B.SCHEDULE_NUM AND IS_RESERVED = 'N') AS RESERVED_AVAILABLE
+	        , (SELECT TO_CHAR(SCHEDULE_START, 'DY') FROM DUAL) AS DY
+		FROM SCREEN A, SCHEDULE B
+		WHERE A.SCREEN_NUM = B.SCREEN_NUM
+		AND MOVIE_NUM = #{movieNum}
+		AND A.SCREEN_NUM = #{screenNum}
+		and TO_CHAR(SCHEDULE_START, 'YYYY-MM-DD') = #{scheduleStart}
+		ORDER BY SCHEDULE_START
+	</select>
+
+</mapper>

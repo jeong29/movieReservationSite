@@ -1,0 +1,109 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>상영 시간표</title>
+<style type="text/css">
+#scheduleList {
+	margin: 0 auto;
+	text-align: center;
+}
+#scheduleList a {
+		color: black;
+}
+
+/* 섦명 박스 */
+#explan {
+	margin: 0 auto;
+	width: 80%;
+	color: gray;
+	font-size: 14px;
+	text-align: left;
+}
+
+#scheduleTable {
+	margin: 10px auto;
+	width: 80%;
+	border-collapse: collapse;
+	border: 1px solid black;
+}
+#scheduleTable td {
+	border: 1px solid white;
+	padding: 10px;
+}
+/* #scheduleTable td:nth-child(1) {
+	padding: 10px;
+} */
+#scheduleTable tr:nth-child(2n-1) {
+	background-color: lightgray;
+}
+#scheduleTable a {
+	text-decoration: none;
+}
+#scheduleTable a:hover {
+	color: rgb(242, 69, 53);
+}
+.day {
+	font-size: 20px;
+}
+.startTime {
+	font-size: 20px;
+	font-weight: bold;
+}
+.seat {
+	color: gray;
+	font-size: 14px;
+}
+#ScheduleListBtn {
+	width: 100px;
+	height: 30px;
+	color: white;
+	background-color: rgb(242, 69, 53);
+	border-style: none;
+}
+</style>
+</head>
+<body>
+<div id="scheduleList">
+	<h3>${sessionScope.MOVIE_INFO.movieTitle }</h3>
+	
+	<!-- 새로 만든 테이블 -->
+	<h3>영화명 : 백두산</h3>
+	<div id="explan">
+		※ 시간(남은 좌석 수 / 총 좌석 수)
+	</div>
+	<table id="scheduleTable">
+		<colgroup>
+			<col width="*">
+			<col width="17%">
+			<col width="17%">
+			<col width="17%">
+			<col width="17%">
+			<col width="17%">
+		</colgroup>
+		<tr>
+			<td><font class="day">2020.01.03(금)</font></td>
+			<td><a href="#"><font class="startTime">09:10</font></a><br><font class="seat">80/100</font></td>
+			<td><a href="#"><font class="startTime">11:45</font></a><br><font class="seat">83/100</font></td>
+			<td><a href="#"><font class="startTime">14:20</font></a><br><font class="seat">85/100</font></td>
+			<td><a href="#"><font class="startTime">19:30</font></a><br><font class="seat">90/100</font></td>
+			<td><a href="#"><font class="startTime">22:05</font></a><br><font class="seat">95/100</font></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><a href="#"><font class="startTime">24:40</font></a><br><font class="seat">98/100</font></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+	</table>
+	<br>
+	<input type="button" value="상영 일정 보기" id="ScheduleListBtn" />
+</div>
+</body>
+</html>

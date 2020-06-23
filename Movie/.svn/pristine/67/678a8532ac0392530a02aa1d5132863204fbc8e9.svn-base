@@ -1,0 +1,75 @@
+//jsp실행시 바로 실행
+$(document).ready(function(){
+	$('.answerTr').hide();
+	
+	//탭메뉴 클릭시
+	$(document).on('click','ul.tabs li' , function(){
+		  var tab_id = $(this).attr('data-tab');
+			 
+		    $('ul.tabs li').removeClass('current');
+		    $('.tab-content').removeClass('current');
+		 
+		    $(this).addClass('current');
+		    $("#"+tab_id).addClass('current');
+		  });
+  	 });
+	
+
+	//자주하는 질문 클릭시
+	$(document).on('click','.askDiv' , function(){
+		var selected = $(this);
+		var isClick = selected.parent().parent().next().attr('data-isShow');
+		
+		
+		if(isClick == 'y'){
+			selected.parent().parent().next().attr('data-isShow','n');
+			selected.parent().parent().next().hide();
+		}
+		else{
+			$('.answerTr').each(function(){
+				$(this).attr('data-isShow','n')
+			});
+			
+			selected.parent().parent().next().attr('data-isShow','y');
+			
+			$('.answerTr').each(function(){
+				if($(this).attr('data-isShow') == 'y'){
+					$(this).show();
+				}
+				else{
+					$(this).hide();
+				}
+			});
+		}
+
+	});
+
+
+	
+	//검색 기능 버튼 클릭시
+	$(document).on('click','#searchBtn' , function(){
+		var searchValue = $('#searchValue').val();
+		var searchKeyword = $('#searchKeyword').val();
+			location.href = 'service.do?searchValue='+ searchValue +'&searchKeyword=' + searchKeyword;
+		});
+	
+	//검색 버튼 엔터 이벤트 처리
+	$(document).on('keydown','#searchValue' , function(key){
+		//엔터키를 눌럿을 때..
+		if(key.keyCode == 13 ){
+			var searchValue = $('#searchValue').val();
+			var searchKeyword = $('#searchKeyword').val();
+			location.href = 'service.do?searchValue='+ searchValue +'&searchKeyword=' + searchKeyword;
+		}
+		
+		});
+
+	
+
+//함수 선언
+(function($){
+
+	
+	
+   
+})(jQuery);

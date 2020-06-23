@@ -1,0 +1,142 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>공지사항 상세보기</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="js/notice_detail.js?ver=07"></script>
+<style type="text/css">
+.container{
+	width: 1200px;
+	margin: 0 auto;
+	align-content: center;
+}
+
+ul.tabs{
+  margin: 0px;
+  padding: 0px;
+  list-style: none;
+ 
+}
+ul.tabs li{
+  background: none;
+  color: #222;
+  display: inline-block;
+  padding: 10px 15px;
+  cursor: pointer;
+ 
+}
+ /* 탭메뉴들 */
+ul.tabs li.current{
+  /* background: rgb(61,157,242); */
+    border: 2px solid lightgray;
+  color: #222;
+  border-bottom: 0;
+}
+.tab-content{
+  display: none;
+ /*  background: #ededed; */
+   border: 2px solid lightgray;
+  padding: 15px;
+}
+ 
+.tab-content.current{
+  display: inherit;
+}
+
+
+#header, #content {
+	width: 90%;
+	border: 1px solid lightgray;
+	margin: 0 auto;
+}
+
+.button{
+	margin: 0 auto;
+}
+.button table {
+	margin: 0 auto;
+		
+}
+#listBtn{
+	margin: 10px auto;
+	width: 100px;
+	height: 35px;
+	font-weight: bold;
+	color: white;
+	background-color: #F24535;
+	border-style: none;
+}
+
+#updateBtn, #deleteBtn {
+	margin: 10px auto;
+	width: 100px;
+	height: 35px;
+	font-weight: bold;
+	color: white;
+	background-color: rgb(61,157,242);
+	border-style: none;
+}
+
+
+</style>
+</head>
+<body>
+<input type="hidden" id="noticeNum" value="${notice.noticeNum }"/>
+
+<div id="container">
+	
+<!--  <div id="tabBtn">
+	  <ul class="tabs">
+	    <li class="tab-link current" data-tab="tab-1">공지사항</li>
+	    <li class="tab-link" data-tab="tab-2">FAQ</li>
+	    <li class="tab-link" data-tab="tab-3">추가여부확인</li>
+	  </ul>
+	
+		<div id="tab-1" class="tab-content current">
+		공지사항
+	  </div>
+	  
+	  
+	  <div id="tab-2" class="tab-content">
+		자주묻는 질문
+	  </div>
+	  
+	  
+	  <div id="tab-3" class="tab-content">
+		추가여부확인
+	  </div>	
+</div> -->
+
+<div id="header">
+		<h3>${notice.noticeTitle }</h3>
+		<table>
+			<tr>
+				<td>&nbsp;&nbsp;<strong>등록일</strong> : ${notice.createDate }</td>			
+				<td>&nbsp;&nbsp;<strong>조회수</strong> : ${notice.readCnt }</td>			
+			</tr>
+		</table>
+	</div>
+	<div id="content">
+		<p>${notice.noticeContent }</p>
+	</div>
+
+<!-- 수정, 삭제 버튼 만들기 -->
+	<div class="button">
+		<table>
+			<tr>
+				<td colspan="3"><input type="button" value="목록가기" id="listBtn"/>
+			<c:if test="${sessionScope.MEMBER_INFO.memberId eq 'admin' }">
+				<input type="button" value="수정" id="updateBtn"/>
+				<input type="button" value="삭제" id="deleteBtn"/>
+			</c:if>	
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+</body>
+</html>

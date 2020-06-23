@@ -1,0 +1,185 @@
+// 이벤트
+$(document).ready(function(){
+	//목록가기 버튼 클릭시
+	$(document).on('click', '#listBtn', function() {
+		location.href = 'movieMain.do';
+	});
+	
+	// 회원 정보 클릭시
+	$(document).on('click', '#memberList', function() {
+		selectMemberList();
+	});
+	
+	// 영화 목록 클릭시
+	$(document).on('click', '#movieList', function() {
+		selectMovieList();
+	});
+	
+	//상영관 목록 클릭시
+	$(document).on('click', '#screenList', function() {
+		selectScreenList();
+	});
+	
+	
+	// 영화 등록 클릭시
+	$(document).on('click', '#insertMovie', function() {
+		location.href = 'movieRegForm.do';
+	});
+});
+
+// 함수
+(function($) {
+	// 모든 회원 정보 조회
+	selectMemberList = function() {
+		var memberId = $('#memberId').val();
+		// 오른쪽 td 내용 지움
+		$('#ListDiv').empty();
+		
+		$.ajax({
+			url : 'selectmemberListAjax.do',
+			type : 'post',
+			data : {'memberId':memberId},
+			success : function(result) {
+				// 오른쪽 td 내용 지움
+				// $('#ListDiv').empty();
+
+				// 리턴 받은 리스트의 갯수
+				var listCnt = result.length;
+				var str = '';
+				
+				str += '<h2>회 원 정 보 조 회</h2>';
+				str += '<table id="memberListTable">';
+				str += '<colgroup>';
+				str += '<col width="20%">';
+				str += '<col width="20%">';
+				str += '<col width="20%">';
+				str += '<col width="*">';
+				str += '<col width="20%">';
+				str += '</colgroup>';
+				str += '<tr>';
+				str += '<td>아이디</td>';
+				str += '<td>비밀번호</td>';
+				str += '<td>이 름</td>';
+				str += '<td>전화번호</td>';
+				str += '<td>멤버등급</td>';
+				str += '</tr>';
+				
+				$.each(result, function(index, element) {
+					str += '<tr>';
+					str += '<td>' + element.memberId + '</td>';
+					str += '<td>' + element.memberPassword + '</td>';
+					str += '<td>' + element.memberName + '</td>';
+					str += '<td>' + element.memberTel + '</td>';
+					str += '<td>' + element.memberShip + '</td>';
+					str += '</tr>';
+				});
+				
+				str += '</table>';
+				$('#ListDiv').append(str);
+			},
+			error : function() {
+				alert('실패');
+			}
+		});
+	}
+	
+	// 모든 영화 정보 조회
+	selectMovieList = function() {
+		var genreNum = 0;
+		$.ajax({
+			url : 'selectMovieListAjax.do',
+			type : 'post',
+			data : {'genreNum':genreNum},
+			success : function(result) {
+				// 오른쪽 td 내용 지움
+				$('#ListDiv').empty();
+				
+				// 리턴 받은 리스트의 갯수
+				var listCnt = result.length;
+				var str = '';
+				
+				str += '<h2>영 화 목 록 조 회</h2>';
+				str += '<table id="movieListTable">';
+				str += '<colgroup>';
+				str += '<col width="*">';
+				str += '<col width="15%">';
+				str += '<col width="15%">';
+				str += '<col width="15%">';
+				str += '<col width="20%">';
+				str += '<col width="15%">';
+				str += '</colgroup>';
+				str += '<tr>';
+				str += '<td>영화명</td>';
+				str += '<td>관람등급</td>';
+				str += '<td>장르</td>';
+				str += '<td>상영시간</td>';
+				str += '<td>개봉일</td>';
+				str += '<td>상영여부</td>';
+				str += '</tr>';
+				
+				$.each(result, function(index, element) {
+					str += '<tr>';
+					str += '<td>' + element.movieTitle + '</td>';
+					str += '<td>' + element.ratingName + '</td>';
+					str += '<td>' + element.genreName + '</td>';
+					str += '<td>' + element.movieRunningTime + ' 분</td>';
+					str += '<td>' + element.movieOpenDate + '</td>';
+					if(element.movieIsUse == 'Y') {
+						str += '<td>상영중</td>'
+					} else if(element.movieIsUse == 'N') {
+						str += '<td>상영중지</td>'
+					}
+					str += '</tr>';
+				});
+
+				str += '</table>';
+				$('#ListDiv').append(str);
+			},
+			error : function() {
+				alert('실패');
+			}
+		});
+	}
+	
+	
+	// 모든 상영관 정보 조회
+	selectScreenList = function() {
+		$.ajax({
+			url : 'selectScreenListAjax.do',
+			type : 'post',
+			data : {},
+			success : function(result) {
+				// 오른쪽 td 내용 지움
+				$('#ListDiv').empty();
+				
+				// 리턴 받은 리스트의 갯수
+				var listCnt = result.length;
+				var str = '';
+				
+				str += '<h2>상 영 관 목 록 조 회</h2>';
+				str += '<table id="screenListTable">';
+				str += '<colgroup>';
+				str += '<col width="*">';
+				str += '<col width="30%">';
+				str += '</colgroup>';
+				str += '<tr>';
+				str += '<td>상영관 이름</td>';
+				str += '<td>좌석수</td>';
+				str += '</tr>';
+				
+				$.each(result, function(index, element) {
+					str += '<tr>';
+					str += '<td>' + element.screenName + '</td>';
+					str += '<td>' + element.seatCnt + '</td>';
+					str += '</tr>';
+				});
+				
+				str += '</table>';
+				$('#ListDiv').append(str);
+			},
+			error : function() {
+				alert('실패');
+			}
+		});
+	}
+})(jQuery);

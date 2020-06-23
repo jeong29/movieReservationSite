@@ -1,0 +1,101 @@
+package com.spring.service;
+
+import java.util.List;
+
+import com.spring.service.vo.BookVO;
+import com.spring.service.vo.MemberVO;
+import com.spring.service.vo.MovieVO;
+import com.spring.service.vo.ScheduleVO;
+import com.spring.service.vo.ScreenVO;
+import com.spring.service.vo.SeatVO;
+
+public interface ReservationService {
+	//상영관 등록
+	public int insertScreen(ScreenVO screenVO);
+	
+	//상영관 번호 조회
+	public ScreenVO selectMaxScreenNum();
+	
+	//좌석 등록
+	public int insertSeat(SeatVO seatVO);
+	
+	//좌석 번호 조회
+	public SeatVO selectMaxSeatNum();
+	
+	//열번호, 행번호 입력
+	public int updateSeat(SeatVO seatVO);
+	
+	//영화 제목 리스트 조회
+	public List<MovieVO> selectMovieTitleList();
+	
+	//스케쥴 등록
+	public int insertSchedule(ScheduleVO scheduleVO);
+	
+	//스케쥴 번호 조회
+	public ScheduleVO selectScheduleNum();
+	
+	//상영관의 좌석번호 최소값, 최대값 조회
+	public SeatVO selectMinNMax(ScheduleVO scheduleVO);
+	
+	//INSERT INTO BOOK...
+	public int insertBook(BookVO bookVO);
+	
+	//상영관 목록 조회
+	public List<ScreenVO> selectScreenListAdmin();
+	
+	//개장 중인 상영관 목록 조회
+	public List<ScreenVO> selectScreenListOnlyServiceable();
+	
+	//상영 일정 조회
+	public List<ScheduleVO> selectScheduleListAdmin();
+	
+	//전체 상영 일정 조회
+	public List<ScheduleVO> selectScheduleWholeList();
+	
+	//SCHEDULE 삭제 전, BOOK 삭제
+	public int deleteBook(ScheduleVO scheduleVO);
+	
+	//SCHEDULE 삭제
+	public int deleteSchedule(ScheduleVO scheduleVO);
+	
+	//폐장 혹은 재개장
+	public int updateServiceable(ScreenVO screenVO);
+	
+	
+	//예매 버튼 클릭 시,
+	//이 영화의 상영관 별 상영시간표 리스트
+	public List<ScreenVO> selcetScreenList(MovieVO movieVO);
+	
+	//(영화, 상영관,) 시간 선택 시,
+	//좌석 별 예약 가능 여부
+	public List<BookVO> selectBookList(ScheduleVO scheduleVO);
+	//좌석 열 개수
+	public ScreenVO selectSeatColCnt(ScheduleVO scheduleVO);
+	
+	//예매 버튼 클릭 시,
+	//확인
+	public BookVO selectIsReserved(BookVO bookVO);
+	//예매
+	public int updateBookIsReserved(BookVO bookVO);
+	
+	//결제화면
+	public BookVO selectMyReservation(BookVO bookVO);
+	
+	//예약 취소
+	public int updateBookIsNotReserved(BookVO bookVO);
+	
+	//상영 중인 영화의 모든 상영일자를 조회한다.
+	public List<String> selectScheduleListForReserve(MovieVO movieVO);
+	
+	//상영일에 영화를 상영하는 모든 상영관을 선택한다.
+	public List<ScreenVO> selectScreenListForReserve(ScreenVO screenVO);
+
+	public List<ScreenVO> selectTimeTablePerScreen(ScreenVO screenVO);
+
+	// 결제 후, 예약 아이디에 회원 아이디 넣기
+	public int updateBookId(BookVO bookVO);
+	
+	// 마이무비, 예매 내역 조회
+	public List<BookVO> selectMyBookList(BookVO bookVO);
+	
+}

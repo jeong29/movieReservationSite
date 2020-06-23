@@ -1,0 +1,44 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>일대일 문의 상세보기 : 고객</title>
+<style type="text/css">
+#container{
+
+}
+table {
+	width:90%;
+	border-collapse: collapse;
+	margin: 0 auto;;
+}
+</style>
+</head>
+<body>
+<div id="container">
+<table border="1">
+	<tr>
+		<td>분 류 : ${detail.otoContact } / ${detail.otoSort }</td>
+		<td>제 목 : ${detail.otoTitle }</td>
+		<td>작 성 일 : ${detail.otoCreateDate }</td>
+	</tr>
+<c:choose>
+	<c:when test="${empty detail.otoAnswer  }">
+		<tr>
+			<td colspan="3">답변이 없습니다.</td>
+		</tr>
+	</c:when>
+	<c:otherwise>
+		<tr>
+			<td colspan="3"> ${detail.otoAnswer }</td>
+		</tr>
+		
+	</c:otherwise>
+</c:choose>
+</table>
+</div>
+</body>
+</html>

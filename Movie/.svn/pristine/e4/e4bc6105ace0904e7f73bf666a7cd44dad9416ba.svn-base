@@ -1,0 +1,59 @@
+//jsp실행시 바로 실행
+$(document).ready(function(){
+	//로그인시 팝업창
+	$('#login_popup').dialog({
+	      autoOpen: false,
+	      height: 200,
+	       width: 'auto',
+	       resizable: false,
+	       modal: true,
+	       buttons: {
+	         '확인': function() {
+	        	 $('#loginForm').submit();
+	        	 
+	         },
+	          '닫기' : function() {
+	              $( this ).dialog( "close" );
+	           }
+	       },
+	   });
+	
+	
+	
+
+	//로그인 버튼 클릭시 
+	$(document).on('click','#loginBtn' , function(){
+		//로그인 팝업창을 띄운다.
+		$('#login_popup').dialog('open');
+		
+
+//		location.href = 'loginForm.do';
+	});
+	
+	//로그아웃 버튼 클릭시
+	$(document).on('click','#logoutBtn' , function(){
+		var isLogout = confirm('정말 로그아웃하시겠습니까?');
+	
+		if(isLogout){
+			location.href = 'logout.do';			
+		}
+   	});
+	
+
+
+	
+	
+	
+	
+});
+
+
+
+
+//함수 선언
+(function($){
+
+	
+	
+   
+})(jQuery);

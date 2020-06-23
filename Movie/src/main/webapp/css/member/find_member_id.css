@@ -1,0 +1,56 @@
+@charset "UTF-8";
+
+
+/* 아이디 찾기 페이지 */
+
+/* 로고 */
+#logo {
+	margin: 70px auto;
+	width: 900px;
+	height: 100px;
+}
+
+#logo img {
+	width: 100%;
+}
+
+/* 회원가입 폼 */
+#findDiv {
+	padding: 0;
+	margin: 0;
+	margin: 30px auto;
+}
+
+#findMemberIdTable {
+	border-collapse: collapse;
+	margin: 20px auto;
+	width: 600px;
+	text-align: left;
+}
+/* #joinTable label {
+	font-weight: bold;
+	font-size: 20px;
+} */
+#findMemberIdTable td {
+	height: 60px;
+	padding: 10px;
+}
+
+input[type="text"], input[type="password"], #findBtn, input[type="tel"] {
+	width: 90%;
+	height: 50px;
+	font-size: 20px;
+}
+
+
+
+/* 회원가입 버튼 */
+#findBtn {
+	height: 70px;
+	font-weight: bold;
+	color: white;
+	background-color: black;
+	border-style: none;
+}
+
+

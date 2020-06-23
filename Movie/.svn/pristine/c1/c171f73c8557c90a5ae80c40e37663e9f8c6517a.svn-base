@@ -1,0 +1,47 @@
+@charset "UTF-8";
+
+/* 로그인 페이지 */
+
+/* 로고 */
+#logo {
+	margin: 70px auto;
+	width: 900px;
+	height: 100px;
+}
+#logo img {
+	width: 100%;
+}
+
+
+/* 로그인 폼 */
+#loginDiv {
+	padding: 0;
+	margin: 0;
+	margin: 30px auto;
+	text-align: center;
+}
+#loginTable {
+	border-collapse: collapse;
+	margin: 20px auto;
+	width: 600px;
+}
+#loginTable td {
+	height: 70px;
+	padding: 20px;
+}
+#loginTable tr:nth-child(4), a{
+	text-decoration: none;
+	color: gray;
+}
+input[type="text"], input[type="password"], input[type="submit"] {
+	width: 90%;
+	height: 60px;
+	font-size: 25px;
+}
+#loginBtn {
+	height: 70px;
+	font-weight: bold;
+	color: white;
+	background-color: rgb(61, 157, 242);
+	border-style: none;
+}

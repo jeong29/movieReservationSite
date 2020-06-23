@@ -1,0 +1,9 @@
+// 이벤트
+$(document).ready(function(){
+
+});
+
+// 함수
+(function($) {
+
+})(jQuery);

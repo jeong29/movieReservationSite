@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="memberMapper">
+	<resultMap type="com.spring.service.vo.MemberVO" id="member">
+		<result column="MEMBER_NUM" 		property="memberNum"/>
+		<result column="MEMBER_ID" 			property="memberId"/>
+		<result column="MEMBER_PASSWORD" 	property="memberPassword"/>
+		<result column="MEMBER_NAME" 		property="memberName"/>
+		<result column="MEMBER_SHIP" 		property="memberShip"/>
+		<result column="MEMBER_TEL" 		property="memberTel"/>
+	</resultMap>
+	
+	
+	<!-- 회원가입하는 메소드 -->
+	<insert id="insertMember">
+	INSERT INTO MOVIE_MEMBER (
+		MEMBER_NUM
+		, MEMBER_ID
+		, MEMBER_PASSWORD
+		, MEMBER_NAME
+		, MEMBER_SHIP
+		, MEMBER_TEL
+	) VALUES (
+		(SELECT NVL(MAX(MEMBER_NUM),0) + 1 FROM MOVIE_MEMBER)
+		, #{memberId}
+		, #{memberPassword}
+		, #{memberName}
+		, '브론즈'
+		, #{memberTel}
+	)
+ 	
+	</insert>
+	
+	
+	<!-- 로그인하는 메소드 -->
+	<select id="loginMember" resultMap="member">
+	SELECT MEMBER_NUM
+		, MEMBER_ID
+		, MEMBER_PASSWORD
+		, MEMBER_NAME
+		, MEMBER_TEL
+		, MEMBER_SHIP
+	FROM MOVIE_MEMBER 	
+	WHERE MEMBER_ID = #{memberId}
+	AND MEMBER_PASSWORD = #{memberPassword}
+	</select>
+	
+	
+	<!-- 회원을 조회하는 쿼리 -->
+	<select id="selectMemberList" resultMap="member">
+		SELECT MEMBER_ID
+ 		   , MEMBER_NAME
+ 		   , MEMBER_TEL
+ 		   , MEMBER_SHIP
+ 		   , MEMBER_PASSWORD
+		FROM MOVIE_MEMBER
+		<if test="memberId != 'admin'">
+		WHERE MEMBER_ID = #{memberId}
+		</if>
+		ORDER BY MEMBER_NUM
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+

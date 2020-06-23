@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+#footerDiv {
+	margin: 0 auto;
+	/* border: 1px solid white; */
+	width: 1200px;
+	height: 100%;
+	text-align: left;
+	position: relative;
+}
+
+#footerDiv div.center {
+	position: absolute;
+	padding: 20px;
+	/* border: 1px solid red;
+	box-sizing: border-box; */
+	color: white;
+}
+#footerDiv div.center .title {
+	font-size: 20px;
+	font-weight: bold;
+	color: white;
+}

@@ -1,0 +1,72 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>헤더 화면</title>
+<style type="text/css">
+div{
+ 
+}
+div nav {
+	float:left;
+	border: 1px solid black; 
+}
+#sns, #menu {
+	width: 25%;
+}
+#sns {
+	float: left;
+}
+#sns img {
+	width: 20px;
+}
+
+#logo{
+	width: 45%;
+	margin: 0 auto;
+}
+#logo img {
+	width: 50%;
+}
+#menu{
+	float: right;
+}
+ul{
+    list-style: none;            
+}
+li{ 
+	float: left;
+	margin-right: 10px;
+}
+
+</style>
+</head>
+<body>
+<div id="top">
+	<nav id="sns">
+		<ul>
+			<li><a href="https://ko-kr.facebook.com" target="_blank">
+			<img src="/img/facebook.svg">LIKE</a></li>
+			<li><a href="https://www.youtube.com"	 target="_blank">
+			<img src="/img/youtube.svg" >구독</a></li>
+			<li><a href="https://www.instagram.com " target="_blank">
+			<img src="/img/instagram.svg">follow</a></li>
+		</ul>
+	</nav>
+	<nav id="logo">
+		<img alt="" src="/img/logo.gif">
+	</nav>
+
+	<nav id="menu">
+		<ul>
+			<li><a href="loginForm.do">로그인 ｜</a></li>
+			<li><a href="joinForm.do">회원가입 ｜</a></li>
+			<li><a href="#">My Movie ｜</a></li>
+			<li><a href="#">고객센터</a></li>
+		</ul>
+	</nav>
+</div>
+</body>
+</html>

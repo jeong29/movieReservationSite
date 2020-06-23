@@ -1,0 +1,190 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>마이 무비</title>
+<script src="https://kit.fontawesome.com/148cfa54ae.js" crossorigin="anonymous"></script>
+<style type="text/css">
+#myMovieDiv {
+	margin: 0;
+	padding: 30px 0;
+}
+#myMoiveTable {
+	border: 1px solid black;
+	border-collapse: collapse;
+	margin: 0 auto;
+	width: 80%;
+	text-align: left;
+	font-size: 20px;
+}
+caption {
+	text-align: left;
+	padding-bottom: 20px;
+	font-size: 30px;
+	font-weight: bold;
+}
+#myMoiveTable tr {
+	height: 60px;
+}
+#myMoiveTable tr:nth-child(1) {
+	background-color: lightgray;
+}
+#myMoiveTable td:nth-child(2) {
+	border-left: 1px solid lightgray;
+}
+#sub_title {
+	font-weight: bold;
+}
+#sub_cont {
+	color: gray;
+	font-size: 16px;
+}
+.box {
+	/* border: 1px solid black; */
+	box-sizing: border-box;
+	padding: 10px;
+}
+.con1 {
+	float: left;
+	width: 70%;
+}
+.con2 {
+	float: right;
+	width: 30%;
+	text-align: right;
+}
+
+
+#myReservTable {
+	border: 1px solid black;
+	border-collapse: collapse;
+	margin: 0 auto;
+	width: 80%;
+	text-align: left;
+	font-size: 20px;
+}
+#myReservTable td {
+	padding: 20px 0;
+}
+#movieImg {
+	border: 1px solid black;
+	width: 80%;
+}
+#movieImg img {
+	width: 100%;
+}
+h3 {
+	margin-top: 10px;
+	margin-bottom: 0px;
+}
+hr {
+	margin: 0;
+	width: 98%;
+	text-align: left;
+	border: 1px solid lightgray;
+}
+#total {
+	color: lightseagreen;
+	font-weight: bold;
+}
+</style>
+</head>
+<body>
+<div id="myMovieDiv">
+	<table id="myMoiveTable">
+	<colgroup>
+		<col width="50%">
+		<col width="50%">
+	</colgroup>
+	<caption>
+		MY MOVIE
+	</caption>
+		<tr>
+			<td colspan="2">
+				<div class="box con1">
+					<font id="sub_title">${sessionScope.MEMBER_INFO.memberName }</font>님 환영합니다!
+				</div>
+				<div class="box con2">
+					<font id="sub_title">회원 등급 </font> 
+					&nbsp;|&nbsp; 
+					${sessionScope.MEMBER_INFO.memberShip }
+				</div>
+			
+			</td>
+		</tr>
+		<tr>
+			<td>
+			
+				<div class="box con1">
+				<font id="sub_title">POINT</font><br><br>
+				<font id="sub_cont">남은 POINT가 100P이상이면 즉시 사용할 수 있습니다.</font>
+				
+				</div>
+				<div class="box con2">
+					<font id="sub_title">${sessionScope.MEMBER_INFO.memberPoint} <i class="fas fa-parking"></i></font>
+				</div>
+				
+			</td>
+			
+			<td>
+				
+				<div class="box con1">
+					<font id="sub_title">보유 쿠폰 정보</font><br><br>
+					<font id="sub_cont">사용 가능한 쿠폰</font><br>
+					<font id="sub_cont">사용한 쿠폰</font>
+				</div>
+				<div class="box con2">
+					<font id="sub_title">0 </font>매<br><br>
+					<font id="sub_title">0 </font><font id="sub_cont">매</font><br>
+					<font id="sub_title">0 </font><font id="sub_cont">매</font>
+				</div>
+				
+			</td>
+		</tr>
+	</table>
+	<br><br>
+	<table id="myReservTable">
+		<caption>
+			MY 예매 내역
+		</caption>
+		<colgroup>
+			<col width="15%">
+			<col width="15%">
+			<col width="*">
+		</colgroup>
+		<tr>
+			<td rowspan="3">
+				<div class="box">
+					<font id="sub_cont">예매번호</font>
+				</div>
+			</td>
+			<td>
+				<div id="movieImg">
+					<img alt="이미지" src="">
+				</div>
+			</td>
+			<td>
+				<h3>시동</h3><br>
+				관람극장 <font id="sub_title">CGV 울산삼산</font><br>
+				관람일시 <font id="sub_title">2019.12.28(토) 15:40</font><br>
+				관람좌석 <font id="sub_title">J14 J15</font><br>
+			</td>
+		</tr>
+		
+		<tr>
+			<td colspan="2">
+				<hr>
+			</td>
+		</tr>
+		
+		<tr>
+			<td colspan="2">
+				<font id="sub_title">총 결제 금액 : </font><font id="total">24,000원</font>
+			</td>
+		</tr>
+	</table>
+</div>
+</body>
+</html>

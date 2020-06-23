@@ -1,0 +1,41 @@
+* {
+	margin: 0;
+	padding: 0;
+	font-size: 16px;
+}
+
+header, footer {
+	width: 100%;
+	background-color: black;
+}
+
+header {
+	height: 50px;
+}
+
+footer {
+	height: 150px;
+}
+
+#contents {
+	margin: 0 auto;
+	width: 1200px;
+	background-color: white;
+	min-height: calc(100vh - 200px);
+}
+
+/* TOP버튼 */
+.top{
+	position: fixed;
+	width: 50px;
+	right: 20px;
+	bottom: 20px;
+	z-index: 100;
+}
+.top:hover {
+	cursor: pointer;
+}
+.top img { 
+	width: 100%;
+}
+

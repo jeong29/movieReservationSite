@@ -1,0 +1,100 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>회원가입 페이지</title>
+<style type="text/css">
+#joinDiv {
+	padding: 0;
+	margin: 0;
+	margin: 30px auto;
+}
+
+#logo {
+	margin: 70px auto;
+	width: 900px;
+	height: 100px;
+}
+
+#logo img {
+	width: 100%;
+}
+
+#joinTable {
+	border-collapse: collapse;
+	margin: 20px auto;
+	width: 600px;
+	text-align: left;
+}
+label {
+	font-weight: bold;
+	font-size: 20px;
+}
+#joinTable td {
+	height: 60px;
+	padding: 20px;
+	/* border: 1px solid black; */
+}
+
+input[type="text"], input[type="password"], input[type="submit"] {
+	width: 90%;
+	height: 50px;
+	font-size: 20px;
+}
+
+#joinBtn {
+	height: 70px;
+	font-weight: bold;
+	color: white;
+	background-color: rgb(61, 157, 242);
+	border-style: none;
+}
+</style>
+</head>
+<body>
+	<div id="logo">
+		<a href="movieMain.do"><img alt="" src="/img/login_logo.png"></a>
+	</div>
+	<div id="joinDiv">
+		<form action="joinResult.do" method="post">
+			<table id="joinTable">
+				<tr>
+					<td>
+						<label>아이디</label><br><br>
+						<input type="text" required>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label>비밀번호</label><br><br>
+						<input type="password" required>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label>비밀번호 재확인</label><br><br>
+						<input type="password" required>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label>이름</label><br><br>
+						<input type="text" required>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label>휴대전화</label><br><br>
+						<input type="text" placeholder="  ' - ' 포함 전화번호 입력" required>
+					</td>
+				</tr>
+				<tr>
+					<td><input type="submit" value="가입하기" id="joinBtn" /></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</body>
+</html>

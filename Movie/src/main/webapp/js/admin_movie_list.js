@@ -1,0 +1,59 @@
+// 이벤트
+$(document).ready(function(){
+	
+	
+	// 상영중지 버튼 클릭 시 
+	$(document).on('click','.isUseBtn', function() {
+		var movieNum = $(this).next().val();
+		var genreNum = "";
+		
+		
+		$.ajax({
+			url: 'isUse.do',
+			type: 'post',
+			data: {'movieNum':movieNum},
+			success: function(result) {
+				if(result == 1) {
+					alert('상영중지 되었습니다.');
+					location.href='movieList.do?genreNum='+genreNum;
+				}
+				else {
+					alert('상영중지 실패');
+				}
+			},
+			error: function() {
+				alert('상영중지 실패');
+			}
+		});
+	});
+	
+	// 상영재개 버튼 클릭 시 
+	$(document).on('click','.isUseIngBtn', function() {
+		var movieNum = $(this).next().val();
+		var genreNum = "";
+				
+		$.ajax({
+			url: 'isUseIng.do',
+			type: 'post',
+			data: {'movieNum':movieNum},
+			success: function(result) {
+				if(result == 1) {
+					alert('상영재개 되었습니다.');
+					location.href='movieList.do?genreNum='+genreNum;
+				}
+				else {
+					alert('상영재개 실패');
+				}
+			},
+			error: function() {
+				alert('상영재개 실패');
+			}
+		});
+	});
+
+});
+
+// 함수
+(function($) {
+
+})(jQuery);

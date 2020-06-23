@@ -1,0 +1,138 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>영화 메인 리스트</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="js/movie_list.js?ver=06"></script>
+<style type="text/css">
+#listDiv {
+	padding: 20px;
+}
+
+#selectMoiveTable {
+	margin: 10px auto;
+	text-align: center;
+	width: 95%;
+	padding: 10px;
+	background-color: white;
+	border-top: 2px solid black;
+	border-bottom: 2px solid black;
+}
+
+#selectMoiveTable td {
+	padding: 5px;
+}
+
+#selectMoiveTable img {
+	width: 150px;
+	height: 200px;
+}
+
+/* 검색 css */
+#searchTable {
+	margin-left: 30px;
+	padding-top: 20px;
+	width: 250px;
+}
+#genreSelector {
+	height: 30px;
+	border-style: none;
+	border-radius: 5px;
+	background-color: lightgray;
+}
+input[type="text"] {
+	background-color: lightgray;
+}
+#searchTable td {
+	padding-right: 5px;
+	height: 30px;
+}
+#searchValue{
+	height: 100%;
+	border-style: none;
+	border-radius: 5px;
+}
+#searchBtn {
+	width: 60px;
+	height: 100%;
+	color: white;
+	background-color: #F24535;
+	border-style: none;
+	border-radius: 5px;
+}
+#no {
+	color: red;
+}
+</style>
+</head>
+<body>
+<div id="listDiv">
+	<table id="searchTable">
+	<colgroup>
+		<col width="30%">
+		<col width="*">
+		<col width="20%">
+	</colgroup>
+		<tr>
+			<td>
+			<select id="genreSelector">
+				<option value="0">장르선택</option>
+					<c:forEach items="${genreList }" var="genreInfo">
+						<option value="${genreInfo.genreNum }">${genreInfo.genreName }</option>
+					</c:forEach>
+			</select>
+			</td>
+			<td>
+				<input type="hidden" value="MOVIE_TITLE" id="searchKeyword">
+				<input type="text" id="searchValue" placeholder=" 영화명을 입력해 주세요">
+			</td>
+			<td><input type="button" value="검색" id="searchBtn"></td>
+		</tr>
+	</table>
+	<table id="selectMoiveTable">
+		<colgroup>
+			<col width="25%">
+			<col width="25%">
+			<col width="25%">
+			<col width="25%">
+		</colgroup>
+		<caption></caption>
+		<c:choose>
+			<c:when test="${list.size() eq 0}">
+				<tr>
+					<td colspan="4">등록된 영화가 없습니다</td>
+				</tr>
+			</c:when>
+			<c:otherwise>
+			
+			<!-- 영화 리스트 조회 -->
+			<tr>
+				<c:forEach items="${list }" var="movie" varStatus="status">
+						<td><a href="#" onclick="goDetail('${movie.movieNum}');">
+						<img alt="${movie.movieTitle }" src="upload/${movie.movieImage }">
+						</a><br>
+						${movie.movieTitle } (${movie.ratingName })<br>
+						${movie.movieOpenDate } 개봉<br>
+						<b><c:if test="${movie.movieIsUse eq 'Y' }">
+							상영중
+						</c:if>
+						<c:if test="${movie.movieIsUse eq 'N' }">
+							<font id="no">상영중지</font>
+						</c:if></b>
+						</td>
+					<c:if test="${(status.index + 1) % 4 eq 0 and status.index ne 0 }">
+					</tr>
+					<tr>
+					</c:if>
+				</c:forEach>
+			</tr>
+			</c:otherwise>
+		</c:choose>		
+	</table>
+</div>
+</body>
+</html>

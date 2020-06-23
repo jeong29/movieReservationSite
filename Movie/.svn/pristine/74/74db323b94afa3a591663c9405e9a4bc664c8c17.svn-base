@@ -1,0 +1,32 @@
+//jsp실행시 바로 실행
+$(document).ready(function(){
+	$('.answerTr').hide();
+	
+	//탭메뉴 클릭시
+	$(document).on('click','ul.tabs li' , function(){
+		  var tab_id = $(this).attr('data-tab');
+			 
+		    $('ul.tabs li').removeClass('current');
+		    $('.tab-content').removeClass('current');
+		 
+		    $(this).addClass('current');
+		    $("#"+tab_id).addClass('current');
+		  });
+  	 });
+	
+
+	//자주하는 질문 클릭시
+	$(document).on('click','.askDiv' , function(){
+		$('.answerTr').show();
+		
+	});
+
+
+
+//함수 선언
+(function($){
+
+	
+	
+   
+})(jQuery);

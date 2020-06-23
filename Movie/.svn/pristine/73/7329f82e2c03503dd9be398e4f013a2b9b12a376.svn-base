@@ -1,0 +1,48 @@
+@charset "UTF-8";
+
+/* 회원정보 페이지 */
+
+
+
+
+#container{
+	padding: 0;
+	margin: 0;
+	margin: 30px auto;
+	text-align: center;
+	
+}
+
+#memberInfoTable {
+	border-collapse: collapse;
+	margin: 20px auto;
+	width: 600px;
+	text-align: left;
+	border-spacing:1px;
+	
+}
+#memberInfoTable label{
+	font-weight: bold;
+	padding: 10px;
+	vertical-align: top;
+	font-size: 20px;
+}
+
+
+#memberInfoTable td{
+	height: 60px;
+	padding: 10px;
+
+}
+
+
+input[type="button"] {
+	margin: 10px auto;
+	width: 90%;
+	height: 50px;
+	font-weight: bold;
+	color: white;
+	background-color: #F24535;
+	/* border-style: none; */
+	font-size: 20px;
+}

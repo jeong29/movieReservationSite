@@ -1,0 +1,64 @@
+package com.spring.service.vo;
+
+import java.sql.Timestamp;
+
+public class ScheduleVO {
+	private int scheduleNum;
+	private Timestamp scheduleStart;
+	private int movieNum;
+	private int screenNum;
+	private String movieTitle;
+	private String screenName;
+	private int seatCnt;
+	private int movieRunningtime;
+	
+	public String getMovieTitle() {
+		return movieTitle;
+	}
+	public void setMovieTitle(String movieTitle) {
+		this.movieTitle = movieTitle;
+	}
+	public String getScreenName() {
+		return screenName;
+	}
+	public void setScreenName(String screenName) {
+		this.screenName = screenName;
+	}
+	public int getSeatCnt() {
+		return seatCnt;
+	}
+	public void setSeatCnt(int seatCnt) {
+		this.seatCnt = seatCnt;
+	}
+	public int getMovieRunningtime() {
+		return movieRunningtime;
+	}
+	public void setMovieRunningtime(int runningtime) {
+		this.movieRunningtime = runningtime;
+	}
+	public int getScheduleNum() {
+		return scheduleNum;
+	}
+	public void setScheduleNum(int scheduleNum) {
+		this.scheduleNum = scheduleNum;
+	}
+	public Timestamp getScheduleStart() {
+		return scheduleStart;
+	}
+	public void setScheduleStart(Timestamp scheduleStart) {
+		this.scheduleStart = scheduleStart;
+	}
+	public int getMovieNum() {
+		return movieNum;
+	}
+	public void setMovieNum(int movieNum) {
+		this.movieNum = movieNum;
+	}
+	public int getScreenNum() {
+		return screenNum;
+	}
+	public void setScreenNum(int screenNum) {
+		this.screenNum = screenNum;
+	}
+	
+}

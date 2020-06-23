@@ -1,0 +1,107 @@
+@charset "UTF-8";
+
+#detailDiv {
+	margin: 0 20px;
+	text-align: left;
+	padding: 30px;
+}
+
+/* 상세보기 테이블 */
+.detailTable {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.detailTable td {
+	/* border: 1px solid black; */
+	padding: 10px;
+}
+
+.detailTable td img {
+	width: 220px;
+	height: 300px;
+}
+
+.detailTable .movieTitle {
+	font-size: 1.7em;
+	font-weight: bold;
+}
+
+.detailTable h3 {
+	padding: 0;
+	margin: 10px 0;
+}
+
+.detailTable .screen {
+	font-weight: bold;
+}
+
+.detailTable .yes {
+	color: blue;
+}
+
+.detailTable .no {
+	color: red;
+}
+
+/* 예매하기, 목록가기 버튼  */
+#reserBtn, #listBtn {
+	margin-top: 10px;
+	width: 100px;
+	height: 30px;
+	color: white;
+	background-color: #F24535;
+	border-style: none;
+}
+
+/* 댓글 테이블 */
+#replyTable {
+	width: 100%;
+}
+
+#replyTable td {
+	text-align: right;
+	height: 25px;
+}
+
+input[type="text"] {
+	width: 99%;
+	height: 100%;
+}
+
+/* 평점 선택 */
+#selectScore {
+	width: 100%;
+	height: 25px;
+}
+
+#replyBtn {
+	height: 100%;
+	font-size: 0.9em;
+}
+
+
+/* 댓글 조회 테이블 */
+#replyTable2 {
+	width: 100%;
+	border-top: 2px solid gray;
+	border-bottom: 2px solid gray;
+	border-collapse: collapse;
+	font-size: 14px;
+	margin-top: 10px;
+}
+
+#replyTable2 tr {
+	border-bottom: 1px dashed gray;
+}
+
+#replyTable2>tr, td {
+	padding: 5px;
+	text-align: left;
+}
+
+span {
+	font-weight: bold;
+	font-size: 14px;
+	color: black;
+}

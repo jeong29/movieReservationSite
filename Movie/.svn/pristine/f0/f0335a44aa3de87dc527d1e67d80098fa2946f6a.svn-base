@@ -1,0 +1,36 @@
+// 이벤트
+$(document).ready(function(){
+	// Admin 클릭시
+	$(document).on('click', '#mainPage', function() {
+		location.href = 'memberList.do';
+	});
+	
+	
+	// 회원 정보 조회 클릭시
+	$(document).on('click', '#memberBtn', function() {
+		var memberId = $('#memberId').val();
+		location.href = 'memberList.do';
+	});
+	
+	
+	// 영화 정보 조회 클릭시
+	$(document).on('click', '#movieListBtn', function() {
+		var genreNum = '';
+		location.href = 'movieList.do?genreNum='+genreNum;
+	});
+	
+	// 장르 조회 클릭시
+	$(document).on('click', '#genreListBtn', function() {
+		location.href = 'genreList.do';
+	});
+	
+	//회원 일대일 문의 클릭시
+	$(document).on('click', '#memberOneToOneBtn', function() {
+		location.href = 'memberOneToOneList.do';
+	});
+});
+
+// 함수
+(function($) {
+
+})(jQuery);

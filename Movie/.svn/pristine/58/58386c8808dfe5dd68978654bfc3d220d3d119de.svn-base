@@ -1,0 +1,54 @@
+package com.spring.service.vo;
+
+//회원 정보를 위한 VO
+
+public class MemberVO {
+	private int memberNum;
+	private String memberId;
+	private String memberPassword;
+	private String memberName;
+	private String memberTel;
+	private String memberShip;
+	
+	
+	public int getMemberNum() {
+		return memberNum;
+	}
+	public void setMemberNum(int memberNum) {
+		this.memberNum = memberNum;
+	}
+	public String getMemberId() {
+		return memberId;
+	}
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+	public String getMemberPassword() {
+		return memberPassword;
+	}
+	public void setMemberPassword(String memberPassword) {
+		this.memberPassword = memberPassword;
+	}
+	public String getMemberName() {
+		return memberName;
+	}
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
+	}
+	public String getMemberTel() {
+		return memberTel;
+	}
+	public void setMemberTel(String memberTel) {
+		this.memberTel = memberTel;
+	}
+	public String getMemberShip() {
+		return memberShip;
+	}
+	public void setMemberShip(String memberShip) {
+		this.memberShip = memberShip;
+	}
+	
+	
+	
+	
+}

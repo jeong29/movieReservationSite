@@ -1,0 +1,58 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>회원수정 페이지</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="js/member_info.js?ver=07"></script>
+<link rel="stylesheet" href="css/member/member_info_update.css?ver=03">
+</head>
+<body>
+<div id="container">
+<div style="height: 170px;"></div>
+<form action="memberInfoUpdate.do" method="post">
+	<table id="memberInfoTable" border="1">
+		<colgroup>
+		<col width="30%"> 
+		<col width="*"> 
+		</colgroup>
+	<thead>
+		<tr>
+			<th colspan="2">수정화면입니다</th>
+		</tr>
+	</thead>	
+		<tr>
+			<th>아이디</th>
+			<td>${info.memberId }<input type="hidden" name="memberId" value="${info.memberId }"/></td>
+		</tr>
+		<tr>
+			<th>비밀번호</th>
+			<td><span><input type="password" value="${info.memberPassword }" name="memberPassword" required="required"/></span></td>
+		</tr>
+		<tr>
+			<th>이 름</th>
+			<td><span><input type="text" name="memberName" value="${info.memberName }" required="required"/></span></td>
+		</tr>
+		<tr>
+			<th>전화번호</th>
+			<td><span><input type="tel" id="memberTel" value="${info.memberTel }" required="required" name="memberTel" placeholder=" - 없이 입력"/></span></td>
+		</tr>
+		<tr>
+			<th>포인트</th>
+			<td>${info.memberPoint } P</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<input type="submit" value="수정완료" id="setBtn"/>
+			</td>
+		</tr>
+	
+	</table>
+</form>	
+</div>
+	
+
+</body>
+</html>

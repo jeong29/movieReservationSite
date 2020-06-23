@@ -1,0 +1,59 @@
+@charset "UTF-8";
+
+#headerMainDiv {
+	position: relative;
+	height: 100%;
+	color: white;
+	font-size: 0.9em;
+	position: relative;
+}
+
+#headerMainDiv div.box {
+	width: 33.3%;
+	height: 100%;
+	/* border: 1px solid blue;
+	box-sizing: border-box; */
+	position: relative;
+	float: left;
+}
+
+/* SNS 박스 */
+#headerMainDiv div.box ul {
+	position: absolute;
+	float: right;
+	list-style: none;
+	top: 22%
+}
+
+#headerMainDiv div.box ul li {
+	float: left;
+}
+
+#headerMainDiv div.box ul li a {
+	text-decoration: none;
+	color: white;
+	padding: 10px;
+}
+
+/* 로고 이미지 */
+#headerMainDiv  div.box img {
+	height: 50px;
+}
+
+/* 주메뉴 */
+#headerMainDiv  div.menu ul {
+	float: right;
+}
+
+#headerMainDiv  div.menu ul li {
+	padding: 5px;
+	line-height: 14px;
+}
+
+#headerMainDiv  div.menu ul li a {
+	padding: 5px;
+}
+
+#headerMainDiv  div.menu ul li a:hover {
+	border-bottom: 2px solid white;
+}

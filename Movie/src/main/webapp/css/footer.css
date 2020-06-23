@@ -1,0 +1,30 @@
+@charset "UTF-8";
+
+div.boxDiv {
+	float: left;
+	padding: 20px;
+	position: relative;
+	/* border: 1px solid red; */
+	display: inline-block;
+	box-sizing: border-box;
+	color: white;
+}
+
+div.left {
+	float: left;
+	text-align: center;
+	width: 20%;
+}
+div.left font#clock {
+	font-size: 30px;
+	font-weight: bold;
+}
+
+div.center {
+	position: absolute;
+	width: 25%;	
+}
+div.center font.title {
+	font-size: 20px;
+	font-weight: bold;
+}

@@ -1,0 +1,49 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>관리자 페이지</title>
+<script type="text/javascript">
+//영화 등록 버튼 클릭시
+$(document).on('click','#insertMovieBtn',function(){
+	location.href='movieRegForm.do';
+});
+
+//목록가기 버튼 클릭시
+$(document).on('click','#listBtn',function(){
+	location.href='movieMain.do';
+});
+
+//회원정보조회 버튼 클릭시
+$(document).on('click','#selectMember',function(){
+	var memberId = $('#memberId').val();
+	
+	location.href='memberList.do?memberId=' + memberId;
+});
+</script>
+<style type="text/css">
+#insertMovieBtn, #selectMember, #listBtn {
+	margin: 10px auto;
+	width: 100px;
+	height: 35px;
+	font-weight: bold;
+	color: white;
+	background-color: #F24535;
+	border-style: none;
+}
+#adminDiv {
+	margin: 20px auto;
+}
+</style>
+</head>
+<body>
+<div id="adminDiv">
+<input type="hidden" value="${sessionScope.MEMBER_INFO.memberId }" id="memberId">
+<input type="button" value="회원정보조회" id="selectMember" /><br>
+<input type="button" value="영화등록" id="insertMovieBtn" /><br>
+<input type="button" value="목록가기" id="listBtn" />
+</div>
+</body>
+</html>

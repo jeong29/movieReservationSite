@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 공지사항 관리하는 매퍼 -->
+
+<mapper namespace="noticeMapper">
+	<resultMap type="com.spring.service.vo.NoticeVO" id="notice">
+		<result column="NOTICE_NUM" 		property="noticeNum"/>
+		<result column="NOTICE_TITLE"		property="noticeTitle"/>
+		<result column="NOTICE_CONTENT" 	property="noticeContent"/>
+		<result column="CREATE_DATE" 		property="createDate"/>
+		<result column="READ_CNT" 			property="readCnt"/>
+		<result column="ROW_NUM" 			property="rowNum"/>
+	</resultMap>
+	
+	
+	
+	
+	<!-- 고객센터 리스트 조회 -->
+	<select id="selectNoticeList" resultMap="notice">
+		SELECT ROW_NUM
+			, NOTICE_NUM
+			, NOTICE_TITLE
+			, NOTICE_CONTENT
+			, CREATE_DATE
+			, READ_CNT
+		FROM 
+			(
+				SELECT (ROW_COUNT - ROWNUM + 1) AS ROW_NUM
+					, ROWNUM AS PAGING_ROW
+					, NOTICE_NUM
+					, NOTICE_TITLE
+					, NOTICE_CONTENT
+					, TEMP_CREATE_DATE AS CREATE_DATE
+					, READ_CNT
+				FROM
+				(
+					SELECT NOTICE_NUM
+						, (SELECT COUNT(NOTICE_NUM)
+							FROM NOTICE
+						) AS ROW_COUNT
+						, NOTICE_TITLE
+						, NOTICE_CONTENT
+						, TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') AS TEMP_CREATE_DATE
+						, READ_CNT	
+					FROM NOTICE
+					ORDER BY CREATE_DATE DESC
+				)	
+			)
+		WHERE PAGING_ROW &gt; = #{startIndex} AND PAGING_ROW &lt; = (#{startIndex} + 9)			
+	</select>
+	
+	
+	<!-- 고객센터 글 등록하는 메소드 -->
+	<insert id="insertNotice">
+	INSERT INTO NOTICE (
+ 		 NOTICE_NUM 
+   		, NOTICE_TITLE
+    	, NOTICE_CONTENT 
+    	, CREATE_DATE 
+    	, READ_CNT
+	) VALUES(
+    	(SELECT NVL(MAX(NOTICE_NUM), 0) + 1 FROM NOTICE)
+    	,#{noticeTitle}
+    	,#{noticeContent}
+    	, SYSDATE
+    	,0
+	)
+	
+	</insert>
+	
+	
+	<!-- 고객센터 글 상세 조회 -->
+	<select id="selectNoticeDetail" resultMap="notice">
+		SELECT NOTICE_CONTENT
+			, NOTICE_TITLE
+			, NOTICE_NUM
+			, TO_CHAR(CREATE_DATE,'YYYY-MM-DD') AS CREATE_DATE
+			, READ_CNT
+		FROM NOTICE
+		WHERE NOTICE_NUM = #{noticeNum}
+	</select>
+
+
+	<!-- 공지사항 수정  -->
+	<update id="updateNotice">
+		UPDATE NOTICE
+		SET 
+		NOTICE_TITLE = #{noticeTitle}
+		, NOTICE_CONTENT = #{noticeContent}
+		WHERE NOTICE_NUM = #{noticeNum}
+	
+	</update>
+	
+	<!-- 게시글 클릭시 조회수 증가 -->
+	<update id="updateReadCnt">
+		UPDATE NOTICE
+		SET READ_CNT = READ_CNT + 1
+		WHERE NOTICE_NUM = #{noticeNum}
+	
+	</update>
+	
+	<!-- 게시글 삭제 -->
+	<delete id="deleteNotice">
+		DELETE FROM NOTICE
+		WHERE NOTICE_NUM = #{noticeNum}
+	</delete>
+	
+	
+	<!-- 페이징기법 한페이지에 10개 나오게 하기 -->
+	<select id="selectNoticeCount" resultType="int">
+		SELECT COUNT(NOTICE_NUM)
+		FROM NOTICE
+		
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+

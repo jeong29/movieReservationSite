@@ -1,0 +1,26 @@
+package com.spring.service.vo;
+
+public class SeatVO {
+	private int seatNum;
+	private String isReserved;
+	private int screenNum;
+	public int getSeatNum() {
+		return seatNum;
+	}
+	public void setSeatNum(int seatNum) {
+		this.seatNum = seatNum;
+	}
+	public String getIsReserved() {
+		return isReserved;
+	}
+	public void setIsReserved(String isReserved) {
+		this.isReserved = isReserved;
+	}
+	public int getScreenNum() {
+		return screenNum;
+	}
+	public void setScreenNum(int screenNum) {
+		this.screenNum = screenNum;
+	}
+	
+}

@@ -1,0 +1,436 @@
+// 영화관
+// 예매를 관리하는 컨트롤러
+package com.spring.controller;
+
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.spring.service.MemberService;
+import com.spring.service.MovieService;
+import com.spring.service.ReservationService;
+import com.spring.service.vo.BookVO;
+import com.spring.service.vo.MemberVO;
+import com.spring.service.vo.MovieVO;
+import com.spring.service.vo.ScheduleVO;
+import com.spring.service.vo.ScreenScheduleVO;
+import com.spring.service.vo.ScreenVO;
+import com.spring.service.vo.SeatVO;
+import com.spring.service.vo.TimeListPerScreenVO;
+
+@Controller
+public class ReservationController {
+
+	@Resource(name = "reservationService")
+	private ReservationService reservationService;
+
+	@Resource(name = "movieService")
+	private MovieService movieService;
+
+	@Resource(name = "memberService")
+	private MemberService memberService;
+
+	// 관리자 페이지
+	// 상영관 등록 폼
+	@RequestMapping(value = "/screenRegForm.do")
+	public String screenRegForm(Model model) {
+		model.addAttribute("page", "/jsp/reservation/movie_screen_reg_form.jsp");
+		return "/jsp/admin/admin_page.jsp";
+	}
+
+	// 상영관 등록
+	@RequestMapping(value = "/screenReg.do")
+	public String screenReg(ScreenVO screenVO, SeatVO seatVO, Model model) {
+		// 상영관 등록
+		int result = reservationService.insertScreen(screenVO);
+		// 좌석 등록
+		SeatVO[] seat = new SeatVO[screenVO.getSeatCnt()];
+		int colCnt = screenVO.getSeatColCnt();
+		int col;
+		String colNum;
+		int row;
+		for (int i = 0; i < seat.length; i++) {
+			seat[i] = new SeatVO();
+			seat[i].setScreenNum(screenVO.getScreenNum());
+			seat[i].setPrice(seatVO.getPrice());
+			seat[i].setScreenNum(reservationService.selectMaxScreenNum().getScreenNum());
+			col = (i + 1) % colCnt;
+			if (col == 0) {
+				col = colCnt;
+			}
+			if (col < 10) {
+				colNum = "0" + col;
+			} else {
+				colNum = Integer.toString(col);
+			}
+			row = i / colCnt;
+			seat[i].setColNum(colNum);
+			if (row == 0) {
+				seat[i].setRowNum("A");
+			} else if (row == 1) {
+				seat[i].setRowNum("B");
+			} else if (row == 2) {
+				seat[i].setRowNum("C");
+			} else if (row == 3) {
+				seat[i].setRowNum("D");
+			} else if (row == 4) {
+				seat[i].setRowNum("E");
+			} else if (row == 5) {
+				seat[i].setRowNum("F");
+			} else if (row == 6) {
+				seat[i].setRowNum("G");
+			} else if (row == 7) {
+				seat[i].setRowNum("H");
+			} else if (row == 8) {
+				seat[i].setRowNum("I");
+			} else if (row == 9) {
+				seat[i].setRowNum("J");
+			} else if (row == 10) {
+				seat[i].setRowNum("K");
+			} else if (row == 11) {
+				seat[i].setRowNum("L");
+			} else if (row == 12) {
+				seat[i].setRowNum("M");
+			} else if (row == 13) {
+				seat[i].setRowNum("N");
+			} else if (row == 14) {
+				seat[i].setRowNum("O");
+			} else if (row == 15) {
+				seat[i].setRowNum("P");
+			} else if (row == 16) {
+				seat[i].setRowNum("Q");
+			} else if (row == 17) {
+				seat[i].setRowNum("R");
+			} else if (row == 18) {
+				seat[i].setRowNum("S");
+			} else if (row == 19) {
+				seat[i].setRowNum("T");
+			} else if (row == 20) {
+				seat[i].setRowNum("U");
+			} else if (row == 21) {
+				seat[i].setRowNum("V");
+			} else if (row == 22) {
+				seat[i].setRowNum("W");
+			} else if (row == 23) {
+				seat[i].setRowNum("X");
+			} else if (row == 24) {
+				seat[i].setRowNum("Y");
+			} else if (row == 25) {
+				seat[i].setRowNum("Z");
+			}
+			reservationService.insertSeat(seat[i]);
+		}
+		model.addAttribute("result", result);
+		model.addAttribute("page", "/jsp/reservation/movie_screen_reg_result.jsp");
+		return "/jsp/admin/admin_page.jsp";
+	}
+
+	// 상영관 목록 조회
+	@RequestMapping(value = "/selectScreenList.do")
+	public String selectScreenList(Model model) {
+		model.addAttribute("list", reservationService.selectScreenListAdmin());
+		model.addAttribute("page", "/jsp/reservation/admin_screen_list.jsp");
+		return "/jsp/admin/admin_page.jsp";
+	}
+
+	// 상영 일정 등록 폼
+	@RequestMapping(value = "/scheduleRegForm.do")
+	public String scheduleRegForm(Model model) {
+		model.addAttribute("movie", reservationService.selectMovieTitleList());
+		model.addAttribute("screen", reservationService.selectScreenListOnlyServiceable());
+		model.addAttribute("page", "/jsp/reservation/movie_schedule_reg_form.jsp");
+		return "/jsp/admin/admin_page.jsp";
+	}
+
+	// 상영관 일정 등록
+	@RequestMapping(value = "/scheduleReg.do")
+	public String scheduleReg(@RequestParam(name = "start") String start, MovieVO movieVO, ScheduleVO scheduleVO,
+			Model model) throws ParseException {
+		// start = 2020-01-10T18:20
+		start = start.replace("T", " ");
+		SimpleDateFormat dt = new SimpleDateFormat("yyyy-mm-dd hh:mm");
+		java.util.Date date = dt.parse(start);
+		Timestamp scheduleStart = new Timestamp(date.getTime());
+		scheduleVO.setScheduleStart(scheduleStart);
+		// insert schedule
+		reservationService.insertSchedule(scheduleVO);
+		// insert book
+		int scheduleNum = reservationService.selectScheduleNum().getScheduleNum();
+		SeatVO seatVO = reservationService.selectMinNMax(scheduleVO);
+		int min = seatVO.getMin();
+		int max = seatVO.getMax();
+		int cnt = max + 1 - min;
+		BookVO[] book = new BookVO[cnt];
+		for (int i = 0; i < cnt; i++) {
+			book[i] = new BookVO();
+			book[i].setScheduleNum(scheduleNum);
+			book[i].setSeatNum(min + i);
+			reservationService.insertBook(book[i]);
+		}
+		model.addAttribute("page", "/jsp/reservation/movie_schedule_reg_result.jsp");
+		return "/jsp/admin/admin_page.jsp";
+	}
+
+	// 예정 상영 일정 화면으로 이동
+	@RequestMapping(value = "selectScheduleListAdmin.do")
+	public String selectScheduleListAdmin(Model model) {
+		model.addAttribute("page", "/jsp/reservation/adminScheduleList.jsp");
+		return "/jsp/admin/admin_page.jsp";
+	}
+
+	// 상영 일정 조회
+	@ResponseBody
+	@RequestMapping(value = "selectScheduleListAjax.do")
+	public List<ScheduleVO> selectScheduleListAjax(Model model) {
+		List<ScheduleVO> list = reservationService.selectScheduleListAdmin();
+		return list;
+	}
+
+	// 전체 상영 일정 조회
+	@ResponseBody
+	@RequestMapping(value = "selectScheduleWholeList.do")
+	public List<ScheduleVO> selectScheduleWholeList(Model model) {
+		List<ScheduleVO> list = reservationService.selectScheduleWholeList();
+		return list;
+	}
+
+	// 상영 일정 삭제
+	@ResponseBody
+	@RequestMapping(value = "deleteBookNScheule.do")
+	public int deleteBookNschedule(ScheduleVO scheduleVO) {
+		return reservationService.deleteBook(scheduleVO) + reservationService.deleteSchedule(scheduleVO);
+	}
+
+	// 폐장 혹은 재개장
+	@ResponseBody
+	@RequestMapping(value = "updateServiceableToN.do")
+	public int updateServiceableToN(ScreenVO screenVO) {
+		return reservationService.updateServiceable(screenVO);
+	}
+
+	// 고객
+	// 예매 버튼 클릭 시, 상영 시간표 화면
+	@RequestMapping(value = "/scheduleList.do")
+	public String memberJoinForm(MovieVO movieVO, Model model, HttpSession session) throws ParseException {
+		session.removeAttribute("MOVIE_INFO");
+		session.setAttribute("MOVIE_INFO", movieService.selectMovieDetail(movieVO));
+
+		session.getAttribute("MOVIE_INFO");
+
+		// List<ScreenVO> originList = reservationService.selcetScreenList(movieVO);
+
+		// 결과가 담길 리스트
+		List<ScreenScheduleVO> resultList = new ArrayList<>();
+
+		ScreenVO tempVO = new ScreenVO();
+		// 상영일 리스트 조회
+		List<String> scheduleList = reservationService.selectScheduleListForReserve(movieVO);
+
+		for (int i = 0; i < scheduleList.size(); i++) {
+			// 상영일 세팅
+			// resultList.get(i).setScheduleStart(scheduleList.get(i));
+
+			// 해당 상영일에 상영이 있는 상영관 조회
+//	    	  tempVO.setScheduleStart(scheduleList.get(i) + getDy(scheduleList.get(i)));
+			tempVO.setScheduleStart(scheduleList.get(i));
+			tempVO.setMovieNum(movieVO.getMovieNum());
+			List<ScreenVO> ScreentListPerSchedule = reservationService.selectScreenListForReserve(tempVO);
+
+			// 각 상영관 마다의 타임테이블을 세팅할 리스트
+			List<TimeListPerScreenVO> timeListPerScreenList = new ArrayList<>();
+
+			// 각 상영관에 이름과 타임테이블 세팅
+			for (ScreenVO e : ScreentListPerSchedule) {
+				TimeListPerScreenVO vo = new TimeListPerScreenVO();
+
+				ScreenVO sVO = new ScreenVO();
+				sVO.setMovieNum(movieVO.getMovieNum());
+				sVO.setScreenNum(e.getScreenNum());
+				sVO.setScheduleStart(scheduleList.get(i));
+				List<ScreenVO> timeTablePerScreenList = reservationService.selectTimeTablePerScreen(sVO);
+
+				vo.setScreenName(e.getScreenName());
+				vo.setScreenList(timeTablePerScreenList);
+				timeListPerScreenList.add(vo);
+			}
+
+			// tempVO.setScheduleStart(scheduleList.get(i) + getDy(scheduleList.get(i)));
+			ScreenScheduleVO ssVO = new ScreenScheduleVO();
+			ssVO.setScheduleStart(scheduleList.get(i) + getDy(scheduleList.get(i)));
+			ssVO.setTimeListPerScreenList(timeListPerScreenList);
+			resultList.add(ssVO);
+
+		}
+
+		// 테스트 후 삭제 요망
+		for (int i = 0; i < resultList.size(); i++) {
+			System.out
+					.println("상영날짜 - " + resultList.get(i).getScheduleStart() + " 상영요일 : " + resultList.get(i).getDy());
+
+			for (int j = 0; j < resultList.get(i).getTimeListPerScreenList().size(); j++) {
+				System.out.println("\t상영관 - " + resultList.get(i).getTimeListPerScreenList().get(j).getScreenName());
+
+				for (int z = 0; z < resultList.get(i).getTimeListPerScreenList().get(j).getScreenList().size(); z++) {
+					System.out.println("\t\t상영시간 - " + resultList.get(i).getTimeListPerScreenList().get(j)
+							.getScreenList().get(z).getScheduleStart());
+				}
+				System.out.println();
+			}
+			System.out.println();
+		}
+		// 상영일정 시간 선택 유무
+		//model.addAttribute("time", reservationService.selectScheduleStartCompare());
+
+		// 이 영화의 상영관 별 상영시간표와 잔여 좌석
+		model.addAttribute("screenList", resultList);
+		model.addAttribute("page", "/jsp/reservation/scheduleList.jsp");
+		return "/jsp/main.jsp";
+	}
+
+	// 시간 선택 하면, 좌석 선택 화면
+	@RequestMapping(value = "/chooseSeat.do")
+	public String chooseSeat(ScheduleVO scheduleVO, Model model, HttpSession session) {
+		// 좌석들 조회
+		model.addAttribute("seatList", reservationService.selectBookList(scheduleVO));
+		// 상영관 열 조회
+		model.addAttribute("colCnt", reservationService.selectSeatColCnt(scheduleVO));
+
+		MovieVO movieVO = (MovieVO) session.getAttribute("MOVIE_INFO");
+
+		model.addAttribute("movieTitle", movieVO.getMovieTitle());
+		model.addAttribute("page", "/jsp/reservation/chooseSeat.jsp");
+		return "/jsp/main.jsp";
+	}
+
+	// 좌석 선택 후 예매 누르면,
+	// 이선좌 또는 확인창
+	@ResponseBody
+	@RequestMapping(value = "/isReserved.do")
+	public int isReserved(@RequestParam(name = "bookNums") String bookNums) {
+		int reservation = 0;
+		String[] bookNum = bookNums.split(",");
+		BookVO[] bookVO = new BookVO[bookNum.length];
+		boolean flag = true;
+		for (int i = 0; i < bookNum.length; i++) {
+			bookVO[i] = new BookVO();
+			bookVO[i].setBookNum(Integer.parseInt(bookNum[i]));
+			if (reservationService.selectIsReserved(bookVO[i]).getIsReserved().equals("N")) {
+				reservation += 1;
+			} else {
+				flag = false;
+			}
+		}
+		if (flag) {
+			return reservation;
+		} else {
+			return 0;
+		}
+	}
+
+	// 확인창에서 '예'를 누르면, 결제화면으로 이동
+	@RequestMapping(value = "/reservation.do")
+	public String reservation(@RequestParam(name = "bookNums") String bookNums, Model model) {
+		String[] bookNum = bookNums.split(",");
+		BookVO[] bookVO = new BookVO[bookNum.length];
+		List<BookVO> list = new ArrayList<>();
+		int price = 0;
+		for (int i = 0; i < bookNum.length; i++) {
+			bookVO[i] = new BookVO();
+			bookVO[i].setBookNum(Integer.parseInt(bookNum[i]));
+			reservationService.updateBookIsReserved(bookVO[i]);
+			list.add(reservationService.selectMyReservation(bookVO[i]));
+			price += list.get(i).getPrice();
+		}
+		System.out.println(price);
+		model.addAttribute("list", list);
+		model.addAttribute("price", price);
+		model.addAttribute("bookNums", bookNums);
+		model.addAttribute("page", "/jsp/reservation/paymentScreen.jsp");
+		return "/jsp/main.jsp";
+	}
+
+	// 결제하기 버튼 클릭 > 마이 무비
+	@RequestMapping(value = "/payScreen.do")
+	public String payScreen(@RequestParam(name = "bookNums") String bookNums, MemberVO memberVO, BookVO bookVO,
+			Model model, HttpSession session) {
+		// 회원 아이디 불러오기
+		MemberVO member = (MemberVO) session.getAttribute("MEMBER_INFO");
+		memberVO.setMemberId(member.getMemberId());
+		// 포인트 차감후, 결과값 받기
+		memberService.updateMemberPoint(memberVO);
+
+		// 예약 아이디에 회원 아이디 넣기
+		bookVO.setBookId(member.getMemberId());
+
+		// 예약번호 조회
+		String[] bookNum = bookNums.split(",");
+		Integer[] arr = new Integer[bookNum.length];
+
+		// 문자열로 받은 예약번호를 숫자 배열에 넣기
+		for (int i = 0; i < bookNum.length; i++) {
+			arr[i] = Integer.parseInt(bookNum[i]);
+		}
+
+		// 리스트에 숫자 배열 넣기
+		List<Integer> bookNumList = Arrays.asList(arr);
+		// 리스트에 변수 넣기
+		bookVO.setBookNumList(bookNumList);
+		reservationService.updateBookId(bookVO);
+
+		return "/jsp/reservation/paymentScreen_result.jsp";
+	}
+
+	public String getDy(String dyDate) throws ParseException {
+		String day = "";
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+		Date nDate = dateFormat.parse(dyDate);
+
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(nDate);
+
+		int dayNum = cal.get(Calendar.DAY_OF_WEEK);
+		switch (dayNum) {
+			case 1:
+				day = "일";
+				break;
+			case 2:
+				day = "월";
+				break;
+			case 3:
+				day = "화";
+				break;
+			case 4:
+				day = "수";
+				break;
+			case 5:
+				day = "목";
+				break;
+			case 6:
+				day = "금";
+				break;
+			case 7:
+				day = "토";
+				break;
+
+		}
+		return day;
+
+	}
+
+}

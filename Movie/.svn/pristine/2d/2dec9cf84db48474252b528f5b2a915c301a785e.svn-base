@@ -1,0 +1,25 @@
+package com.spring.service;
+
+import java.util.List;
+
+import com.spring.service.vo.NoticeVO;
+
+//고객센터 관리하는 서비스 인터페이스
+public interface CustomerService {
+
+	//리스트 조회하는 메소드
+	public List<NoticeVO> selectNoticeList();
+	
+	//공지사항 상세조회
+	public NoticeVO selectNoticeDetail(NoticeVO noticeVO);
+	
+	//게시글의 클릭시 조회수 증가
+	public int updateReadCnt(NoticeVO noticeVO);
+	
+	
+	//공지사항 등록하는 메소드
+	public int insertNotice(NoticeVO noticeVO);
+	
+	
+	
+}

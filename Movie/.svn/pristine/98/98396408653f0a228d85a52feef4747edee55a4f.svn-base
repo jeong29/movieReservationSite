@@ -1,0 +1,16 @@
+// 이벤트
+$(document).ready(function(){
+	// 댓글 버튼 클릭 시 이동
+	$(document).on('click','#replyBtn', function() {
+		var replyContent = $('#replyContent').val();
+		var movieNum = $('#movieNum').val();
+		var scoreNum = $('#selectScore option:selected').val();
+
+		location.href = 'insertReply.do?replyContent=' + replyContent + '&movieNum=' + movieNum + '&scoreNum=' + scoreNum;
+	})
+});
+
+// 함수
+(function($) {
+
+})(jQuery);

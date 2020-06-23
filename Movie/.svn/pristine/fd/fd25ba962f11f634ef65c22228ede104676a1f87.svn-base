@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 일대일 문의 관리하는 매퍼 -->
+
+<mapper namespace="oneToOneMapper">
+	<resultMap type="com.spring.service.vo.OneToOneVO" id="oneToOne">
+		<result column="OTO_CONTACT" 	 	property="otoContact"/>
+		<result column="OTO_SORT"	 		property="otoSort"/>
+		<result column="OTO_TITLE" 			property="otoTitle"/>
+		<result column="OTO_CONTENT" 		property="otoContent"/>
+		<result column="OTO_FILE" 			property="otoFile"/>
+		<result column="OTO_NUM" 			property="otoNum"/>
+		<result column="MEMBER_NUM" 		property="memberNum"/>
+		<result column="MEMBER_ID" 			property="memberId"/>
+	</resultMap>
+	
+	
+	
+	
+	<!-- 일대일 문의 목록 조회하는 쿼리 -->
+	<select id="selectOneToOneList" resultMap="oneToOne">
+		SELECT OTO_CONTACT
+			, OTO_SORT
+			, OTO_TITLE
+			, OTO_NUM
+		FROM ONE_TO_ONE
+		ORDER BY OTO_NUM DESC
+	</select>
+	
+	<!-- 일대일문의 상세조회 하는 쿼리 -->
+	<select id="selectOneToOneDetail" resultMap="oneToOne">
+		SELECT O.OTO_CONTACT
+		    ,O.OTO_SORT
+		    ,O.OTO_TITLE
+		    ,O.OTO_CONTENT
+		    ,O.OTO_FILE
+		    ,M.MEMBER_ID
+		FROM ONE_TO_ONE O, MOVIE_MEMBER M
+		WHERE M.MEMBER_NUM = O.MEMBER_NUM
+		AND O.OTO_NUM = #{otoNum}
+	</select>
+
+
+	<!-- 일대일문의 등록하는 메소드 -->
+	<insert id="insertOneToOne">
+		INSERT INTO ONE_TO_ONE (
+   		 OTO_CONTACT
+   		 , OTO_SORT
+   		 , OTO_TITLE
+   		 , OTO_CONTENT
+   		 , OTO_NUM
+    	 , OTO_FILE
+   		 , MEMBER_NUM
+		) VALUES (
+   		  #{otoContact}
+    	 , #{otoSort}
+   		 , #{otoTitle}
+   		 , #{otoContent}
+   		 , (SELECT NVL(MAX(OTO_NUM),0) + 1 FROM ONE_TO_ONE)
+   		 , 0
+   		 , #{memberNum}
+)
+	</insert>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+

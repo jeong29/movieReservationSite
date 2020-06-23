@@ -1,0 +1,55 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>일대일 문의 상세보기 : 고객</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="js/oneToOne_detail.js?ver=02"></script>
+<link rel="stylesheet" href="css/member/oneToOne_detail.css?ver=00">
+<style type="text/css">
+
+</style>
+</head>
+<body>
+<div id="container">
+	<table border="1">
+		<tr>
+			<th><b>${detail.otoContact } | ${detail.otoSort }</b></th>
+				<td>작 성 일 : ${detail.otoCreateDate }</td>
+		</tr>
+			<tr>
+				<td>Q ${detail.otoTitle }</td>
+			<td>${detail.otoIsUse }</td>
+			</tr>
+			<tr>		
+				<td colspan="2">${detail.otoContent }</td>
+			</tr>
+	</table>		
+	<c:choose>
+		<c:when test="${empty detail.otoAnswer  }">
+		<table>
+			<tr>
+				<td colspan="3">답변이 없습니다.</td>
+			</tr>
+		</table>	
+		</c:when>
+		<c:otherwise>
+			<br><br>
+			<table border="1">
+				<tr>
+					<td> ${detail.otoAnswer }</td>
+				
+				</tr>
+			</table>	
+		</c:otherwise>
+	</c:choose>
+	
+	<input type="hidden" value="${detail.otoNum }" id="otoNum"/>
+	<input type="button" value="목록" id="listBtn"/>
+	<input type="button" value="삭제" id="deleteBtn"/>
+</div>
+</body>
+</html>

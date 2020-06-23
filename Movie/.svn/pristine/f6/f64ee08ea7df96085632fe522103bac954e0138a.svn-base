@@ -1,0 +1,222 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>고객센터 페이지</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="js/service_list.js?ver=50"></script>
+<link rel="stylesheet" href="css/member/service_list.css?ver=11">
+</head>
+
+<body>
+<input type="hidden" value="${member.memberId }" name="memberId" id="memberId"/>
+<div class="container">
+<h1> 고객센터 </h1>
+  <ul class="tabs">
+    <li class="tab-link current" data-tab="tab-1">FAQ</li>
+    <li class="tab-link" data-tab="tab-2">공지사항</li>
+    <li class="tab-link" data-tab="tab-3" id="otoTap">1대1 문의 </li>
+  </ul>
+
+<!-- 자주묻는 질문 -->  
+<div id="tab-1" class="tab-content current">
+   <div id="faqTapDiv">
+      <ul class="faqTap">
+         <li><a href="#" onclick="selectFaqList();">전체</a></li>
+         <li><a href="#" onclick="selectFaqList(1);">영화관 이용</a></li>
+         <li><a href="#" onclick="selectFaqList(2);">회원</a></li>
+         <li><a href="#" onclick="selectFaqList(3);">VIP/클럽멤버쉽</a></li>
+         <li><a href="#" onclick="selectFaqList(4);">온라인</a></li>
+         <li><a href="#" onclick="selectFaqList(5);">할인 혜택</a></li>
+         <li><a href="#" onclick="selectFaqList(6);">관람권</a></li>
+         <li><a href="#" onclick="selectFaqList(7);">스페셜관</a></li>
+      </ul>
+   </div>
+
+   <table border="1" id="faqTable">
+      <colgroup>
+         <col width="20%">
+         <col width="80%">
+      </colgroup>
+      <tr>
+         <th>분류 </th>
+         <th>질문 </th>
+      </tr>
+      
+   <c:forEach items="${faqList}" var="faq">
+      <tr>
+         <td>${faq.faqSortName }</td>
+         <td><div class="askDiv">${faq.faqAsk }</div></td>
+      </tr>
+      <tr class="answerTr" data-isShow="n">
+         <td colspan="2">${faq.faqAnswer }</td>
+      </tr>
+      
+   </c:forEach>
+   </table>   
+     <c:if test="${sessionScope.MEMBER_INFO.memberShip eq 'admin' }">
+      <input type="button" id="faqBtn" class="btn" value="FAQ 등록" onclick="location.href='faqWriteForm.do'"/>
+     </c:if>
+</div>
+  
+ 
+   <!-- 공지사항 리스트 -->
+<div id="tab-2" class="tab-content">  
+   <!-- 검색창 -->
+   <div id="searchDiv">
+      <table border="1" id="searchTable">
+         <tr>
+            <th colspan="3">
+               <select id="searchKeyword">
+                  <option value="NOTICE_TITLE">제목</option>
+                  <option value="NOTICE_CONTENT">내용</option>
+               </select>
+            <input type="text" id="searchValue"/>
+            <input type="button" class="btn" value="검색" onclick="searchBtn(${noticeVO.searchValue});"/></th>
+         </tr>
+      </table>
+   
+   </div>
+    <table border="1" id="noticeTable">
+    <colgroup>
+    	<col width="10%">
+    	<col width="*">
+    	<col width="20%">
+    	<col width="20%">
+    </colgroup>
+      <tr>
+         <th>번호</th>
+         <th>제목</th>
+         <th>등록일</th>
+         <th>조회수</th>
+      </tr>
+   
+   <c:forEach items="${list }" var="notice">
+      <tr>
+         <td>${notice.rowNum }</td>
+         <td><a href="noticeDetail.do?noticeNum=${notice.noticeNum }">${notice.noticeTitle }</a></td>
+         <td>${notice.createDate}</td>
+         <td>${notice.readCnt }</td>
+      </tr>
+   </c:forEach>
+   </table>
+   
+     <!-- 페이지번호 나오게하는 소스 -->
+   <div id="pagingDiv">
+      <c:forEach begin="1" end="${pageCnt }" var="pageIndex">
+         <%-- <a href="service.do?startIndex=${pageIndex *10 -9 }" onclick="selectNoticeList();"> ${pageIndex }  &nbsp;&nbsp;&nbsp;</a> --%>
+         <a href="#" onclick="selectNoticeList('${pageIndex *10 -9 }');"> ${pageIndex }  &nbsp;&nbsp;&nbsp;</a>
+         <input type="hidden" value="${pageIndex *10 -9 }" id="startIndex"/>
+      </c:forEach>
+   </div>
+    <c:if test="${sessionScope.MEMBER_INFO.memberShip eq 'admin' }">
+      <input type="button" id="noticeBtn" class="btn" value="공지 등록" onclick="location.href='noticeWriteForm.do'"/>
+     </c:if>
+</div>
+ 
+<!-- 1대1문의 -->  
+<div id="tab-3" class="tab-content">
+   <div id="oneToOneDiv">
+      <div id="infoDiv" >
+         <strong>FAQ를 이용하시면 궁금증을 더 빠르게 해결하실 수 있습니다.</strong>
+         <ul>
+            <li> 1:1 문의글 답변 운영시간 09:00 ~ 18:00</li>
+            <li> 접수 후 48시간 안에 답변 드리겠습니다.</li>
+         </ul>
+      </div>
+      <div id="privacyDiv" >
+         <fieldset>
+            <legend>개인정보수집동의</legend>
+            <div>
+               <h3>개인정보수집동의</h3>
+               <span>문의를 통해 개인정보를 수집합니다. 수집된 개인정보는 문의 처리 외 목적으로 사용하지 않습니다.</span>
+            </div>
+            
+            <div id="agreeBoxDiv">
+               <strong>개인정보의 수집목적 및 항목</strong>
+               <ul>
+                  <li>수집 목적 : 원활한 고객 상담, 불편사항 및 문의사항 관련 의사소통 경로 확보</li>
+                  <li>수집 항목
+                     <strong>* 필수입력사항</strong>
+                     <ul>
+                        <li>- 이용자 식별을 위한 항목 : 성명, 연락처, 이메일, 아이디(로그인 시 수집)</li>
+                     </ul>
+                  </li>
+               </ul>
+               
+               <div>
+               <strong>개인정보의 보유 및 이용기간</strong>
+                  <p>입력하신 개인정보는 문의 접수 후 처리 완료 시점으로 부터 3개월 간 보유 합니다. </p>
+                  <p>다만, 소비자보호에 관한 법률 등 관계 법률에 의해 보유할 필요가 있는 경우에는 다음과 같이 보유합니다.</p><br>
+                  <p>보유기간 : 소비자의 불만 또는 분쟁처리에 관한 기록 3년</p>
+               </div>
+               <p>
+               ※ 1:1문의 서비스 제공을 위한 최소한의 개인정보이며 거부할 수 있습니다. 다만, 수집에 동의하지 않을 경우 서비스 이용이 제한됩니다.
+               </p>
+            </div>
+            <input type="radio" name="agree"/>동의하지않음
+            <input type="radio" name="agree" checked="checked"/>동의
+         </fieldset>
+      </div>
+     
+      <form action="oneToOneListResult.do" method="post" enctype="multipart/form-data">
+      <div id="questionDiv">
+   	    <input type="hidden" value="${sessionScope.MEMBER_INFO.memberNum }" name="memberNum"/>
+            <table id="questionTable" border="1">
+               <colgroup>
+                  <col width="*">
+                  <col width="80%">
+               </colgroup>
+               <tr>
+                  <th>문의 내용</th>
+                  <td>
+                 	<input type="radio" name="otoContact" value="문의" checked="checked"/>문의
+                     <input type="radio" name="otoContact" value="칭찬"/>칭찬
+                     <input type="radio" name="otoContact" value="불만"/>불만
+                     <input type="radio" name="otoContact" value="건의"/>건의
+                  </td>
+               </tr>
+               <tr>
+                  <th>분류</th>
+                  <td>
+                     <select name="otoSort" required="required">
+                     <optgroup label="분류 선택"></optgroup>
+                        <option value="영화관">영화관</option>
+                        <option value="영화">영화</option>
+                        <option value="멤버쉽">멤버쉽</option>
+                        <option value="예매 / 결제">예매 / 결제</option>
+                     </select>
+                  </td>
+               </tr>
+               <tr>
+                  <th>제목</th>
+                  <td><input type="text" name="otoTitle" style="width: 90%;" placeholder="	제목 작성바랍니다" required="required"></td>
+               </tr>
+               <tr>
+                  <th>내용</th>
+                  <td><textarea rows="10" cols="90%;" name="otoContent" placeholder=" 내용 작성 바랍니다" required="required"></textarea></td>
+               </tr>
+               <tr>
+                  <th>첨부파일</th>
+                  <td><input type="file" name="file"/></td>
+               </tr>
+            </table>
+	  	</div>
+	  	    <input type="submit" value="확인" class="btn"   />
+    	 	<input type="button" value="취소" class="btn" onclick="location.href='service.do'"/>
+ 	  </form>
+   </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</body>
+</html>

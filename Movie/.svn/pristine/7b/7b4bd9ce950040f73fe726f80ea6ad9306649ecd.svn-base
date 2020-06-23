@@ -1,0 +1,16 @@
+// 이벤트
+$(document).ready(function(){
+	// 영화 등록 버튼 클릭시
+	$(document).on('click','#insertMovieBtn',function(){
+		location.href='movieRegForm.do';
+	});
+});
+
+// 함수
+(function($) {
+	// 상세보기 이동
+	goDetail = function(movieNum) {
+		//alert(movieNum);
+		location.href='movieDetail.do?movieNum='+movieNum;
+	}
+})(jQuery);

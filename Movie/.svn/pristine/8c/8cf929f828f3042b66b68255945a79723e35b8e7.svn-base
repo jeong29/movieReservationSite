@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 자주하는 질문 관리하는 매퍼 -->
+
+<mapper namespace="faqMapper">
+	<resultMap type="com.spring.service.vo.FaqVO" id="faq">
+		<result column="FAQ_NUM" 	 property="faqNum"/>
+		<result column="FAQ_SORT"	 property="faqSort"/>
+		<result column="FAQ_ASK"	 property="faqAsk"/>
+		<result column="FAQ_ANSWER" property="faqAnswer"/>
+	</resultMap>
+	
+	<!-- 자주하는 질문 리스트 조회하기 -->
+	<select id="selectFaqList" resultMap="faq">
+		SELECT FAQ_SORT
+			, FAQ_ASK
+			, FAQ_ANSWER
+		FROM FAQ
+	</select>
+	
+	<!-- 자주하는 질문 등록하기 -->
+	<insert id="insertFaq">
+		INSERT INTO FAQ (
+  	  		FAQ_NUM
+    		,FAQ_SORT
+    		,FAQ_ASK
+    		,FAQ_ANSWER
+		) VALUES (
+    	(SELECT NVL(MAX(FAQ_NUM),0) +1 FROM FAQ)
+    	, #{faqSort}
+    	, #{faqAsk}
+    	, #{faqAnswer}
+		)
+	</insert>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+

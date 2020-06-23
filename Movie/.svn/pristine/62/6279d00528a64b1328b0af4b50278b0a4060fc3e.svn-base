@@ -1,0 +1,26 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>공지사항 상세보기</title>
+<style type="text/css">
+div{
+	border: 1px solid black;
+}
+
+</style>
+</head>
+<body>
+<div id="container">
+	<div id="header">
+		<h3>${noticeDetail.noticeTitle }</h3>
+	</div>
+	<div id="content">
+		<p>${noticeDetail.noticeContent }</p>
+	</div>
+	
+</div>
+</body>
+</html>

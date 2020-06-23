@@ -1,0 +1,25 @@
+package com.spring.controller;
+
+// 영화관
+// 예매를 관리하는 컨트롤러
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+public class ReservationController {
+	/*
+	 * //서비스 받아오기
+	 * 
+	 * @Resource(name = "memberService") private Reservation reservation;
+	 */
+	
+	//예매 버튼 클릭 시,
+	@RequestMapping(value = "/timeList.do")
+	public String memberJoinForm(Model model) {
+		model.addAttribute("page", "/jsp/reservation/timeList.jsp");
+		return "/jsp/main.jsp";
+	}
+	
+}

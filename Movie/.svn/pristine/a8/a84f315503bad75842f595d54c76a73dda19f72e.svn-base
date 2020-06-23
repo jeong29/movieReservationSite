@@ -1,0 +1,38 @@
+package com.spring.service;
+
+import java.util.List;
+
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.spring.service.vo.NoticeVO;
+
+//고객센터 서비스 임플 
+
+@Service("customerService")
+public class CustomerServiceImpl implements CustomerService{
+	@Autowired
+	private SqlSessionTemplate sqlSession;
+
+	@Override
+	
+	//고객센터 리스트를 조회하는 메소드 
+	public List<NoticeVO> selectNoticeList() {
+		return sqlSession.selectList("selectNoticeList", null);
+	}
+
+	@Override
+	//고객센터 글 상세조회하는 메소드
+	public NoticeVO selectNoticeDetail(NoticeVO noticeVO) {
+		updateReadCnt(noticeVO);
+		return sqlSession.selectOne("selectNoticeDetail", noticeVO);
+	}
+
+	@Override
+	//게시글 클릭시 조회수 증가
+	public int updateReadCnt(NoticeVO noticeVO) {
+		return sqlSession.update("updateReadCnt", noticeVO);
+	}
+	
+}

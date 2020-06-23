@@ -1,0 +1,18 @@
+// 이벤트
+$(document).ready(function(){
+	// 등록 버튼 클릭 시
+	$(document).on('click','#insertBtn', function() {
+		
+	});
+	
+	// 취소 버튼 클릭 시
+	$(document).on('click','#cancellBtn', function() {
+		location.href = 'adminPage.do';
+	});
+	
+});
+
+// 함수
+(function($) {
+	
+})(jQuery);

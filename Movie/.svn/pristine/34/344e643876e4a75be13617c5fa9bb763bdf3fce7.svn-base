@@ -1,0 +1,16 @@
+// 이벤트
+$(document).ready(function(){
+	// 수정 버튼 등록시
+	$(document).on('click', '#updateBtn', function() {
+		var memberId = $('#memberId').text();
+		location.href = 'memberInfoUpdateForm.do?memberId=' + memberId;
+		
+	});
+	
+
+});
+
+// 함수
+(function($) {
+
+})(jQuery);

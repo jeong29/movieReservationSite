@@ -1,0 +1,81 @@
+@charset "UTF-8";
+
+/* 회원가입 페이지 */
+
+/* 로고 */
+#logo {
+	margin: 70px auto;
+	width: 900px;
+	height: 100px;
+}
+
+#logo img {
+	width: 100%;
+}
+
+/* 회원가입 폼 */
+#joinDiv {
+	padding: 0;
+	margin: 0;
+	margin: 30px auto;
+}
+
+#joinTable {
+	border-collapse: collapse;
+	margin: 20px auto;
+	width: 600px;
+	text-align: left;
+}
+#joinTable label {
+	font-weight: bold;
+	font-size: 20px;
+}
+#joinTable td {
+	height: 60px;
+	padding: 10px;
+}
+
+input[type="text"], input[type="password"], #joinBtn, input[type="tel"] {
+	width: 90%;
+	height: 50px;
+	font-size: 20px;
+}
+#memberId , #chooChunId {
+	width: 70%;
+}
+#chkNoticeDiv {
+	width: 300px;
+}
+
+/* 회원가입 버튼 */
+#joinBtn {
+	height: 70px;
+	font-weight: bold;
+	color: white;
+	background-color: rgb(61, 157, 242);
+	border-style: none;
+}
+
+/* 취소 버튼 */
+#cancelBtn {
+	border: 2px solid rgb(61, 157, 242);
+	color: rgb(61, 157, 242);
+	background-color: white;
+	height: 66px;
+	font-weight: bold;
+	width: 90%;
+	height: 70px;
+	font-size: 20px;
+}
+
+/* 중복검사 버튼, 추천인 아이디 버튼 */
+#idChkBtn, #chooChunBtn {
+	color: white;
+	border-style: none;
+	background-color: rgb(61, 157, 242);
+	font-weight: bold;
+	height: 56px;
+	line-height: 22px;
+	font-size: 20px;
+	padding: 0 6px;
+}

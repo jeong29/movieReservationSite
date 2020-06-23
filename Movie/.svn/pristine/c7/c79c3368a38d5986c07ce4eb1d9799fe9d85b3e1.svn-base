@@ -1,0 +1,42 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>어쩌다 발견한 영화</title>
+<style type="text/css">
+body {
+	text-align: center;
+}
+header, footer {
+	width: 100%;
+	height: 200px;
+	background: rgb(61, 157, 242);
+}
+#contents {
+	margin: 0 auto;
+	width: 1200px;
+	border: 1px solid black; 
+	background-color: lightgray;
+}
+</style>
+</head>
+<body>
+<div id="container">
+<!-- 헤더 부분 -->
+<header>
+	<jsp:include page="header.jsp"></jsp:include>
+</header>
+
+<!-- 컨텐츠 부분 -->
+<div id="contents">
+	<jsp:include page="${page }"></jsp:include>
+</div>
+<!-- 푸터 부분 -->
+<footer>
+	<jsp:include page="footer.jsp"></jsp:include>
+</footer>
+</div>
+</body>
+</html>

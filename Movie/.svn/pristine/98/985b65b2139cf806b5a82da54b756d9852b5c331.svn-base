@@ -1,0 +1,44 @@
+package com.spring.service;
+
+import java.util.List;
+
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.spring.service.vo.BookVO;
+import com.spring.service.vo.MemberVO;
+import com.spring.service.vo.MovieVO;
+import com.spring.service.vo.ScheduleVO;
+import com.spring.service.vo.ScreenVO;
+import com.spring.service.vo.SeatVO;
+
+@Service("reservationService")
+public class ReservationServiceImpl implements ReservationService {
+	@Autowired
+	private SqlSessionTemplate sqlsession;
+	
+	@Override
+	public List<ScreenVO> selectScreenListAjax() {
+		return sqlsession.selectList("selectScreenListAjax", null);
+	}
+	
+	@Override
+	public List<ScreenVO> selcetScreenList(MovieVO movieVO) {
+		return sqlsession.selectList("selectScreenList", movieVO);
+	}
+
+	@Override
+	public List<BookVO> selectBookList(ScheduleVO scheduleVO) {
+		return sqlsession.selectList("selectBookList", scheduleVO);
+	}
+	@Override
+	public ScreenVO selectSeatColCnt(ScheduleVO scheduleVO) {
+		return sqlsession.selectOne("selectSeatColCnt", scheduleVO);
+	}
+
+	@Override
+	public int updateBookIsReserved(BookVO bookVO) {
+		return sqlsession.update("updateBookIsReserved", bookVO);
+	}
+}

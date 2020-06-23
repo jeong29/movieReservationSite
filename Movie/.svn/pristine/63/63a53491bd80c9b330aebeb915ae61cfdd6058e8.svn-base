@@ -1,0 +1,41 @@
+@charset "UTF-8";
+
+.seatDiv {
+	text-align: center;
+}
+.seatDiv h2 {
+	margin: 40px 0;
+	padding: 10px 0;
+	width: 100%;
+	font-size: 2em;
+	font-weight: bold;
+	background-color: black;
+	color: white;
+}
+.seatTable {
+	margin: 0 auto;
+	width: 100%;
+}
+.N, .Y {
+	width: 2.7%;
+}
+
+input[type="button"] {
+	margin: 10px auto;
+	width: 120px;
+	height: 35px;
+	font-weight: bold;
+	color: white;
+	background-color: #F24535;
+	border-style: none;
+}
+
+/* 좌석 선택 유무 */
+.N {
+	background: rgb(61, 157, 242);
+	color: white;
+	cursor: pointer;
+}
+.Y {
+	background: lightgray;
+}

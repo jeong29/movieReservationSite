@@ -1,0 +1,36 @@
+package com.spring.service.vo;
+
+import java.sql.Date;
+
+public class ScheduleVO {
+	private int scheduleNum;
+	private Date scheduleStart;
+	private int movieNum;
+	private int screenNum;
+	
+	public int getScheduleNum() {
+		return scheduleNum;
+	}
+	public void setScheduleNum(int scheduleNum) {
+		this.scheduleNum = scheduleNum;
+	}
+	public Date getScheduleStart() {
+		return scheduleStart;
+	}
+	public void setScheduleStart(Date scheduleStart) {
+		this.scheduleStart = scheduleStart;
+	}
+	public int getMovieNum() {
+		return movieNum;
+	}
+	public void setMovieNum(int movieNum) {
+		this.movieNum = movieNum;
+	}
+	public int getScreenNum() {
+		return screenNum;
+	}
+	public void setScreenNum(int screenNum) {
+		this.screenNum = screenNum;
+	}
+	
+}

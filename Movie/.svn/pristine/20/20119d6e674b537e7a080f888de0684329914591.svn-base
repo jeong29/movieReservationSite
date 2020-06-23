@@ -1,0 +1,165 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>회원가입 페이지</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<style type="text/css">
+#joinDiv {
+	padding: 0;
+	margin: 0;
+	margin: 30px auto;
+}
+
+#logo {
+	margin: 70px auto;
+	width: 900px;
+	height: 100px;
+}
+
+#logo img {
+	width: 100%;
+}
+
+#joinTable {
+	border-collapse: collapse;
+	margin: 20px auto;
+	width: 600px;
+	text-align: left;
+}
+label {
+	font-weight: bold;
+	font-size: 20px;
+}
+#joinTable td {
+	height: 60px;
+	padding: 20px;
+	/* border: 1px solid black; */
+}
+
+input[type="text"], input[type="password"], input[type="submit"] {
+	width: 90%;
+	height: 50px;
+	font-size: 20px;
+}
+#memberId {
+	width: 70%;
+}
+#chkNoticeDiv {
+	width: 300px;
+}
+#joinBtn {
+	height: 70px;
+	font-weight: bold;
+	color: white;
+	background-color: rgb(61, 157, 242);
+	border-style: none;
+}
+#cancelBtn {
+	border: 2px solid rgb(61, 157, 242);
+	color: rgb(61, 157, 242);
+	background-color: white;
+	height: 66px;
+	font-weight: bold;
+	width: 90%;
+	height: 50px;
+	font-size: 20px;
+}
+#idChkBtn {
+	color: white;
+	border-style: none;
+	background-color: rgb(61, 157, 242);
+	font-weight: bold;
+	height: 55px;
+	font-size: 20px;
+}
+</style>
+</head>
+<body>
+	<div id="logo">
+		<a href="movieMain.do"><img alt="" src="/img/login_logo.png"></a>
+	</div>
+	<div id="joinDiv">
+		<form action="joinResult.do" method="post">
+			<table id="joinTable">
+				<tr>
+					<td>
+						<label>아이디</label><br><br>
+						<input type="text" id="memberId" required>
+						<input type="button" value="중복 검사" id="idChkBtn">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label>비밀번호</label><br><br>
+						<input type="password" id="memberPassword" required>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label>비밀번호 재확인</label><br><br>
+						<input type="password" id="memberPasswordChk"><br>
+						<font id="chkNotice" size="4"></font>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label>이름</label><br><br>
+						<input type="text" required>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label>휴대전화</label><br><br>
+						<input type="text" placeholder="  ' - ' 포함 전화번호 입력" required>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="submit" value="가입하기" id="joinBtn" /><br><br>
+						<input type="button" value="취소하기" id="cancelBtn" onclick="location.href='movieMain.do'"/>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+<script type="text/javascript">
+// 아이디 확인
+$(document).on('click','#idChkBtn' , function(){
+	var memberId = $('#memberId').val();
+	
+	$.ajax({
+        url: 'selectmemberIdAjax.do',
+        type: 'post',
+        data: {'memberId':memberId},
+        success: function(result) {
+           if(result == '' || result == 0) {
+              alert('사용 가능한 ID입니다.');
+           }
+           else {
+              alert('사용중인 ID입니다.');
+           }
+        },
+        error: function(){
+           alert('실패');
+        }
+   });
+});
+
+// 비밀번호 확인
+$(document).on('keyup','#memberPassword' , function(){
+	$('#chkNotice').html('');
+});
+$(document).on('keyup','#memberPasswordChk', function(){
+    if($('#memberPassword').val() != $('#memberPasswordChk').val()){
+       $('#chkNotice').html('<div style="color:red;">&nbsp;&nbsp;비밀번호가 일치하지 않습니다</div>');         
+    }
+    else{
+       $('#chkNotice').html('<div style="color:blue;">&nbsp;&nbsp;비밀번호가 일치합니다</div>');
+    }
+ });
+</script>
+</body>
+</html>

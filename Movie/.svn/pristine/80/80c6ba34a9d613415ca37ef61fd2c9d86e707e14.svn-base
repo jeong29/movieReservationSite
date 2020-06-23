@@ -1,0 +1,69 @@
+// 이벤트
+$(document).ready(function(){
+	//목록가기 버튼 클릭시
+	$(document).on('click', '#listBtn', function() {
+		location.href = 'movieMain.do';
+	});
+	
+	// 회원 정보 조회 클릭시
+	$(document).on('click', '#memberList', function() {
+		selectMemberList();
+	});
+	
+
+});
+
+// 함수
+(function($) {
+	// 모든 회원 정보 조회
+	selectMemberList = function() {
+		var memberId = $('#memberId').val();
+		
+		$.ajax({
+			url : 'selectmemberListAjax.do',
+			type : 'post',
+			data : {'memberId':memberId},
+			success : function(result) {
+				// 오른쪽 td 내용 지움
+				$('#ListDiv').empty();
+
+				// 리턴 받은 리스트의 갯수
+				var listCnt = result.length;
+				var str = '';
+				
+				str += '<h2>회 원 정 보 조 회</h2>';
+				str += '<table id="memberListTable">';
+				str += '<colgroup>';
+				str += '<col width="20%">';
+				str += '<col width="20%">';
+				str += '<col width="20%">';
+				str += '<col width="*">';
+				str += '<col width="20%">';
+				str += '</colgroup>';
+				str += '<tr>';
+				str += '<td>아이디</td>';
+				str += '<td>비밀번호</td>';
+				str += '<td>이 름</td>';
+				str += '<td>전화번호</td>';
+				str += '<td>멤버등급</td>';
+				str += '</tr>';
+				
+				$.each(result, function(index, element) {
+					str += '<tr>';
+					str += '<td>' + element.memberId + '</td>';
+					str += '<td>' + element.memberPassword + '</td>';
+					str += '<td>' + element.memberName + '</td>';
+					str += '<td>' + element.memberTel + '</td>';
+					str += '<td>' + element.memberShip + '</td>';
+					str += '</tr>';
+				});
+				
+				str += '</table>';
+				$('#ListDiv').append(str);
+			},
+			error : function() {
+				alert('실패');
+			}
+		});
+	}
+})(jQuery);

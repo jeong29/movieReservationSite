@@ -1,0 +1,29 @@
+// 이벤트
+$(document).ready(function(){
+	// 등록 버튼 클릭 시
+	$(document).on('click','#insertBtn', function() {
+		var genre = $('#selectGenre').val();
+		var rating = $('#selectRating').val();
+		
+		if(genre == 0){
+			alert('장르를 선택하세요');
+			return;
+		}
+		else if(rating == 0){
+			alert('관람등급을 선택하세요');
+			return;
+		}
+		$('#movieRegForm').submit();
+	});
+	
+	// 취소 버튼 클릭 시
+	$(document).on('click','#cancellBtn', function() {
+		location.href = 'adminPage.do';
+	});
+	
+});
+
+// 함수
+(function($) {
+	
+})(jQuery);

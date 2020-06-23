@@ -1,0 +1,267 @@
+package com.spring.controller;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.spring.service.CustomerService;
+import com.spring.service.MemberService;
+import com.spring.service.vo.FaqVO;
+import com.spring.service.vo.MemberVO;
+import com.spring.service.vo.NoticeVO;
+import com.spring.service.vo.OneToOneVO;
+
+//고객센터를 관리하는 컨트롤러
+
+@Controller
+public class CustomerController {
+	//서비스를 받아온다
+	@Resource(name = "customerService")
+	private CustomerService customerService;
+	
+	@Resource(name = "memberService")
+	private MemberService memberService;
+	
+	
+	//고객센터메인으로 가는 메소드
+	@RequestMapping(value = "/service.do")
+	public String service(Model model, NoticeVO noticeVO,FaqVO faqVO,OneToOneVO otoVO, HttpSession session) {
+		//멤버 정보 가져오기
+		MemberVO member = (MemberVO) session.getAttribute("MEMBER_INFO");
+		model.addAttribute("member", member);
+		
+		//자주하는 질문 리스트 조회하기
+		List<FaqVO> faqList = customerService.selectFaqList(faqVO);
+		model.addAttribute("faqList", faqList);
+		
+		//고객센터 리스트 조회하기 - 쿼리 작성하러 가기
+		List<NoticeVO> list = customerService.selectNoticeList(noticeVO);
+		model.addAttribute("list", list);
+		
+		
+		//공지사항 게시글 갯수조회
+		int noticeCnt = customerService.selectNoticeCount();
+		
+		//일대일문의 글 등록하는 메소드
+//		int result3 = memberService.insertOneToOne(otoVO);
+//		model.addAttribute("oneToOneResult", result3);
+		
+	
+		
+		
+		
+		
+		//페이지 수 
+		int pageCnt = noticeCnt / 10 ; 
+		if(noticeCnt % 10 != 0) {
+			pageCnt++;
+		}
+		
+		model.addAttribute("pageCnt", pageCnt);
+		
+		
+		model.addAttribute("page","/jsp/member/service_list.jsp");	
+		return "/jsp/main.jsp";
+	}
+	
+	
+	
+	
+	//공지사항 글 확인하는 메소드
+	@RequestMapping(value = "/noticeDetail.do")
+	public String noticeDetail(Model model, NoticeVO noticeVO) {
+		
+		//공지사항 클릭시 공지안의 내용을 확인하는 쿼리 작성하러 가기
+		
+		model.addAttribute("notice", customerService.selectNoticeDetail(noticeVO));
+		model.addAttribute("page", "/jsp/admin/notice_detail.jsp");
+		
+		return "/jsp/main.jsp";
+				
+	}
+	
+	
+	//공지사항 등록하는 메소드
+	@RequestMapping(value = "/noticeWriteForm.do")
+	public String noticeWriteForm(Model model) {
+		model.addAttribute("page",  "/jsp/admin/notice_write_form.jsp");
+		
+		return "/jsp/main.jsp";
+	}
+	
+	//공지사항 진짜 등록하는 메소드
+	@RequestMapping(value = "/noticeForm.do")
+	public String noticeForm(Model model,NoticeVO noticeVO) {
+		int result = customerService.insertNotice(noticeVO);
+		model.addAttribute("result", result);
+		
+		model.addAttribute("page", "/jsp/admin/notice_write_result.jsp");
+		return "/jsp/main.jsp";
+	}
+	
+	
+	
+	//공지사항 글 수정하는 화면으로 이동
+	@RequestMapping(value = "/noticeUpdateForm.do")
+	public String noticeUpdateForm(Model model,NoticeVO noticeVO) {
+		//게시글 상세보기 서비스 듫고가기
+		
+		model.addAttribute("notice", customerService.selectNoticeDetail(noticeVO));
+		
+		model.addAttribute("page", "/jsp/admin/notice_update_form.jsp");
+		return "/jsp/main.jsp";
+	}
+	
+	//공지사항을 진짜 수정하는 곳
+	@RequestMapping(value = "/noticeUpdate.do")
+	public String noticeUpdate(Model model, NoticeVO noticeVO) {
+		//수정 쿼리 넣어주기		
+		model.addAttribute("updateResult", customerService.updateNotice(noticeVO));
+
+		model.addAttribute("page", "/jsp/admin/notice_update_result.jsp");
+		//수정결과 확인을 위해 update 결과값 던져주지
+		
+		return "/jsp/main.jsp";
+	}
+	
+	
+	//공지사항을 삭제하는 곳
+	@RequestMapping(value = "/noticeDelete.do")
+	public String noticeDelete(Model model,NoticeVO noticeVO) {
+		//삭제쿼리 넣기
+		customerService.deleteNotice(noticeVO);
+		//model.addAttribute("page", "/jsp/admin/notice_delete_result.jsp");
+		return "/jsp/admin/notice_delete_result.jsp";
+	}
+	
+	
+	
+	//////////자주하는 질문 관리하는 컨트롤러/////////////////////
+	
+	//자주하는 질문 (FAQ)등록하는 메소드
+	@RequestMapping(value = "/faqWriteForm.do")
+	public String faqWriteForm(Model model) {
+		model.addAttribute("page",  "/jsp/admin/faq_write_form.jsp");
+		
+		return "/jsp/main.jsp";
+	}
+	
+	
+	//자주하는질문 진짜 등록하는 메소드
+	@RequestMapping(value = "/faqForm.do")
+	public String faqForm(Model model,FaqVO faqVO) {
+		//쿼리 등록하기
+		int result2 = customerService.insertFaq(faqVO);
+		model.addAttribute("faqResult", result2);
+		
+		model.addAttribute("page", "/jsp/admin/faq_write_result.jsp");
+		return "/jsp/main.jsp";
+	}
+	
+	//공지사항 페이징 처리 리스트 조회
+	@ResponseBody
+	@RequestMapping(value = "/selectNoticeListAjax.do")
+	public List<NoticeVO> selectNoticeListAjax(NoticeVO noticeVO) {
+		return customerService.selectNoticeList(noticeVO);
+		
+	}
+
+	
+	//FAQ 리스트 조회
+	@ResponseBody
+	@RequestMapping(value = "/selectFaqListAjax.do")
+	public List<FaqVO> selectFaqListAjax(Model model,FaqVO faqVO) {
+		return customerService.selectFaqList(faqVO);
+		
+	}
+
+	
+	
+	
+	///////////////////일대일 문의//////////////////////////
+	
+	//회원 일대일 목록 페이지 이동 -- 민희가 추가한갓
+	@RequestMapping(value = "/memberOneToOneList.do")
+	public String memberOneToOneList(MemberVO memberVO, Model model,OneToOneVO otoVO) {
+		model.addAttribute("oneToOneList", customerService.selectOneToOneList());
+		model.addAttribute("page","/jsp/admin/admin_member_oneToOne_list.jsp");
+		return "/jsp/admin/admin_page.jsp";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	//회원 일대일문의 글 확인하는 메소드 -어드민이 하는거
+	@RequestMapping(value = "/oneToOneDetail.do")
+	public String oneToOneDetail(Model model, OneToOneVO otoVO) {
+		//공지사항 클릭시 공지안의 내용을 확인하는 쿼리 작성하러 가기
+		
+		model.addAttribute("otoDetail", customerService.selectOneToOneDetail(otoVO));
+		model.addAttribute("page", "/jsp/admin/admin_member_oneToOne_detail.jsp");
+		
+		
+		return "/jsp/admin/admin_page.jsp";
+				
+	}
+	
+	//어드민이 회원에게 일대일문의 답변시 
+	@RequestMapping(value = "/oneToOneUpdate.do")
+	public String oneToOneUpdate(OneToOneVO otoVO,Model model) {
+		//쿼리 등록하기
+		int update = customerService.updateAnswer(otoVO);
+		//OneToOneVO detail = customerService.selectOneToOneDetail(otoVO);
+		model.addAttribute("result", update);
+	//	model.addAttribute("page", "/jsp/admin/admin_member_oneToOne_result.jsp");
+		
+		return "/jsp/admin/admin_member_oneToOne_result.jsp";
+	}
+	
+	
+//	//어드민이 회원에게 일대일문의 답변시 
+//	@RequestMapping(value = "/oneToOneUpdateResult.do")
+//	public String oneToOneUpdateResult(Model model,OneToOneVO otoVO) {
+//		//쿼리 등록하기
+//		int update = customerService.updateAnswer(otoVO);
+//		//OneToOneVO detail = customerService.selectOneToOneDetail(otoVO);
+//		model.addAttribute("result", update);
+//	//	model.addAttribute("detail", detail);
+//		//model.addAttribute("page", "/jsp/admin/admin_oneToOne_result.jsp");
+//		return "/jsp/admin/admin_member_oneToOne_result.jsp";
+//	}
+//	
+	
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

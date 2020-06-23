@@ -1,0 +1,113 @@
+package com.spring.controller;
+
+import java.io.File;
+import java.io.IOException;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.spring.service.MovieService;
+import com.spring.service.vo.MemberVO;
+import com.spring.service.vo.MovieVO;
+import com.spring.service.vo.ReplyVO;
+import com.spring.service.vo.ScoreVO;
+
+
+@Controller
+public class MovieController {
+	@Resource(name = "movieService")
+	private MovieService movieService;
+	
+	/*
+	 * // 영화 리스트 이동
+	 * 
+	 * @RequestMapping(value = "/movieList.do") public String movieList(Model model)
+	 * { model.addAttribute("list", movieService.selectMovieList()); //return
+	 * "/jsp/movie/move_list.jsp"; return "redirect:movieMain.do"; }
+	 */
+	
+	// 프로그램 시작 시 실행 메소드
+		@RequestMapping(value = "/movieMain.do")
+		public String movieMain(Model model) {
+			model.addAttribute("genreList", movieService.selectGenreList());
+			model.addAttribute("list", movieService.selectMovieList());
+			model.addAttribute("page", "/jsp/movie/movie_list.jsp");
+			return "/jsp/main.jsp";
+		}
+	
+	// 영화 상세조회
+	@RequestMapping(value = "/movieDetail.do")
+	public String movieDetail(MovieVO movieVO, ReplyVO replyVO, Model model, HttpSession session) {
+		// 영화 상세 조회
+		MovieVO movie = movieService.selectMovieDetail(movieVO);
+		model.addAttribute("movie", movie);
+		// 댓글 조회
+		model.addAttribute("scoreList", movieService.selectScoreList());
+		model.addAttribute("replyList", movieService.selectReplyList(replyVO));
+		model.addAttribute("page", "/jsp/movie/movie_detail.jsp");
+		
+		//영화도 세션에 넣겠습니다.
+		session.setAttribute("MOVIE_INFO", movie);
+		return "/jsp/main.jsp";
+	}
+	
+	// 댓글 달기
+	@RequestMapping(value = "/insertReply.do")
+	public String insertReply(ReplyVO replyVO,ScoreVO scoreVO, Model model, HttpSession session) {
+		// 세션에서 이름 값을 가져와서 작성자에 넣기
+		MemberVO member = (MemberVO)session.getAttribute("MEMBER_INFO");
+		replyVO.setReplyWriter(member.getMemberName());
+		
+		// 댓글 추가
+		movieService.insertReply(replyVO);
+		
+		// 댓글 조회에 필요한 
+		// movieNum 넘기기
+		model.addAttribute("movieNum", replyVO.getMovieNum());
+		// scoreGreade 넘기기
+		model.addAttribute("scoreGrade", scoreVO.getScoreGrade());
+		return "redirect:movieDetail.do";
+	}
+	
+	// 영화 등록 폼 이동
+	@RequestMapping(value = "/movieRegForm.do")
+	public String movieRegForm(Model model)  {
+		model.addAttribute("genreList", movieService.selectGenreList());
+		model.addAttribute("ratingList", movieService.selectRatingList());
+		model.addAttribute("page", "/jsp/movie/movie_reg_form.jsp");
+		return "/jsp/main.jsp";
+	}
+	
+	// 영화 등록
+	@RequestMapping(value = "/movieReg.do")
+	public String movieReg(MultipartFile file,HttpServletRequest request,Model model, MovieVO movieVO) throws IOException {
+		String saveName = "";
+		
+		if(file != null && !file.getOriginalFilename().equals("")) {
+			// 첨부 파일 업로드
+			// 서버에 올라갈 파일 이름
+			saveName = file.getOriginalFilename();
+			// 첨부 파일이 올라간 폴더 지정
+			String uploadPath = request.getSession().getServletContext().getRealPath("/upload");
+			
+			// 실제 파일을 지정된 폴더로 업로드
+			File target = new File(uploadPath,saveName);
+			FileCopyUtils.copy(file.getBytes(), target);
+		}
+		
+		// 이미지 등록
+		movieVO.setMovieImage(saveName);
+		// 영화 등록
+		int result = movieService.insertMovie(movieVO);
+		model.addAttribute("result", result);
+		
+		return "/jsp/movie/movie_reg_result.jsp";
+	}
+}

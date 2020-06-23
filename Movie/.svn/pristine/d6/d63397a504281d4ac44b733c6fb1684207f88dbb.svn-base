@@ -1,0 +1,203 @@
+package com.spring.controller;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.spring.service.MovieService;
+import com.spring.service.vo.GenreVO;
+import com.spring.service.vo.MemberVO;
+import com.spring.service.vo.MovieVO;
+import com.spring.service.vo.RatingVO;
+import com.spring.service.vo.ReplyVO;
+import com.spring.service.vo.ScoreVO;
+
+@Controller
+public class MovieController {
+	@Resource(name = "movieService")
+	private MovieService movieService;
+
+	// 프로그램 시작 시 실행 메소드
+	@RequestMapping(value = "/movieMain.do")
+	public String movieMain(Model model, MovieVO movieVO) {
+		model.addAttribute("genreList", movieService.selectGenreList());
+		model.addAttribute("list", movieService.selectMovieList(movieVO));
+		
+		//영화 갯수 조회
+		int movieCnt = movieService.selectMovieCount(movieVO);
+		
+		//페이지 수 
+		int pageCnt = movieCnt / 20 ;
+		if(movieCnt % 20 != 0) {
+			pageCnt ++;
+		}
+		model.addAttribute("pageCnt", pageCnt);
+		model.addAttribute("page", "/jsp/movie/movie_list.jsp");
+		return "/jsp/main.jsp";
+	}
+
+	// 장르 선택시 해당 장르로 영화 조회
+	@ResponseBody
+	@RequestMapping(value = "/selectMovieListAjax.do")
+	public List<MovieVO> selectMovieListAjax(MovieVO movieVO) {
+		List<MovieVO> list = movieService.selectMovieList(movieVO);
+		return list;
+	}
+
+	// 영화 상세조회
+	@RequestMapping(value = "/movieDetail.do")
+	public String movieDetail(MovieVO movieVO, ReplyVO replyVO, GenreVO genreVo, Model model, HttpSession session) {
+		// 영화 상세 조회
+		MovieVO movie = movieService.selectMovieDetail(movieVO);
+
+		model.addAttribute("movie", movie);
+
+		// 장르 이름 조회
+		String[] genres = movie.getGenreNum().split(","); // ,를 잘라서 배열에 넣음
+		Integer[] arr = new Integer[genres.length];
+
+		for (int i = 0; i < genres.length; i++) {
+			arr[i] = Integer.parseInt(genres[i]); // 문자열 배열을 숫자로 전환해서 새로운 배열에 넣음
+		}
+
+		List<Integer> genreList = Arrays.asList(arr);// 리스트에 숫자 배열을 넣음
+		genreVo.setGenreNumList(genreList); // 리스트를 변수에 넣음
+		List<GenreVO> list = movieService.selectGenreName(genreVo);
+		model.addAttribute("genre", list);
+
+		// 댓글 조회
+		model.addAttribute("scoreList", movieService.selectScoreList());
+		model.addAttribute("replyList", movieService.selectReplyList(replyVO));
+
+		// 영화도 세션에 넣겠습니다.
+		session.setAttribute("MOVIE_INFO", movie);
+
+		model.addAttribute("page", "/jsp/movie/movie_detail.jsp");
+		return "/jsp/main.jsp";
+	}
+
+	// 영화 상영여부 변경
+	@ResponseBody
+	@RequestMapping(value = "/isUse.do")
+	public int isUse(MovieVO movieVO) {
+		int result = movieService.updateIsUse(movieVO);
+		return result;
+	}
+	
+	// 영화 상영여부 변경
+	@ResponseBody
+	@RequestMapping(value = "/isUseIng.do")
+	public int isUseIng(MovieVO movieVO) {
+		int result = movieService.updateIsUseIng(movieVO);
+		return result;
+	}
+
+	// 댓글 달기
+	@RequestMapping(value = "/insertReply.do")
+	public String insertReply(ReplyVO replyVO, ScoreVO scoreVO, Model model, HttpSession session) {
+		// 세션에서 이름 값을 가져와서 작성자에 넣기
+		MemberVO member = (MemberVO) session.getAttribute("MEMBER_INFO");
+		replyVO.setReplyWriter(member.getMemberName());
+
+		// 댓글 추가
+		movieService.insertReply(replyVO);
+
+		// 댓글 조회에 필요한
+		// movieNum 넘기기
+		model.addAttribute("movieNum", replyVO.getMovieNum());
+		// scoreGreade 넘기기
+		model.addAttribute("scoreGrade", scoreVO.getScoreGrade());
+		return "redirect:movieDetail.do";
+	}
+
+	// 영화 등록 폼 이동
+	@RequestMapping(value = "/movieRegForm.do")
+	public String movieRegForm(Model model) {
+		model.addAttribute("genreList", movieService.selectGenreList());
+		model.addAttribute("ratingList", movieService.selectRatingList());
+		model.addAttribute("page", "/jsp/movie/movie_reg_form.jsp");
+		return "/jsp/admin/admin_page.jsp";
+	}
+
+	// 영화 등록
+	@RequestMapping(value = "/movieReg.do")
+	public String movieReg(@RequestParam(value = "genres") int[] genres, MultipartFile file, HttpServletRequest request,
+			Model model, MovieVO movieVO) throws IOException {
+		String saveName = "";
+
+		if (file != null && !file.getOriginalFilename().equals("")) {
+			// 첨부 파일 업로드
+			// 서버에 올라갈 파일 이름
+			saveName = file.getOriginalFilename();
+			// 첨부 파일이 올라간 폴더 지정
+			String uploadPath = request.getSession().getServletContext().getRealPath("/upload");
+
+			// 실제 파일을 지정된 폴더로 업로드
+			File target = new File(uploadPath, saveName);
+			FileCopyUtils.copy(file.getBytes(), target);
+		}
+		String genreNum = "";
+		for (int i = 0; i < genres.length; i++) {
+			genreNum += genres[i] + ",";
+		}
+		movieVO.setGenreNum(genreNum.substring(0, genreNum.length() - 1));
+
+		// 장르 등록
+		System.out.println(genreNum);
+		// 이미지 등록
+		movieVO.setMovieImage(saveName);
+		// 영화 등록
+		int result = movieService.insertMovie(movieVO);
+		model.addAttribute("result", result);
+
+		return "/jsp/movie/movie_reg_result.jsp";
+	}
+
+	// 장르 조회 페이지 이동
+	@RequestMapping(value = "/genreList.do")
+	public String genreList(Model model) {
+		model.addAttribute("list", movieService.selectGenreList());
+		model.addAttribute("page", "/jsp/admin/admin_genre_list.jsp");
+		return "/jsp/admin/admin_page.jsp";
+	}
+
+	// 장르 등록
+	@ResponseBody
+	@RequestMapping(value = "/insertGenre.do")
+	public int insertGenre(GenreVO genreVO) {
+		int result = movieService.insertGenre(genreVO);
+		return result;
+	}
+
+	// 관람등급 조회
+	@ResponseBody
+	@RequestMapping(value = "/ratingListAjax.do")
+	public List<RatingVO> ratingListAjax() {
+		List<RatingVO> list = movieService.selectRatingList();
+		return list;
+	}
+
+	// 모든 영화 리스트 출력 - 관리자 페이지
+	@RequestMapping(value = "/movieList.do")
+	public String MovieList(MovieVO movieVO, Model model) {
+
+		model.addAttribute("list", movieService.selectMovieList(movieVO));
+		model.addAttribute("page", "/jsp/admin/admin_movie_list.jsp");
+		return "/jsp/admin/admin_page.jsp";
+	}
+
+
+}

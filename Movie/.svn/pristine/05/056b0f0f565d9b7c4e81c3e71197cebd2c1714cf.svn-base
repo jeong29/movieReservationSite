@@ -1,0 +1,73 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>관리자 페이지 상영관 조회</title>
+<script src="js/admin_screen_list.js?ver=05"></script>
+<style type="text/css">
+body {
+	padding: 0;
+	margin: 0;
+}
+#screenListTable {
+	margin: 30px auto;
+	width: 40%;
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+#screenListTable tr:nth-child(1) {
+	font-weight: bold;
+}
+#screenListTable td {
+	border: 1px solid black;
+}
+</style>
+</head>
+<body>
+<div id="screenListDiv">
+	<h2> 상 영 관 조 회</h2>
+	<table id="screenListTable">
+		<colgroup>
+			<col width="*">
+			<col width="15%">
+			<col width="15%">
+		</colgroup>
+		<tr>
+			<td>상영관 이름</td>
+			<td>좌 석 수</td>
+			<td>비고</td>
+		</tr>
+
+		<c:choose>
+			<c:when test="${list.size() eq 0 }">
+				<tr>
+					<td colspan="3">등록된 상영관이 없습니다</td>
+				</tr>
+			</c:when>
+			<c:otherwise>
+				<c:forEach items="${list }" var="screen">
+					<tr>
+						<td>${screen.screenName }</td>
+						<td>${screen.seatCnt }</td>
+						<td>
+						<input type="hidden" value="${screen.screenNum }"/>
+						<c:choose>
+							<c:when test="${screen.serviceable eq 'Y'}">
+								<input type="button" value="폐장" class="serviceable"/>
+							</c:when>
+							<c:otherwise>
+								<input type="button" value="재개장" class="serviceable"/>
+							</c:otherwise>
+						</c:choose>
+						</td>
+					</tr>
+				</c:forEach>
+			</c:otherwise>
+		</c:choose>
+	</table>
+</div>
+</body>
+</html>
